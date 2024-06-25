@@ -1,30 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/26 05:58:01 by hyungcho         ###   ########.fr       */
+/*   Created: 2024/06/24 20:53:58 by hyungcho          #+#    #+#             */
+/*   Updated: 2024/06/24 20:54:27 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <stdio.h>
-# include "Libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <sys/signal.h>
-# include <stdlib.h>
-# include <termios.h>
-# include <unistd.h>
+static void	sig_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		ft_putstr_fd("\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		rl_redisplay();
+	}
+	else if (sig == SIGQUIT)
+		rl_redisplay();
+	else if (sig == SIGTERM)
+		exit(0);
+}
 
-void	set_signal(void);
-void	start_shell(void);
-
-void	puterr(char *msg);
-
-#endif
+void	set_signal(void)
+{
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
+	signal(SIGTERM, sig_handler);
+}
