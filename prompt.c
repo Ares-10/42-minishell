@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/26 05:58:01 by hyungcho         ###   ########.fr       */
+/*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
+/*   Updated: 2024/06/24 21:13:17 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <stdio.h>
-# include "Libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <sys/signal.h>
-# include <stdlib.h>
-# include <termios.h>
-# include <unistd.h>
+void	start_shell(void)
+{
+	char	*input;
 
-void	set_signal(void);
-void	start_shell(void);
-
-void	puterr(char *msg);
-
-#endif
+	while (1)
+	{
+		input = readline("[minishell] % ");
+		if (input)
+		{
+			add_history(input);
+			printf("You entered: %s\n", input);
+		}
+		else
+		{
+			ft_putstr_fd("exit\n", 1);
+			exit(0);
+		}
+		free(input);
+	}
+}
