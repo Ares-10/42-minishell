@@ -19,12 +19,12 @@ void	start_shell(void)
 	while (1)
 	{
 		input = readline("[minishell] % ");
-		if (input)
+		if (input && input[0])
 		{
 			add_history(input);
 			printf("You entered: %s\n", input);
 		}
-		else
+		else if (!input)
 		{
 			ft_putstr_fd("exit\n", 1);
 			exit(0);
