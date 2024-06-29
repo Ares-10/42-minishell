@@ -6,26 +6,27 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/27 03:28:45 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/06/30 05:30:24 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-void prf(void *t)
+/* 테스트용입니다. */
+void	prf(void *t)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = (t_token *) t;
 	printf("str: %s \t\t| type:%d\n", token->str, token->type);
 }
 
-void parse(char *str)
+void	parse(char *str)
 {
-	int i;
-	t_list *token_list;
-	t_token *token;
-	int size;
+	int		i;
+	t_list	*token_list;
+	t_token	*token;
+	int		size;
 
 	i = 0;
 	token_list = NULL;
