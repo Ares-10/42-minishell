@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+int	check_str(char *str)
+{
+	int		i;
+
+	if (str == NULL)
+		return (0);
+	i = 0;
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+		i++;
+	if (!str[i])
+		return (0);
+	return (1);
+}
+
 void	start_shell(void)
 {
 	char	*input;
@@ -19,7 +33,7 @@ void	start_shell(void)
 	while (1)
 	{
 		input = readline("[minishell] % ");
-		if (input && input[0])
+		if (check_str(input))
 		{
 			add_history(input);
 			printf("You entered: %s\n", input);
