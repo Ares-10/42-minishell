@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:29:57 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/30 04:29:57 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/06/30 05:29:23 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
  * ' 안쪽: 1
  * " 안쪽: 2
  */
-int check_quote(const char *str, int index)
+int	check_quote(const char *str, int index)
 {
-	int i;
-	int quote_flag;
-	int dquote_flag;
+	int	i;
+	int	quote_flag;
+	int	dquote_flag;
 
 	quote_flag = 0;
 	dquote_flag = 0;
@@ -34,20 +34,13 @@ int check_quote(const char *str, int index)
 		else if (str[i] == '\"' && !quote_flag)
 			dquote_flag = !dquote_flag;
 	}
-	if ((str[i] == '\'' || str[i] == '\"')
-		&& (!quote_flag && !dquote_flag))
+	if (((str[i] == '\'' || str[i] == '\"') && (!quote_flag && !dquote_flag))
+		|| (quote_flag && str[i] == '\'')
+		|| (dquote_flag && str[i] == '\"'))
 		return (-1);
-	if (i == index && quote_flag)
-	{
-		if (str[i] == '\'')
-			return (-1);
+	if (quote_flag)
 		return (1);
-	}
-	if (i == index && dquote_flag)
-	{
-		if (str[i] == '\"')
-			return (-1);
+	if (dquote_flag)
 		return (2);
-	}
 	return (0);
 }

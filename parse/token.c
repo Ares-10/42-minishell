@@ -6,17 +6,17 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:22:11 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/30 04:22:53 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/06/30 05:25:18 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-static void remove_quote(char *str);
+static void	remove_quote(char *str);
 
-t_token *new_token(const char *str, int size)
+t_token	*new_token(const char *str, int size)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = (t_token *) malloc(sizeof(t_token));
 	if (!token)
@@ -29,12 +29,12 @@ t_token *new_token(const char *str, int size)
 		token->type = PIPE;
 	else
 		token->type = WORD;
-	return token;
+	return (token);
 }
 
-int get_token_size(const char *str)
+int	get_token_size(const char *str)
 {
-	int i;
+	int	i;
 
 	if ((str[0] == '<' && str[1] == '<') || (str[0] == '>' && str[1] == '>'))
 		return (2);
@@ -43,25 +43,27 @@ int get_token_size(const char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (check_quote(str, i) == 0 &&
-			(str[i] == ' ' || str[i] == '|' || str[i] == '<' || str[i] == '>'))
+		if (check_quote(str, i) == 0
+			&& (str[i] == ' ' || str[i] == '|'
+				|| str[i] == '<' || str[i] == '>'))
 			return (i);
 	}
 	return (i);
 }
 
-void delete_token(t_token *token)
+void	delete_token(t_token *token)
 {
 	free(token->str);
 	free(token);
 }
 
-void remove_quote(char *str)
+void	remove_quote(char *str)
 {
-	int i;
-	int new_index = 0;
+	int	i;
+	int	new_index;
 
 	i = -1;
+	new_index = 0;
 	while (str[++i])
 	{
 		if (check_quote(str, i) != -1)
