@@ -22,8 +22,20 @@
 # include <termios.h>
 # include <unistd.h>
 
+# define WORD 1
+# define PIPE 2
+# define REDIRECT 3
+
+typedef struct s_token
+{
+	int				type;
+	char			*str;
+}	t_token;
+
 void	set_signal(void);
 void	start_shell(void);
+
+void	parse(char *str);
 
 void	puterr(char *msg);
 

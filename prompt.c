@@ -36,6 +36,7 @@ void	start_shell(void)
 		if (check_str(input))
 		{
 			add_history(input);
+			parse(input);
 			printf("You entered: %s\n", input);
 		}
 		else if (!input)

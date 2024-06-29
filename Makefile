@@ -1,9 +1,12 @@
 NAME = minishell
 
-SRCS =  main.c		\
-		signal.c	\
-		prompt.c	\
-		error.c		\
+SRCS =  main.c			\
+		signal.c		\
+		prompt.c		\
+		error.c			\
+		parse/parse.c	\
+		parse/token.c	\
+		parse/quote.c	\
 
 OBJS = $(SRCS:.c=.o)
 
@@ -19,11 +22,11 @@ LIBS = -lreadline		\
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	@$(MAKE) -C ./Libft all
+	@$(MAKE) -C ./Libft bonus
 	cc $(LDFLAGS) $^ $(LIBS) -o $(NAME)
 
 %.o: %.c
-	cc $(CFLAGS)  $(CPPFLAGS) -c $< -o $@ -I minishell.h
+	cc $(CFLAGS)  $(CPPFLAGS) -c $< -o $@ -I minishell.h -I parse/parse.h
 
 clean :
 	@$(MAKE) -C ./Libft fclean
