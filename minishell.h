@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/29 01:09:24 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/06/30 21:50:43 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # include "Libft/libft.h"
+# include <stdlib.h>
+
 # include <readline/readline.h>
 
 /*
@@ -33,11 +35,11 @@ typedef struct s_token
 	char	*str;
 }	t_token;
 
-typedef struct s_ast
+typedef struct s_tree
 {
 	t_token	token;
-	t_ast	*left;
-	t_ast	*right;
-}	t_ast;
+	t_tree	*left;
+	t_tree	*right;
+}	t_tree;
 
 #endif
