@@ -6,13 +6,36 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:22:11 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/30 05:25:18 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/06/30 09:06:52 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
 static void	remove_quote(char *str);
+static int	get_token_size(const char *str);
+t_token		*new_token(const char *str, int size);
+
+void	tokenize(t_list **token_list, char *str)
+{
+	int		i;
+	t_token	*token;
+	int		size;
+
+	i = 0;
+	*token_list = NULL;
+	while (str[i])
+	{
+		while (str[i] && (str[i] == '\t' || str[i] == ' ' || str[i] == '\n'))
+			i++;
+		size = get_token_size(&str[i]);
+		token = new_token(&str[i], size);
+		ft_lstadd_back(token_list, ft_lstnew(token));
+		i += size;
+	}
+	if (check_quote(str, i))
+		puterr("quote must be pair");
+}
 
 t_token	*new_token(const char *str, int size)
 {
@@ -51,9 +74,9 @@ int	get_token_size(const char *str)
 	return (i);
 }
 
-void	delete_token(t_token *token)
+void	delete_token(void *token)
 {
-	free(token->str);
+	free(((t_token *)token)->str);
 	free(token);
 }
 

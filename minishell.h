@@ -22,10 +22,6 @@
 # include <termios.h>
 # include <unistd.h>
 
-# define WORD 1
-# define PIPE 2
-# define REDIRECT 3
-
 typedef struct s_token
 {
 	int				type;
