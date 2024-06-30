@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run.c                                              :+:      :+:    :+:   */
+/*   tmp                                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojepar <seojepar@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:29:55 by seojepar          #+#    #+#             */
-/*   Updated: 2024/06/24 21:31:30 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/06/30 21:05:32 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,3 +26,113 @@
  * 	6. exec함 (execve할 때는 fork해서 처리함)
  */
 
+void	search_tree(t_ast *node)
+{
+	execute_tree(node);
+	if (node->left != NULL)
+		search_tree(node->left);
+	if (node->right != NULL)
+		search_tree(node->right);
+}
+
+void	execute_tree(t_ast *node)
+{
+
+}
+
+// <pipeline>     ::= <cmd>
+// 			|   <pipeline> '|' <cmd>
+void	execute_pipe(t_ast *node)
+{
+	int	p_fd[2];
+	pid_t	pid1;
+	pid_t	pid2;
+
+	if (node->left && node->right)
+	{
+		if (pipe(p_fd) == -1) {
+			perror("pipe");
+			exit(EXIT_FAILURE);
+		}
+		pid1 = fork();
+		if (pid1 == -1) {
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		if (pid1 == 0)
+		{
+			close(p_fd[0]);
+			dup2(p_fd[1], STDOUT_FILENO);
+			close(p_fd[1]);
+			search_tree(node->left);
+			exit(EXIT_SUCCESS);
+		}
+		else
+		{
+			pid_t pid2 = fork();
+			if (pid2 == -1) {
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
+			if (pid2 == 0) {
+				close(p_fd[1]);
+				dup2(p_fd[0], STDIN_FILENO);
+				close(p_fd[0]);
+				search_tree(node->right);
+				exit(EXIT_SUCCESS);
+			}
+			else
+			{
+				close(p_fd[0]);
+				close(p_fd[1]);
+				waitpid(pid1, NULL, 0);
+				waitpid(pid2, NULL, 0);
+			}
+		}
+	}
+}
+
+// <cmd>	::= <simple_cmd>
+// 		|   <simple_cmd> <redirects>
+void	execute_cmd(node)
+{
+
+}
+
+// <simple_cmd>   ::= <file_path>
+// 				   |   <argv>
+void	execute_simple_cmd(node)
+{
+
+}
+
+// <argv>	::= <file_path> <args>
+void	execute_argv(node)
+{
+
+}
+
+// <args>        ::= WORD
+// 				| <args> WORD
+// <filename>    ::= WORD
+// <file_path>   ::= WORD
+void	execute_file_path(node)
+{
+
+}
+
+// <redirects>	::= <io_redirect>
+// 			|  <redirects> <io_redirect>
+void	execute_redirects(node)
+{
+
+}
+
+// <io_redirect>  ::= '<'   <filename>
+// 				|  '<<'  <filename>
+// 				|  '>'   <filename>
+// 				|  '>>'  <filename>
+void	execute_io_redirect(node)
+{
+
+}
