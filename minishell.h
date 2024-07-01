@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/30 21:50:43 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/01 11:27:43 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ typedef struct s_token
 
 typedef struct s_tree
 {
-	t_token	token;
-	t_tree	*left;
-	t_tree	*right;
+	int				type;
+	void			*data;
+	struct s_tree	*left;
+	struct s_tree	*right;
 }	t_tree;
 
 #endif
