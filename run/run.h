@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/06/30 21:58:35 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/01 11:30:01 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "minishell.h"
 # include <stdlib.h>
+# include <unistd.h>
 
 void	exec_argv(char *cmd, char **env);
 

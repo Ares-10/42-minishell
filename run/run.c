@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:29:55 by seojepar          #+#    #+#             */
-/*   Updated: 2024/06/30 22:09:17 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/01 11:27:33 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
  * 	6. exec함 (execve할 때는 fork해서 처리함)
  */
 
-void	search_tree(t_tree *node)
+void	search_tree(t_tree *node, char **env)
 {
 	exec_tree(node);
 	if (node->left != NULL)
@@ -37,21 +37,14 @@ void	search_tree(t_tree *node)
 
 void	exec_tree(t_tree *node)
 {
-	int	t;
-
-	t = node->token.type;
-	if (t == T_NULL)
+	if (node->type == T_NULL)
 		return ;
-	if (t == T_WORD)
+	if (node->type == T_WORD)
 		return ;
-	if (t == T_PIPE)
+	if (node->type == T_PIPE)
 		exec_pipe(node);
-	if (t == T_REDIRECT)
+	if (node->type == T_REDIRECT)
 		exec_redirects(node);
-	if (t == T_DOUBLE_QUOTES)
-		// 
-	if (t == T_SINGLE_QUOTES)
-		// 
 }
 
 // <pipeline>     ::= <cmd>
