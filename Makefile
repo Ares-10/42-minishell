@@ -1,12 +1,14 @@
 NAME = minishell
 
-SRCS =  main.c			\
-		signal.c		\
-		prompt.c		\
-		error.c			\
-		parse/parse.c	\
-		parse/token.c	\
-		parse/quote.c	\
+SRCS =  main.c					\
+		signal.c				\
+		prompt.c				\
+		error.c					\
+		parse/parse.c			\
+		parse/token.c			\
+		parse/quote.c			\
+		parse/syntaxanalysis.c	\
+		parse/treebuilder.c		\
 
 OBJS = $(SRCS:.c=.o)
 
