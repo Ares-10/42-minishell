@@ -21,6 +21,7 @@ void	tokenize(t_list **token_list, char *str)
 	int		i;
 	t_token	*token;
 	int		size;
+	t_list	*node;
 
 	i = 0;
 	*token_list = NULL;
@@ -30,7 +31,10 @@ void	tokenize(t_list **token_list, char *str)
 			i++;
 		size = get_token_size(&str[i]);
 		token = new_token(&str[i], size);
-		ft_lstadd_back(token_list, ft_lstnew(token));
+		node = ft_lstnew(token);
+		if (!node)
+			puterr("malloc failed");
+		ft_lstadd_back(token_list, node);
 		i += size;
 	}
 	if (check_quote(str, i))
@@ -45,13 +49,15 @@ t_token	*new_token(const char *str, int size)
 	if (!token)
 		puterr("malloc failed");
 	token->str = ft_substr(str, 0, size);
+	if (!token->str)
+		puterr("malloc failed");
 	remove_quote(token->str);
 	if (str[0] == '<' || str[0] == '>')
-		token->type = REDIRECT;
+		token->type = T_REDIRECT;
 	else if (str[0] == '|')
-		token->type = PIPE;
+		token->type = T_PIPE;
 	else
-		token->type = WORD;
+		token->type = T_WORD;
 	return (token);
 }
 
