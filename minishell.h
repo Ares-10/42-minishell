@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
 /*   Updated: 2024/07/03 22:15:34 by hyungcho         ###   ########.fr       */
@@ -13,14 +13,14 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h>
 # include "Libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <sys/signal.h>
 # include <stdlib.h>
-# include <termios.h>
-# include <unistd.h>
+
+# include <readline/readline.h>
+
+/*
+ * token
+ */
 
 # define T_WORD 1
 # define T_PIPE 2
@@ -29,10 +29,18 @@
 # define T_REDIRECTS 5
 # define T_SIMPLECMD 6
 
+typedef enum
+{
+	OUTPUT_REDIRECT = 1,    // '>'
+	APPEND_REDIRECT = 2,    // '>>'
+	INPUT_REDIRECT = 3,     // '<'
+	HERE_DOCUMENT = 4       // '<<'
+}	t_redirect_type;
+
 typedef struct s_token
 {
-	int				type;
-	char			*str;
+	int		type;
+	char	*str;
 }	t_token;
 
 typedef struct s_tree
@@ -42,14 +50,6 @@ typedef struct s_tree
 	struct s_tree	*left;
 	struct s_tree	*right;
 }	t_tree;
-
-typedef enum
-{
-	OUTPUT_REDIRECT = 1,    // '>'
-	APPEND_REDIRECT = 2,    // '>>'
-	INPUT_REDIRECT = 3,     // '<'
-	HERE_DOCUMENT = 4       // '<<'
-}	t_redirect_type;
 
 typedef struct s_redirect
 {
