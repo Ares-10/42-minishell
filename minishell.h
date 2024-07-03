@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/26 05:58:01 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/03 22:15:34 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,51 @@
 # include <termios.h>
 # include <unistd.h>
 
+# define T_WORD 1
+# define T_PIPE 2
+# define T_REDIRECT 3
+# define T_CMD 4
+# define T_REDIRECTS 5
+# define T_SIMPLECMD 6
+
 typedef struct s_token
 {
 	int				type;
 	char			*str;
 }	t_token;
 
+typedef struct s_tree
+{
+	int				type;
+	void			*data;
+	struct s_tree	*left;
+	struct s_tree	*right;
+}	t_tree;
+
+typedef enum
+{
+	OUTPUT_REDIRECT = 1,    // '>'
+	APPEND_REDIRECT = 2,    // '>>'
+	INPUT_REDIRECT = 3,     // '<'
+	HERE_DOCUMENT = 4       // '<<'
+}	t_redirect_type;
+
+typedef struct s_redirect
+{
+	t_redirect_type	type;
+	char			*file_path;
+}	t_redirect;
+
+typedef struct s_simplecmd
+{
+	char	*file_path;
+	char	*argv;
+}	t_simplecmd;
+
 void	set_signal(void);
 void	start_shell(void);
 
-void	parse(char *str);
+t_tree	*parse(char *str);
 
 void	puterr(char *msg);
 

@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:55 by seojepar          #+#    #+#             */
-/*   Updated: 2024/06/24 21:26:25 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/03 22:43:22 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,5 @@ int	main(int argc, char **argv, char **envp)
 		puterr("tcsetattr failed");
 	set_signal();
 	start_shell();
+	exit(0);
 }
