@@ -28,7 +28,7 @@ $(NAME) : $(OBJS)
 	cc $(LDFLAGS) $^ $(LIBS) -o $(NAME)
 
 %.o: %.c
-	cc $(CFLAGS)  $(CPPFLAGS) -c $< -o $@ -I minishell.h -I parse/parse.h
+	cc $(CFLAGS)  $(CPPFLAGS) -c $< -o $@ -I. -I/parse
 
 clean :
 	@$(MAKE) -C ./Libft fclean
