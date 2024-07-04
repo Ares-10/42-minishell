@@ -62,7 +62,7 @@ $(NAME) : $(OBJS)
 	ar -r $@ $^
 
 %.o: %.c
-	cc $(CFLAGS) $< -o $@ -I libft.h
+	cc $(CFLAGS) $< -o $@ -I.
 
 clean :
 	rm -rf $(OBJS) $(OBJS_BONUS) _BONUS
