@@ -22,7 +22,7 @@
  *      -> 토큰화한 데이터로 실행시키기
  */
 
-int	main(int argc, char **argv, char **envp)
+static void	set_term(void)
 {
 	struct termios	term;
 
@@ -31,6 +31,12 @@ int	main(int argc, char **argv, char **envp)
 	term.c_lflag &= ~(ECHOCTL);
 	if (tcsetattr(STDIN_FILENO, TCSADRAIN, &term) == -1)
 		puterr("tcsetattr failed");
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	g_envp = envp;
+	set_term();
 	set_signal();
 	start_shell();
 	exit(0);
