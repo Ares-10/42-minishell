@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/03 23:16:04 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:33:00 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@
 # include <unistd.h>
 # include <signal.h>
 
-
-/*
- * token
- */
-
 # define T_WORD 1
 # define T_PIPE 2
 # define T_REDIRECT 3
@@ -36,12 +31,17 @@
 # define T_REDIRECTS 5
 # define T_SIMPLECMD 6
 
-typedef enum
+char	**g_envp;
+
+/*
+ * >, >>, <, <<
+ */
+typedef enum s_redirect_type
 {
-	OUTPUT_REDIRECT = 1,    // '>'
-	APPEND_REDIRECT = 2,    // '>>'
-	INPUT_REDIRECT = 3,     // '<'
-	HERE_DOCUMENT = 4       // '<<'
+	OUTPUT_REDIRECT = 1,
+	APPEND_REDIRECT = 2,
+	INPUT_REDIRECT = 3,
+	HERE_DOCUMENT = 4
 }	t_redirect_type;
 
 typedef struct s_token
