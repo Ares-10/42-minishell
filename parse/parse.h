@@ -16,7 +16,6 @@
 # include "../minishell.h"
 
 void	tokenize(t_list **token_list, char *str);
-void	syntax_analysis(t_tree **parse_tree, t_list *token_list);
 
 void	delete_token(void *token);
 int		check_quote(const char *str, int index);
