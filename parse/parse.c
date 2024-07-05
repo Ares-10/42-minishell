@@ -59,13 +59,13 @@ void	search_tree(t_tree *tree)
 		printf("T_REDIRECT\t| ");
 		redirect = (t_redirect * )tree->data;
 		if (redirect->type == OUTPUT_REDIRECT)
-			printf("type: %d | file_path: %s\n", OUTPUT_REDIRECT, redirect->file_path);
+			printf("type: > | file_path: %s\n", redirect->file_path);
 		else if (redirect->type == INPUT_REDIRECT)
-			printf("type: %d | file_path: %s\n", INPUT_REDIRECT, redirect->file_path);
+			printf("type: < | file_path: %s\n", redirect->file_path);
 		else if (redirect->type == APPEND_REDIRECT)
-			printf("type: %d | file_path: %s\n", APPEND_REDIRECT, redirect->file_path);
+			printf("type: >> | file_path: %s\n", redirect->file_path);
 		else if (redirect->type == HERE_DOCUMENT)
-			printf("type: %d | file_path: %s\n", HERE_DOCUMENT, redirect->file_path);
+			printf("type: << | file_path: %s\n", redirect->file_path);
 	}
 	else
 		puterr("type failed");
