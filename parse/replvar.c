@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/06 18:07:44 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/07 01:27:55 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static char	*get_env_value(char *name)
 		p = ft_strchr(g_envp[i], '=');
 		if (p == NULL)
 			continue ;
-		if (ft_strncmp(name, p + 1, ft_strlen(p + 1) + 1) == 0)
+		if (ft_strncmp(name, g_envp[i], ft_strlen(name)) == 0
+			&& g_envp[i][ft_strlen(name)] == '=')
 			return (ft_strdup(p + 1));
 	}
 	return (ft_strdup(""));
@@ -33,7 +34,7 @@ static int	get_var_name(char *str, char *var_name)
 	int		i;
 	int		j;
 
-	i = 0;
+	i = 1;
 	j = 0;
 	if (str[i] == '{') {
 		i++;
@@ -43,7 +44,7 @@ static int	get_var_name(char *str, char *var_name)
 		if (str[i] == '}')
 			i++;
 		else
-			puterr("usage: ${VAR_NAME}");
+			puterr("parse error");
 	}
 	else
 	{
@@ -61,6 +62,8 @@ static void	replace_var(char **str)
 	int		var_len;
 	char	*tmp;
 
+	if (!(ft_isalnum((*str)[1]) || (*str)[1] == '_' || (*str)[1] == '{'))
+		return ;
 	var_name = (char *)malloc(ft_strlen(*str));
 	var_len = get_var_name(*str, var_name);
 	env_value = get_env_value(var_name);
@@ -80,7 +83,7 @@ char	*replace_variable(char *str)
 	char	**strs;
 	char	*tmp;
 
-	strs = ft_split(str, '$');
+	strs = var_split(str);
 	if (strs == NULL)
 		return (NULL);
 	if (str[0] == '$')
