@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/24 21:13:17 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/06 18:10:28 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	check_str(char *str)
 		return (0);
 	return (1);
 }
+
+#include "parse/parse.h"
 
 void	start_shell(void)
 {
