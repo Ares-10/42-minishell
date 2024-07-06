@@ -8,6 +8,7 @@ SRCS =  main.c					\
 		parse/token.c			\
 		parse/quote.c			\
 		parse/treebuilder.c		\
+		parse/replvar.c			\
 
 OBJS = $(SRCS:.c=.o)
 
