@@ -27,7 +27,7 @@ char	*ft_strndup(const char *s, int len)
 	return (str);
 }
 
-char	**ft_freeall(char **list)
+char	**freeall(char **list)
 {
 	int	i;
 
@@ -41,7 +41,7 @@ char	**ft_freeall(char **list)
 	return (NULL);
 }
 
-int	ft_wordcount(char const *s, char c)
+int	word_count(char const *s, char c)
 {
 	int	word_count;
 	int	len;
@@ -73,12 +73,12 @@ char	**ft_split(char const *s, char c)
 	int		k;
 	int		len;
 
-	strs = (char **)malloc(sizeof(char *) * (ft_wordcount(s, c) + 1));
+	strs = (char **)malloc(sizeof(char *) * (word_count(s, c) + 1));
 	if (!strs)
 		return (0);
 	i = 0;
 	k = 0;
-	while (i < ft_wordcount(s, c) && s[k] != '\0')
+	while (i < word_count(s, c) && s[k] != '\0')
 	{
 		while (s[k] == c)
 			k++;
@@ -87,7 +87,7 @@ char	**ft_split(char const *s, char c)
 			k++;
 		strs[i] = ft_strndup(&s[len], k - len);
 		if (strs[i++] == 0)
-			return (ft_freeall(strs));
+			return (freeall(strs));
 	}
 	strs[i] = NULL;
 	return (strs);
