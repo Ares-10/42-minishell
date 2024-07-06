@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/03 22:59:16 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/06 18:08:07 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ t_tree	*parse(char *str)
 	t_list	*token_list;
 	t_tree	*parse_tree;
 
+	replace_variable(str);
 	tokenize(&token_list, str);
 	// ft_lstiter(token_list, prf); // 테스트용
 	parse_tree = syntax_pipeline(token_list);
-	search_tree(parse_tree); // 테스트용
+	// search_tree(parse_tree); // 테스트용
 	ft_lstclear(&token_list, delete_token);
 	return (parse_tree);
 }
