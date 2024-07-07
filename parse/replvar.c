@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 21:48:20 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/08 03:39:09 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static int	get_var_name(char *str, char *var_name)
 	i = 1 + brace_flag;
 	j = 0;
 	while (ft_isalnum(str[i]) || str[i] == '_')
+		var_name[j++] = str[i++];
+	if (str[i] == '?' && i == 1 + brace_flag)
 		var_name[j++] = str[i++];
 	var_name[j] = '\0';
 	if (brace_flag && str[i] != '}')
