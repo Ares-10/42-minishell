@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 19:36:05 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/07 23:59:14 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,13 @@
 # define T_REDIRECTS 5
 # define T_SIMPLECMD 6
 
-char	**g_envp;
+/* > >> < << */
+# define OUTPUT_REDIRECT 1
+# define APPEND_REDIRECT 2
+# define INPUT_REDIRECT 3
+# define HERE_DOCUMENT 4
 
-/*
- * >, >>, <, <<
- */
-typedef enum s_redirect_type
-{
-	OUTPUT_REDIRECT = 1,
-	APPEND_REDIRECT = 2,
-	INPUT_REDIRECT = 3,
-	HERE_DOCUMENT = 4
-}	t_redirect_type;
+char	**g_envp;
 
 typedef struct s_token
 {
@@ -64,8 +59,8 @@ typedef struct s_tree
 
 typedef struct s_redirect
 {
-	t_redirect_type	type;
-	char			*file_path;
+	int		type;
+	char	*file_path;
 }	t_redirect;
 
 typedef struct s_simplecmd
