@@ -6,55 +6,72 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 01:27:55 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/07 19:46:15 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "parse.h"
+#include "parse.h"
 
+static void	free_strs(char **strs)
+{
+	int	i;
+
+	i = -1;
+	while (strs[++i])
+		free(strs[i]);
+}
+
+/* safe */
 static char	*get_env_value(char *name)
 {
 	int		i;
 	char	*p;
+	char	*env_value;
 
 	i = -1;
-	while (g_envp[++i] != NULL) {
+	while (g_envp[++i] != NULL)
+	{
 		p = ft_strchr(g_envp[i], '=');
 		if (p == NULL)
 			continue ;
 		if (ft_strncmp(name, g_envp[i], ft_strlen(name)) == 0
 			&& g_envp[i][ft_strlen(name)] == '=')
-			return (ft_strdup(p + 1));
+		{
+			env_value = ft_strdup(p + 1);
+			if (env_value == NULL)
+				puterr("malloc failed");
+			return (env_value);
+		}
 	}
-	return (ft_strdup(""));
+	env_value = ft_strdup("");
+	if (env_value == NULL)
+		puterr("malloc failed");
+	return (env_value);
 }
 
 static int	get_var_name(char *str, char *var_name)
 {
 	int		i;
 	int		j;
+	int		brace_flag;
 
-	i = 1;
+	brace_flag = 0;
+	if (str[1] == '{')
+		brace_flag = 1;
+	i = 1 + brace_flag;
 	j = 0;
-	if (str[i] == '{') {
-		i++;
-		while (str[i] != '}' && str[i] != '\0')
-			var_name[j++] = str[i++];
-		var_name[j] = '\0';
-		if (str[i] == '}')
-			i++;
-		else
-			puterr("parse error");
-	}
-	else
+	while (ft_isalnum(str[i]) || str[i] == '_')
+		var_name[j++] = str[i++];
+	var_name[j] = '\0';
+	if (brace_flag && str[i] != '}')
 	{
-		while (ft_isalnum(str[i]) || str[i] == '_')
-			var_name[j++] = str[i++];
-		var_name[j] = '\0';
+		var_name[0] = '\0';
+		return (0);
 	}
-	return (i);
+	return (i + brace_flag);
 }
 
+/* safe */
 static void	replace_var(char **str)
 {
 	char	*env_value;
@@ -64,18 +81,19 @@ static void	replace_var(char **str)
 
 	if (!(ft_isalnum((*str)[1]) || (*str)[1] == '_' || (*str)[1] == '{'))
 		return ;
-	var_name = (char *)malloc(ft_strlen(*str));
+	var_name = (char *)xmalloc(ft_strlen(*str));
 	var_len = get_var_name(*str, var_name);
 	env_value = get_env_value(var_name);
 	free(var_name);
-	if (env_value == NULL)
-		return ;
 	tmp = *str;
 	*str = ft_strjoin(env_value, *str + var_len);
+	if (*str == NULL)
+		puterr("malloc failed");
 	free(tmp);
 	free(env_value);
 }
 
+/* safe */
 char	*replace_variable(char *str)
 {
 	int		i;
@@ -84,27 +102,15 @@ char	*replace_variable(char *str)
 	char	*tmp;
 
 	strs = var_split(str);
-	if (strs == NULL)
-		return (NULL);
-	if (str[0] == '$')
-	{
-		i = -1;
-		new_str = ft_strdup("");
-	}
-	else
-	{
-		i = 0;
-		new_str = ft_strdup(strs[0]);
-		free(strs[0]);
-	}
+	i = 0;
+	new_str = ckm(ft_strdup(strs[0]));
 	while (strs[++i])
 	{
 		replace_var(&strs[i]);
 		tmp = new_str;
-		new_str = ft_strjoin(new_str, strs[i]);
+		new_str = ckm(ft_strjoin(new_str, strs[i]));
 		free(tmp);
-		free(strs[i]);
 	}
-	free(strs);
+	free_strs(strs);
 	return (new_str);
 }

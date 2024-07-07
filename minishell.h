@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/05 15:33:00 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/07 19:36:05 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 # include <termios.h>
 # include <unistd.h>
 # include <signal.h>
+# include <errno.h>
+
+# define SUCCESS 1
+# define FAILURE 0
 
 # define T_WORD 1
 # define T_PIPE 2
@@ -75,6 +79,9 @@ void	start_shell(void);
 
 t_tree	*parse(char *str);
 
+/* error.c */
 void	puterr(char *msg);
+void	*xmalloc(int size);
+void	*ckm(void *ptr);
 
 #endif
