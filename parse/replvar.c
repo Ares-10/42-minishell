@@ -66,13 +66,13 @@ static int	get_var_name(char *str, char *var_name)
 	if (brace_flag && str[i] != '}')
 	{
 		var_name[0] = '\0';
-		return (0);
+		return (FAILURE);
 	}
 	return (i + brace_flag);
 }
 
 /* safe */
-static void	replace_var(char **str)
+static int	replace_var(char **str)
 {
 	char	*env_value;
 	char	*var_name;
@@ -80,9 +80,14 @@ static void	replace_var(char **str)
 	char	*tmp;
 
 	if (!(ft_isalnum((*str)[1]) || (*str)[1] == '_' || (*str)[1] == '{'))
-		return ;
+		return (SUCCESS);
 	var_name = (char *)xmalloc(ft_strlen(*str));
 	var_len = get_var_name(*str, var_name);
+	if (var_len == 0)
+	{
+		free(var_name);
+		return (FAILURE);
+	}
 	env_value = get_env_value(var_name);
 	free(var_name);
 	tmp = *str;
@@ -91,6 +96,7 @@ static void	replace_var(char **str)
 		puterr("malloc failed");
 	free(tmp);
 	free(env_value);
+	return (SUCCESS);
 }
 
 /* safe */
@@ -106,7 +112,11 @@ char	*replace_variable(char *str)
 	new_str = ckm(ft_strdup(strs[0]));
 	while (strs[++i])
 	{
-		replace_var(&strs[i]);
+		if (replace_var(&strs[i]) == FAILURE)
+		{
+			free_strs(strs);
+			return (FAILURE);
+		};
 		tmp = new_str;
 		new_str = ckm(ft_strjoin(new_str, strs[i]));
 		free(tmp);
