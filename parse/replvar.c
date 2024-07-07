@@ -6,11 +6,11 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 01:27:55 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/07 18:15:51 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "parse.h"
+#include "parse.h"
 
 static char	*get_env_value(char *name)
 {
@@ -18,7 +18,8 @@ static char	*get_env_value(char *name)
 	char	*p;
 
 	i = -1;
-	while (g_envp[++i] != NULL) {
+	while (g_envp[++i] != NULL)
+	{
 		p = ft_strchr(g_envp[i], '=');
 		if (p == NULL)
 			continue ;
@@ -33,26 +34,19 @@ static int	get_var_name(char *str, char *var_name)
 {
 	int		i;
 	int		j;
+	int		brace_flag;
 
-	i = 1;
+	brace_flag = 0;
+	if (str[1] == '{')
+		brace_flag = 1;
+	i = 1 + brace_flag;
 	j = 0;
-	if (str[i] == '{') {
-		i++;
-		while (str[i] != '}' && str[i] != '\0')
-			var_name[j++] = str[i++];
-		var_name[j] = '\0';
-		if (str[i] == '}')
-			i++;
-		else
-			puterr("parse error");
-	}
-	else
-	{
-		while (ft_isalnum(str[i]) || str[i] == '_')
-			var_name[j++] = str[i++];
-		var_name[j] = '\0';
-	}
-	return (i);
+	while (ft_isalnum(str[i]) || str[i] == '_')
+		var_name[j++] = str[i++];
+	var_name[j] = '\0';
+	if (brace_flag && str[i] != '}')
+		perror("parse error");
+	return (i + brace_flag);
 }
 
 static void	replace_var(char **str)
@@ -86,25 +80,18 @@ char	*replace_variable(char *str)
 	strs = var_split(str);
 	if (strs == NULL)
 		return (NULL);
-	if (str[0] == '$')
-	{
-		i = -1;
-		new_str = ft_strdup("");
-	}
-	else
-	{
-		i = 0;
-		new_str = ft_strdup(strs[0]);
-		free(strs[0]);
-	}
+	i = 0;
+	new_str = ft_strdup(strs[0]);
 	while (strs[++i])
 	{
 		replace_var(&strs[i]);
 		tmp = new_str;
 		new_str = ft_strjoin(new_str, strs[i]);
 		free(tmp);
-		free(strs[i]);
 	}
+	i = -1;
+	while (strs[++i])
+		free(strs[i]);
 	free(strs);
 	return (new_str);
 }

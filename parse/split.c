@@ -36,6 +36,8 @@ static int	word_count(char const *s)
 	while (s[++i])
 		if ((s[i] == '$' && check_quote(s, i) != 1) || i == 0)
 			count++;
+	if (s[0] == '$')
+		count++;
 	return (count);
 }
 
@@ -61,6 +63,8 @@ char	**var_split(char const *s)
 		return (NULL);
 	j = 0;
 	i = 0;
+	if (s[0] == '$')
+		strs[j++] = ft_strdup("");
 	while (s[i] != '\0')
 	{
 		strs[j] = get_word(s, i);

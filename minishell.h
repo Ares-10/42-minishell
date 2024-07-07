@@ -23,6 +23,7 @@
 # include <termios.h>
 # include <unistd.h>
 # include <signal.h>
+# include <errno.h>
 
 # define T_WORD 1
 # define T_PIPE 2
