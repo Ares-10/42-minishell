@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_exit.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/01 11:17:45 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/01 11:28:13 by seojepar         ###   ########.fr       */
+/*   Created: 2024/07/07 21:45:48 by seojepar          #+#    #+#             */
+/*   Updated: 2024/07/07 22:33:13 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-	exit with no options
-	옵션이 없는 exit
-*/
-void	exec_exit()
+#include "run.h"
+
+void	builtin_env(char **env)
 {
-	
+	int	i;
+
+	i = 0;
+	while (env[i] != NULL)
+	{
+		printf("%s\n", env[i]);
+		i++;
+	}
 }
