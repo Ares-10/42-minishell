@@ -6,12 +6,11 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:44:53 by seojepar          #+#    #+#             */
-/*   Updated: 2024/06/30 21:58:35 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/07 22:38:28 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
-#include "libft.h"
 
 static void	ft_free(char **ptr)
 {
@@ -25,7 +24,6 @@ static void	ft_free(char **ptr)
 	}
 	free(ptr);
 }
-
 
 static char	*my_getenv(char *name, char **env)
 {
