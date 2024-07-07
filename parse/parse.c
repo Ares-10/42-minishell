@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/06 18:08:07 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/07 18:16:33 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	search_tree(t_tree *tree)
 	else if (type == T_REDIRECT)
 	{
 		printf("T_REDIRECT\t| ");
-		redirect = (t_redirect * )tree->data;
+		redirect = (t_redirect *)tree->data;
 		if (redirect->type == OUTPUT_REDIRECT)
 			printf("type: > | file_path: %s\n", redirect->file_path);
 		else if (redirect->type == INPUT_REDIRECT)
