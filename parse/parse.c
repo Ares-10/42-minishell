@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 18:16:33 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/07 21:48:50 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,22 @@ void	search_tree(t_tree *tree)
 		search_tree(tree->right);
 }
 
+void	*parse_err(char *msg)
+{
+	ft_putstr_fd("parse error: ", 2);
+	ft_putendl_fd(msg, 2);
+	return (FAILURE);
+}
+
 t_tree	*parse(char *str)
 {
 	t_list	*token_list;
 	t_tree	*parse_tree;
+	char	*new_str;
 
-	replace_variable(str);
+	new_str = replace_variable(str);
+	if (new_str == FAILURE)
+		parse_err("bad var name");
 	tokenize(&token_list, str);
 	// ft_lstiter(token_list, prf); // 테스트용
 	parse_tree = syntax_pipeline(token_list);
