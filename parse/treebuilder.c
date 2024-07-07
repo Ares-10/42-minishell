@@ -15,7 +15,6 @@
 t_tree	*syntax_pipeline(t_list *token_list)
 {
 	t_tree	*tree;
-	t_token token;
 
 	tree = (t_tree *)malloc(sizeof(t_tree));
 	if (tree == NULL)
