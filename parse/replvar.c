@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 19:46:15 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/07 21:48:20 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,9 @@ char	*replace_variable(char *str)
 		if (replace_var(&strs[i]) == FAILURE)
 		{
 			free_strs(strs);
+			free(new_str);
 			return (FAILURE);
-		};
+		}
 		tmp = new_str;
 		new_str = ckm(ft_strjoin(new_str, strs[i]));
 		free(tmp);

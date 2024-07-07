@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 21:46:56 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/07 21:48:50 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	search_tree(t_tree *tree)
 
 void	*parse_err(char *msg)
 {
-	ft_putstr_fd("parse error: ", 2)
+	ft_putstr_fd("parse error: ", 2);
 	ft_putendl_fd(msg, 2);
 	return (FAILURE);
 }
