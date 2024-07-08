@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/08 23:27:43 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/08 23:56:27 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_tree	*parse(char *str)
 	new_str = replace_variable(str);
 	if (new_str == FAILURE)
 		parse_err("bad var name");
-	tokenize(&token_list, str);
+	tokenize(&token_list, new_str);
 	// ft_lstiter(token_list, prf); // 테스트용
 	parse_tree = syntax_pipeline(token_list);
 	search_tree(parse_tree); // 테스트용
