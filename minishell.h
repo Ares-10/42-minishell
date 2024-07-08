@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 23:59:14 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:46:07 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_redirect
 typedef struct s_simplecmd
 {
 	char	*file_path;
-	char	*argv;
+	char	**argv;
 }	t_simplecmd;
 
 void	set_signal(void);
@@ -75,7 +75,8 @@ void	start_shell(void);
 t_tree	*parse(char *str);
 
 /* error.c */
-void	puterr(char *msg);
+void	puterr_exit(char *msg);
+void	*puterr(char *msg);
 void	*xmalloc(int size);
 void	*ckm(void *ptr);
 

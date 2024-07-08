@@ -47,20 +47,20 @@ char	**var_split(char const *s)
 
 	strs = (char **)malloc(sizeof(char *) * (word_count(s) + 1));
 	if (strs == NULL)
-		puterr("malloc failed");
+		puterr_exit("malloc failed");
 	j = 0;
 	i = 0;
 	if (s[0] == '$')
 	{
 		strs[j] = ft_strdup("");
 		if (strs[j++] == NULL)
-			puterr("malloc failed");
+			puterr_exit("malloc failed");
 	}
 	while (s[i] != '\0')
 	{
 		strs[j] = get_word(s, i);
 		if (strs[j] == NULL)
-			puterr("malloc failed");
+			puterr_exit("malloc failed");
 		i += ft_strlen(strs[j]);
 		j++;
 	}

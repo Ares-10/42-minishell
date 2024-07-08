@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 21:48:50 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/08 18:36:22 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	prf(void *t)
 	else if (type == T_REDIRECT)
 		printf("T_REDIRECT\n");
 	else
-		puterr("type failed");
+		puterr_exit("type failed");
 }
 
 /*
@@ -50,9 +50,9 @@ void	search_tree(t_tree *tree)
 		printf("T_REDIRECTS\n");
 	else if (type == T_SIMPLECMD)
 	{
-		printf("T_SIMPLECMD\t| ");
-		cmd = (t_simplecmd *)tree->data;
-		printf("file_path: %s | argv: %s\n", cmd->file_path, cmd->argv);
+		printf("T_SIMPLECMD\t| \n");
+		// cmd = (t_simplecmd *)tree->data;
+		// printf("file_path: %s | argv: \n", cmd->file_path);
 	}
 	else if (type == T_REDIRECT)
 	{
@@ -68,7 +68,7 @@ void	search_tree(t_tree *tree)
 			printf("type: << | file_path: %s\n", redirect->file_path);
 	}
 	else
-		puterr("type failed");
+		puterr_exit("type failed");
 	if (tree->left != NULL)
 		search_tree(tree->left);
 	if (tree->right != NULL)
