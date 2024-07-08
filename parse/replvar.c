@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 21:48:20 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/08 03:39:09 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ static char	*get_env_value(char *name)
 		{
 			env_value = ft_strdup(p + 1);
 			if (env_value == NULL)
-				puterr("malloc failed");
+				puterr_exit("malloc failed");
 			return (env_value);
 		}
 	}
 	env_value = ft_strdup("");
 	if (env_value == NULL)
-		puterr("malloc failed");
+		puterr_exit("malloc failed");
 	return (env_value);
 }
 
@@ -61,6 +61,8 @@ static int	get_var_name(char *str, char *var_name)
 	i = 1 + brace_flag;
 	j = 0;
 	while (ft_isalnum(str[i]) || str[i] == '_')
+		var_name[j++] = str[i++];
+	if (str[i] == '?' && i == 1 + brace_flag)
 		var_name[j++] = str[i++];
 	var_name[j] = '\0';
 	if (brace_flag && str[i] != '}')
@@ -93,7 +95,7 @@ static int	replace_var(char **str)
 	tmp = *str;
 	*str = ft_strjoin(env_value, *str + var_len);
 	if (*str == NULL)
-		puterr("malloc failed");
+		puterr_exit("malloc failed");
 	free(tmp);
 	free(env_value);
 	return (SUCCESS);

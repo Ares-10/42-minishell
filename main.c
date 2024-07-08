@@ -27,10 +27,10 @@ static void	set_term(void)
 	struct termios	term;
 
 	if (tcgetattr(STDIN_FILENO, &term) == -1)
-		puterr("tcgetattr failed");
+		puterr_exit("tcgetattr failed");
 	term.c_lflag &= ~(ECHOCTL);
 	if (tcsetattr(STDIN_FILENO, TCSADRAIN, &term) == -1)
-		puterr("tcsetattr failed");
+		puterr_exit("tcsetattr failed");
 }
 
 int	main(int argc, char **argv, char **envp)
