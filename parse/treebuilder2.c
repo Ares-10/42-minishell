@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:36:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/08 18:33:11 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/08 23:28:56 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ char	**get_argv(t_list *token_list)
 	argv = (char **)xmalloc(sizeof(char *) * count);
 	i = -1;
 	while (++i < count - 1)
+	{
 		argv[i] = ckm(ft_strdup(((t_token *)token_list->content)->str));
+		token_list = token_list->next;
+	}
 	argv[i] = NULL;
 	return (argv);
 }
