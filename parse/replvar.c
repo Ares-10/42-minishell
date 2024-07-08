@@ -39,13 +39,13 @@ static char	*get_env_value(char *name)
 		{
 			env_value = ft_strdup(p + 1);
 			if (env_value == NULL)
-				puterr("malloc failed");
+				puterr_exit("malloc failed");
 			return (env_value);
 		}
 	}
 	env_value = ft_strdup("");
 	if (env_value == NULL)
-		puterr("malloc failed");
+		puterr_exit("malloc failed");
 	return (env_value);
 }
 
@@ -95,7 +95,7 @@ static int	replace_var(char **str)
 	tmp = *str;
 	*str = ft_strjoin(env_value, *str + var_len);
 	if (*str == NULL)
-		puterr("malloc failed");
+		puterr_exit("malloc failed");
 	free(tmp);
 	free(env_value);
 	return (SUCCESS);
