@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/08 03:39:09 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/09 00:12:19 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ static int	replace_var(char **str)
 	int		var_len;
 	char	*tmp;
 
-	if (!(ft_isalnum((*str)[1]) || (*str)[1] == '_' || (*str)[1] == '{'))
+	if (!(ft_isalnum((*str)[1]) || (*str)[1] == '_'
+		|| (*str)[1] == '{' || (*str)[1] == '?'))
 		return (SUCCESS);
 	var_name = (char *)xmalloc(ft_strlen(*str));
 	var_len = get_var_name(*str, var_name);
