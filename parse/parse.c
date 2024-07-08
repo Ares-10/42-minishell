@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/08 18:36:22 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/08 23:27:43 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	prf(void *t)
 void	search_tree(t_tree *tree)
 {
 	int			type;
+	int			i;
 	t_simplecmd	*cmd;
 	t_redirect	*redirect;
 
@@ -50,9 +51,13 @@ void	search_tree(t_tree *tree)
 		printf("T_REDIRECTS\n");
 	else if (type == T_SIMPLECMD)
 	{
-		printf("T_SIMPLECMD\t| \n");
-		// cmd = (t_simplecmd *)tree->data;
-		// printf("file_path: %s | argv: \n", cmd->file_path);
+		printf("T_SIMPLECMD\t| ");
+		cmd = (t_simplecmd *)tree->data;
+		printf("file_path: %s | argv: ", cmd->file_path);
+		i = -1;
+		while (cmd->argv[++i])
+			printf("%s, ", cmd->argv[i]);
+		printf("%s\n", cmd->argv[i]);
 	}
 	else if (type == T_REDIRECT)
 	{
@@ -94,7 +99,7 @@ t_tree	*parse(char *str)
 	tokenize(&token_list, str);
 	// ft_lstiter(token_list, prf); // 테스트용
 	parse_tree = syntax_pipeline(token_list);
-	// search_tree(parse_tree); // 테스트용
+	search_tree(parse_tree); // 테스트용
 	ft_lstclear(&token_list, delete_token);
 	return (parse_tree);
 }
