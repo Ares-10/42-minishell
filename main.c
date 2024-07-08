@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:55 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/03 22:43:22 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/08 23:49:23 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,24 @@ static void	set_term(void)
 		puterr_exit("tcsetattr failed");
 }
 
+static void	set_g_envp(char **envp)
+{
+	int		i;
+
+	i = -1;
+	while (envp[++i])
+		;
+	g_envp = (char **)xmalloc(sizeof(char *) * (i + 2));
+	g_envp[0] = ckm(ft_strdup(""));
+	i = -1;
+	while (envp[++i])
+		g_envp[i + 1] = ckm(ft_strdup(envp[i]));
+	g_envp[i + 1] = NULL;
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	g_envp = envp;
+	set_g_envp(envp);
 	set_term();
 	set_signal();
 	start_shell();
