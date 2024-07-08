@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/06 18:12:36 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/07 19:37:47 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	check_str(char *str)
 void	start_shell(void)
 {
 	char	*input;
+	t_tree	*parse_tree;
 
 	while (1)
 	{
@@ -36,7 +37,7 @@ void	start_shell(void)
 		if (check_str(input))
 		{
 			add_history(input);
-			parse(input);
+			parse_tree = parse(input);
 			printf("You entered: %s\n", input);
 		}
 		else if (!input)

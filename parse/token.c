@@ -33,12 +33,12 @@ void	tokenize(t_list **token_list, char *str)
 		token = new_token(&str[i], size);
 		node = ft_lstnew(token);
 		if (!node)
-			puterr("malloc failed");
+			puterr_exit("malloc failed");
 		ft_lstadd_back(token_list, node);
 		i += size;
 	}
 	if (check_quote(str, i))
-		puterr("quote must be pair");
+		puterr_exit("quote must be pair");
 }
 
 t_token	*new_token(const char *str, int size)
@@ -47,10 +47,10 @@ t_token	*new_token(const char *str, int size)
 
 	token = (t_token *) malloc(sizeof(t_token));
 	if (!token)
-		puterr("malloc failed");
+		puterr_exit("malloc failed");
 	token->str = ft_substr(str, 0, size);
 	if (!token->str)
-		puterr("malloc failed");
+		puterr_exit("malloc failed");
 	remove_quote(token->str);
 	if (str[0] == '<' || str[0] == '>')
 		token->type = T_REDIRECT;

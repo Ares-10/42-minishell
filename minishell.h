@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 19:36:05 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:46:07 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,13 @@
 # define T_REDIRECTS 5
 # define T_SIMPLECMD 6
 
-char	**g_envp;
+/* > >> < << */
+# define OUTPUT_REDIRECT 1
+# define APPEND_REDIRECT 2
+# define INPUT_REDIRECT 3
+# define HERE_DOCUMENT 4
 
-/*
- * >, >>, <, <<
- */
-typedef enum s_redirect_type
-{
-	OUTPUT_REDIRECT = 1,
-	APPEND_REDIRECT = 2,
-	INPUT_REDIRECT = 3,
-	HERE_DOCUMENT = 4
-}	t_redirect_type;
+char	**g_envp;
 
 typedef struct s_token
 {
@@ -64,14 +59,14 @@ typedef struct s_tree
 
 typedef struct s_redirect
 {
-	t_redirect_type	type;
-	char			*file_path;
+	int		type;
+	char	*file_path;
 }	t_redirect;
 
 typedef struct s_simplecmd
 {
 	char	*file_path;
-	char	*argv;
+	char	**argv;
 }	t_simplecmd;
 
 void	set_signal(void);
@@ -80,7 +75,8 @@ void	start_shell(void);
 t_tree	*parse(char *str);
 
 /* error.c */
-void	puterr(char *msg);
+void	puterr_exit(char *msg);
+void	*puterr(char *msg);
 void	*xmalloc(int size);
 void	*ckm(void *ptr);
 
