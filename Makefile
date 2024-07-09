@@ -38,7 +38,7 @@ $(NAME) : $(OBJS)
 	cc $(LDFLAGS) $^ $(LIBS) -o $(NAME)
 
 %.o: %.c
-	cc $(CFLAGS)  $(CPPFLAGS) -c $< -o $@ -I. -I/parse
+	cc $(CFLAGS)  $(CPPFLAGS) -c $< -o $@ -I. -I./parse -I./run
 
 clean :
 	@$(MAKE) -C ./Libft fclean
