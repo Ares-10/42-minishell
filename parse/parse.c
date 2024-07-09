@@ -35,6 +35,7 @@ void	prf(void *t)
  * 테스트용입니다
  * 전위순회순으로 트리를 출력합니다
  */
+/*
 void	search_tree(t_tree *tree)
 {
 	int			type;
@@ -79,6 +80,7 @@ void	search_tree(t_tree *tree)
 	if (tree->right != NULL)
 		search_tree(tree->right);
 }
+*/
 
 void	*parse_err(char *msg)
 {
@@ -87,7 +89,7 @@ void	*parse_err(char *msg)
 	return (FAILURE);
 }
 
-t_tree	*parse(char *str)
+t_tree	*parse(char *str, char **envp)
 {
 	t_list	*token_list;
 	t_tree	*parse_tree;
@@ -99,7 +101,7 @@ t_tree	*parse(char *str)
 	tokenize(&token_list, new_str);
 	// ft_lstiter(token_list, prf); // 테스트용
 	parse_tree = syntax_pipeline(token_list);
-	search_tree(parse_tree); // 테스트용
+	search_tree(parse_tree, envp); // 테스트용
 	ft_lstclear(&token_list, delete_token);
 	return (parse_tree);
 }

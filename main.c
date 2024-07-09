@@ -53,6 +53,6 @@ int	main(int argc, char **argv, char **envp)
 	set_g_envp(envp);
 	set_term();
 	set_signal();
-	start_shell();
+	start_shell(envp);
 	exit(0);
 }
