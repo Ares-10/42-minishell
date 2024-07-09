@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:36:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/08 23:28:56 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/10 00:28:16 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_tree	*syntax_simple_cmd(t_list *token_list)
 	cmd = (t_simplecmd *)xmalloc(sizeof(t_simplecmd));
 	token = (t_token *)token_list->content;
 	cmd->file_path = ft_strdup(token->str);
-	cmd->argv = get_argv(token_list->next);
+	cmd->argv = get_argv(token_list);
 	tree = (t_tree *)xmalloc(sizeof(t_tree));
 	tree->type = T_SIMPLECMD;
 	tree->left = NULL;
@@ -79,8 +79,8 @@ char	**get_argv(t_list *token_list)
 	char	**argv;
 	t_list	*ptr;
 
-	ptr = token_list;
-	count = 1;
+	ptr = token_list->next;
+	count = 2;
 	while (ptr != NULL && ((t_token *)ptr->content)->type == T_WORD)
 	{
 		ptr = ptr->next;
@@ -100,13 +100,13 @@ char	**get_argv(t_list *token_list)
 /* safe */
 int	get_redirection_type(char *str)
 {
-	if (ft_strncmp(str, ">", 1) == 0)
+	if (ft_strncmp(str, ">", 2) == 0)
 		return (OUTPUT_REDIRECT);
-	if (ft_strncmp(str, ">>", 1) == 0)
+	if (ft_strncmp(str, ">>", 2) == 0)
 		return (APPEND_REDIRECT);
-	if (ft_strncmp(str, "<", 1) == 0)
+	if (ft_strncmp(str, "<", 2) == 0)
 		return (INPUT_REDIRECT);
-	if (ft_strncmp(str, "<<", 1) == 0)
+	if (ft_strncmp(str, "<<", 2) == 0)
 		return (HERE_DOCUMENT);
 	puterr_exit("get_redirection_type failed");
 	return (FAILURE);
