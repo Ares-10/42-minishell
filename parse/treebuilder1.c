@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 15:07:39 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/08 18:24:53 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/10 00:44:12 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_tree	*syntax_redirects(t_list *token_list)
 	tree->data = NULL;
 	tree->type = T_REDIRECTS;
 	tree->left = syntax_io_redirect(token_list);
-	if (token_list)
+	if (token_list && ((t_token *)token_list->content)->type == T_REDIRECT)
 		token_list = token_list->next;
 	while (token_list && ((t_token *)token_list->content)->type == T_WORD)
 		token_list = token_list->next;
