@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:55 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/09 00:13:06 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/10 01:04:35 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,30 @@ static void	set_term(void)
 		puterr_exit("tcsetattr failed");
 }
 
-static void	set_g_envp(char **envp)
+static char	**get_env(char **envp)
 {
 	int		i;
+	char	**env;
 
 	i = -1;
 	while (envp[++i])
 		;
-	g_envp = (char **)xmalloc(sizeof(char *) * (i + 2));
-	g_envp[0] = ckm(ft_strdup("?=0"));
+	env = (char **)xmalloc(sizeof(char *) * (i + 2));
+	env[0] = ckm(ft_strdup("?=0"));
 	i = -1;
 	while (envp[++i])
-		g_envp[i + 1] = ckm(ft_strdup(envp[i]));
-	g_envp[i + 1] = NULL;
+		env[i + 1] = ckm(ft_strdup(envp[i]));
+	env[i + 1] = NULL;
+	return (env);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	set_g_envp(envp);
+	char	**env;
+
+	env = get_env(envp);
 	set_term();
 	set_signal();
-	start_shell();
+	start_shell(env);
 	exit(0);
 }

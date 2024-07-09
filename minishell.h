@@ -41,8 +41,6 @@
 # define INPUT_REDIRECT 3
 # define HERE_DOCUMENT 4
 
-char	**g_envp;
-
 typedef struct s_token
 {
 	int		type;
@@ -70,9 +68,9 @@ typedef struct s_simplecmd
 }	t_simplecmd;
 
 void	set_signal(void);
-void	start_shell(void);
+void	start_shell(char **envp);
 
-t_tree	*parse(char *str);
+t_tree	*parse(char *str, char **envp);
 
 /* error.c */
 void	puterr_exit(char *msg);

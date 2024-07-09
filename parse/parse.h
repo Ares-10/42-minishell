@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:23:19 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/08 16:40:43 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/10 01:09:40 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../minishell.h"
 
 /* replvar.c */
-char	*replace_variable(char *str);
+char	*replace_variable(char *str, char **envp);
 
 /* token.c */
 void	tokenize(t_list **token_list, char *str);
