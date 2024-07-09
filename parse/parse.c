@@ -87,13 +87,13 @@ void	*parse_err(char *msg)
 	return (FAILURE);
 }
 
-t_tree	*parse(char *str)
+t_tree	*parse(char *str, char **envp)
 {
 	t_list	*token_list;
 	t_tree	*parse_tree;
 	char	*new_str;
 
-	new_str = replace_variable(str);
+	new_str = replace_variable(str, envp);
 	if (new_str == FAILURE)
 		parse_err("bad var name");
 	tokenize(&token_list, new_str);
