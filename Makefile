@@ -11,6 +11,14 @@ SRCS =  main.c					\
 		parse/split.c			\
 		parse/treebuilder1.c	\
 		parse/treebuilder2.c	\
+		run/builtin/env.c		\
+		run/builtin/exit.c		\
+		run/builtin/export.c	\
+		run/builtin/simple.c	\
+		run/builtin/unset.c		\
+		run/builtin/utils.c		\
+		run/exec_cmd.c			\
+		run/run.c				\
 
 OBJS = $(SRCS:.c=.o)
 
