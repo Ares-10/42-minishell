@@ -26,7 +26,7 @@ int	check_str(char *str)
 	return (1);
 }
 
-void	start_shell(void)
+void	start_shell(char **envp)
 {
 	char	*input;
 	t_tree	*parse_tree;
@@ -37,7 +37,7 @@ void	start_shell(void)
 		if (check_str(input))
 		{
 			add_history(input);
-			parse_tree = parse(input);
+			parse_tree = parse(input, envp);
 			printf("You entered: %s\n", input);
 		}
 		else if (!input)

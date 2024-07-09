@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/09 00:12:19 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/10 01:09:10 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,20 @@ static void	free_strs(char **strs)
 }
 
 /* safe */
-static char	*get_env_value(char *name)
+static char	*get_env_value(char *name, char **envp)
 {
 	int		i;
 	char	*p;
 	char	*env_value;
 
 	i = -1;
-	while (g_envp[++i] != NULL)
+	while (envp[++i] != NULL)
 	{
-		p = ft_strchr(g_envp[i], '=');
+		p = ft_strchr(envp[i], '=');
 		if (p == NULL)
 			continue ;
-		if (ft_strncmp(name, g_envp[i], ft_strlen(name)) == 0
-			&& g_envp[i][ft_strlen(name)] == '=')
+		if (ft_strncmp(name, envp[i], ft_strlen(name)) == 0
+			&& envp[i][ft_strlen(name)] == '=')
 		{
 			env_value = ft_strdup(p + 1);
 			if (env_value == NULL)
@@ -74,7 +74,7 @@ static int	get_var_name(char *str, char *var_name)
 }
 
 /* safe */
-static int	replace_var(char **str)
+static int	replace_var(char **str, char **envp)
 {
 	char	*env_value;
 	char	*var_name;
@@ -91,7 +91,7 @@ static int	replace_var(char **str)
 		free(var_name);
 		return (FAILURE);
 	}
-	env_value = get_env_value(var_name);
+	env_value = get_env_value(var_name, envp);
 	free(var_name);
 	tmp = *str;
 	*str = ft_strjoin(env_value, *str + var_len);
@@ -103,7 +103,7 @@ static int	replace_var(char **str)
 }
 
 /* safe */
-char	*replace_variable(char *str)
+char	*replace_variable(char *str, char **envp)
 {
 	int		i;
 	char	*new_str;
@@ -115,7 +115,7 @@ char	*replace_variable(char *str)
 	new_str = ckm(ft_strdup(strs[0]));
 	while (strs[++i])
 	{
-		if (replace_var(&strs[i]) == FAILURE)
+		if (replace_var(&strs[i], envp) == FAILURE)
 		{
 			free_strs(strs);
 			free(new_str);
