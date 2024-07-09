@@ -70,14 +70,15 @@ typedef struct s_simplecmd
 }	t_simplecmd;
 
 void	set_signal(void);
-void	start_shell(void);
+void	start_shell(char **envp);
 
-t_tree	*parse(char *str);
+t_tree	*parse(char *str, char **envp);
 
 /* error.c */
 void	puterr_exit(char *msg);
 void	*puterr(char *msg);
 void	*xmalloc(int size);
 void	*ckm(void *ptr);
+void	search_tree(t_tree *node, char **env);
 
 #endif
