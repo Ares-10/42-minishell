@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/12 21:07:34 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/12 21:42:21 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,25 @@ void	exec_command(t_tree *node, char **env, t_pipe *info);
 void	handle_pipe(t_tree *node, char **env, t_pipe *info);
 void	handle_redirect(t_tree *node, char **env, t_pipe *info);
 
+void	restore_io(t_pipe info)
+{
+	if (dup2(info.original_stdin, STDIN_FILENO) == -1)
+		error_and_exit("dup2 failed");
+	if (dup2(info.original_stdout, STDOUT_FILENO) == -1)
+		error_and_exit("dup2 failed");
+}
+
 void	init_pipe(t_pipe **info)
 {
 	*info = xmalloc(sizeof(t_pipe));
 	(*info)->total_child_cnt = 0;
 	if (pipe((*info)->prev_fd) < 0)
-	{
-		perror("pipe");
-		exit(EXIT_FAILURE);
-	}
+		error_and_exit("pipe failed");
 	(*info)->prev_pipe_exist = FALSE;
+	(*info)->original_stdin = dup(STDIN_FILENO);
+	(*info)->original_stdout = dup(STDOUT_FILENO);
+	if ((*info)->original_stdin == -1 || (*info)->original_stdout == -1)
+		error_and_exit("dup failed");
 }
 
 void	search_tree(t_tree *node, char **env, t_pipe *info)
@@ -75,10 +84,7 @@ void	handle_here_document(t_redirect *redirect, char **env)
 	tmp_filename = ".tmp";
 	tmp_fd = open(tmp_filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (tmp_fd < 0)
-	{
-		perror("Failed to open temporary file");
-		exit(EXIT_FAILURE);
-	}
+		error_and_exit("Failed to open temporary file");
 	while (1)
 	{
 		line = readline("> ");
@@ -96,10 +102,7 @@ void	handle_here_document(t_redirect *redirect, char **env)
 	close(tmp_fd);
 	tmp_fd = open(tmp_filename, O_RDONLY);
 	if (tmp_fd < 0)
-	{
-		perror("Failed to reopen temporary file");
-		exit(EXIT_FAILURE);
-	}
+		error_and_exit("Failed to reopen temporary file");
 	dup2(tmp_fd, STDIN_FILENO);
 	close(tmp_fd);
 	unlink(tmp_filename);
@@ -129,10 +132,7 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 		return ;
 	}
 	if (fd < 0)
-	{
-		perror("open");
-		exit(EXIT_FAILURE);
-	}
+		error_and_exit("open failed");
 	if (redirect->type == OUTPUT_REDIRECT || redirect->type == APPEND_REDIRECT)
 		dup2(fd, STDOUT_FILENO);
 	else if (redirect->type == INPUT_REDIRECT)
