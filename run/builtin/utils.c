@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/12 18:58:55 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/12 21:17:51 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,11 @@ void	wait_all_child(t_pipe *info, char **env)
 	char	*new;
 
 	i = 0;
-	printf("loop start %d\n", info->total_child_cnt);
 	while (i < info->total_child_cnt)
 	{
 		waitpid(-1, &state, 0);
 		i++;
 	}
-	printf("loop end\n");
 	// exit_str = ft_itoa(state);
 	// if (!exit_str)
 	// 	puterr_exit("Malloc Failed");
