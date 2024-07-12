@@ -11,13 +11,21 @@ SRCS =  main.c					\
 		parse/split.c			\
 		parse/treebuilder1.c	\
 		parse/treebuilder2.c	\
+		run/builtin/env.c		\
+		run/builtin/exit.c		\
+		run/builtin/export.c	\
+		run/builtin/simple.c	\
+		run/builtin/unset.c		\
+		run/builtin/utils.c		\
+		run/exec_cmd.c			\
+		run/run.c				\
 
 OBJS = $(SRCS:.c=.o)
 
 #CFLAGS =	-Wall -Wextra -Werror
 
-CPPFLAGS = -I/opt/homebrew/opt/readline/include
-LDFLAGS = -L/opt/homebrew/opt/readline/lib
+LDFLAGS=-L/usr/local/opt/readline/lib
+CPPFLAGS=-I/usr/local/opt/readline/include
 
 LIBS = -lreadline		\
 		Libft/libft.a	\
@@ -30,7 +38,7 @@ $(NAME) : $(OBJS)
 	cc $(LDFLAGS) $^ $(LIBS) -o $(NAME)
 
 %.o: %.c
-	cc $(CFLAGS)  $(CPPFLAGS) -c $< -o $@ -I. -I/parse
+	cc $(CFLAGS)  $(CPPFLAGS) -c $< -o $@ -I. -I./parse -I./run
 
 clean :
 	@$(MAKE) -C ./Libft fclean
