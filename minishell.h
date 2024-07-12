@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/08 15:46:07 by hyungcho         ###   ########.fr       */
+/*   Created: 2024/06/24 17:02:44 by hyungcho           #+#    #+#             */
+/*   Updated: 2024/07/ㅋ12 13:18:01 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define INPUT_REDIRECT 3
 # define HERE_DOCUMENT 4
 
+
 typedef struct s_token
 {
 	int		type;
@@ -67,6 +68,13 @@ typedef struct s_simplecmd
 	char	**argv;
 }	t_simplecmd;
 
+typedef struct s_pipe
+{
+	int	prev_fd[2];
+	int	prev_pipe_exist;
+	int	next_pipe_exist;
+}	t_pipe;
+
 void	set_signal(void);
 void	start_shell(char **envp);
 
@@ -77,5 +85,8 @@ void	puterr_exit(char *msg);
 void	*puterr(char *msg);
 void	*xmalloc(int size);
 void	*ckm(void *ptr);
+void	search_tree(t_tree *node, char **env, t_pipe *info);
+
+void	init_pipe(t_pipe **info);
 
 #endif
