@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_simple.c                                   :+:      :+:    :+:   */
+/*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:38:24 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/07 21:39:32 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/12 20:57:47 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,16 @@ void	builtin_echo(char **argv)
 
 void	builtin_cd(char **argv, char **env)
 {
-	if (chdir(argv[1]) != 0)
-		perror("cd failed");
+	char	*msg;
+
+	if (argv[1] == NULL)
+		return ;
+	if (chdir(argv[1]) == -1)
+	{
+		write_error("minishell: cd: ");
+		perror(argv[1]);
+	}
+	// exit_status 추가 필요
 }
 
 void	builtin_pwd(void)
