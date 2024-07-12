@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:22:11 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/30 09:06:52 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/13 01:42:22 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void	tokenize(t_list **token_list, char *str)
 	{
 		while (str[i] && (str[i] == '\t' || str[i] == ' ' || str[i] == '\n'))
 			i++;
+		if (str[i] == '\0')
+			break ;
 		size = get_token_size(&str[i]);
 		token = new_token(&str[i], size);
-		node = ft_lstnew(token);
-		if (!node)
-			puterr_exit("malloc failed");
+		node = ckm(ft_lstnew(token));
 		ft_lstadd_back(token_list, node);
 		i += size;
 	}
