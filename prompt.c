@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/07 19:37:47 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/12 21:20:18 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	start_shell(char **envp)
 		{
 			add_history(input);
 			parse_tree = parse(input, envp);
-			printf("You entered: %s\n", input);
+			// printf("You entered: %s\n", input);
 		}
 		else if (!input)
 		{
