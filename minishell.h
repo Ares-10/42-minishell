@@ -73,6 +73,7 @@ typedef struct s_pipe
 	int	prev_fd[2];
 	int	prev_pipe_exist;
 	int	next_pipe_exist;
+	int	total_child_cnt;
 }	t_pipe;
 
 void	set_signal(void);
