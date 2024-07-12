@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/12 12:42:05 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/12 18:58:55 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,35 @@ void	pexit(char *msg)
 	exit(1);
 }
 
+void	wait_all_child(t_pipe *info, char **env)
+{
+	int		i;
+	int		state;
+	char	*exit_str;
+	char	*new;
+
+	i = 0;
+	printf("loop start %d\n", info->total_child_cnt);
+	while (i < info->total_child_cnt)
+	{
+		waitpid(-1, &state, 0);
+		i++;
+	}
+	printf("loop end\n");
+	// exit_str = ft_itoa(state);
+	// if (!exit_str)
+	// 	puterr_exit("Malloc Failed");
+	// new = ft_strjoin("?=", exit_str);
+	// if (!new)
+	// {
+	// 	free(exit_str);
+	// 	puterr_exit("Malloc Failed");
+	// }
+	// ft_setenv(env, new);
+	// free(new);
+	// free(exit_str);
+}
+
 void	exec_command(t_tree *node, char **env, t_pipe *info)
 {
 	t_simplecmd	*cmd;
@@ -65,14 +94,10 @@ void	exec_command(t_tree *node, char **env, t_pipe *info)
 		if (info->next_pipe_exist && pipe(new_fd) < 0)
 			pexit("Pipe Failed");
 		pid = fork();
+		if (pid < 0)
+			puterr_exit("Fork failed");
 		if (pid == 0)
 		{
-			if (info->prev_pipe_exist)
-			{
-				dup2(info->prev_fd[R], STDIN_FILENO);
-				close(info->prev_fd[R]);
-				close(info->prev_fd[W]);
-			}
 			if (info->next_pipe_exist)
 			{
 				dup2(new_fd[W], STDOUT_FILENO);
@@ -81,17 +106,22 @@ void	exec_command(t_tree *node, char **env, t_pipe *info)
 			}
 			exec_argv(cmd->file_path, cmd->argv, env);
 		}
-		else 
+		else
 		{
+			info->total_child_cnt++;
 			close(info->prev_fd[R]);
 			close(info->prev_fd[W]);
 			if (info->next_pipe_exist)
 			{
 				info->prev_fd[R] = new_fd[R];
 				info->prev_fd[W] = new_fd[W];
+				dup2(info->prev_fd[R], STDIN_FILENO);
+				close(info->prev_fd[R]);
+				close(info->prev_fd[W]);
 			}
+			else
+				wait_all_child(info, env);
 			info->prev_pipe_exist = TRUE;
-			waitpid(pid, NULL, 0);
 		}
 	}
 }
