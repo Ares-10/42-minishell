@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse1.c                                           :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/08 23:56:27 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/11 19:34:36 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	prf(void *t)
  * 테스트용입니다
  * 전위순회순으로 트리를 출력합니다
  */
-void	search_tree(t_tree *tree)
+void	print_tree(t_tree *tree)
 {
 	int			type;
 	int			i;
@@ -75,9 +75,9 @@ void	search_tree(t_tree *tree)
 	else
 		puterr_exit("type failed");
 	if (tree->left != NULL)
-		search_tree(tree->left);
+		print_tree(tree->left);
 	if (tree->right != NULL)
-		search_tree(tree->right);
+		print_tree(tree->right);
 }
 
 void	*parse_err(char *msg)
@@ -91,6 +91,7 @@ t_tree	*parse(char *str, char **envp)
 {
 	t_list	*token_list;
 	t_tree	*parse_tree;
+	t_pipe	*info;
 	char	*new_str;
 
 	new_str = replace_variable(str, envp);
@@ -99,7 +100,9 @@ t_tree	*parse(char *str, char **envp)
 	tokenize(&token_list, new_str);
 	// ft_lstiter(token_list, prf); // 테스트용
 	parse_tree = syntax_pipeline(token_list);
-	search_tree(parse_tree); // 테스트용
+	print_tree(parse_tree);
+	init_pipe(&info);
+	search_tree(parse_tree, envp, info);
 	ft_lstclear(&token_list, delete_token);
 	return (parse_tree);
 }
