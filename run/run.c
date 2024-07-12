@@ -3,83 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojepar <seojepar@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/07 22:27:48 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/07 22:39:32 by seojepar         ###   ########.fr       */
+/*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
+/*   Updated: 2024/07/12 12:25:38 by seojepar         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*																			  */
-/*														:::	  ::::::::        */
-/*   run.c											  :+:	  :+:	:+:       */
-/*													+:+ +:+		 +:+	      */
-/*   By: seojepar <seojepar@student.42.fr>		  +#+  +:+	   +#+		      */
-/*												+#+#+#+#+#+   +#+		      */
-/*   Created: 2024/06/24 21:29:55 by seojepar		  #+#	#+#			      */
-/*   Updated: 2024/07/07 21:16:17 by seojepar		 ###   ########.fr	      */
-/*																			  */
 /* ************************************************************************** */
 
 #include "run.h"
 
-void	exec_tree(t_tree *node, char **env);
-void	exec_command(t_tree *node, char **env);
-void	handle_pipe(t_tree *node, char **env);
-void	handle_redirect(t_tree *node, char **env);
+void	exec_tree(t_tree *node, char **env, t_pipe *info);
+void	exec_command(t_tree *node, char **env, t_pipe *info);
+void	handle_pipe(t_tree *node, char **env, t_pipe *info);
+void	handle_redirect(t_tree *node, char **env, t_pipe *info);
 
-void	search_tree(t_tree *node, char **env)
+void	init_pipe(t_pipe **info)
 {
-	exec_tree(node, env);
-	if (node->left != NULL)
-		search_tree(node->left, env);
-	if (node->right != NULL)
-		search_tree(node->right, env);
-}
-
-void	exec_tree(t_tree *node, char **env)
-{
-	if (node->type == T_WORD)
-		exec_command(node->data, env);
-	if (node->type == T_PIPE)
-		handle_pipe(node, env);
-	if (node->type == T_REDIRECT)
-		handle_redirect(node, env);
-}
-
-void	handle_pipe(t_tree *node, char **env)
-{
-	int		p_fd[2];
-	pid_t	pid;
-
-	if (pipe(p_fd) < 0)
+	*info = xmalloc(sizeof(t_pipe));
+	if (pipe((*info)->prev_fd) < 0)
 	{
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0)
-	{
-		close(p_fd[0]);
-		dup2(p_fd[1], STDOUT_FILENO);
-		close(p_fd[1]);
-		exec_command(node->left, env);
-		exit(EXIT_SUCCESS);
-	}
+	(*info)->prev_pipe_exist = FALSE;
+}
+
+void	search_tree(t_tree *node, char **env, t_pipe *info)
+{
+	exec_tree(node, env, info);
+	if (node->left != NULL)
+		search_tree(node->left, env, info);
+	if (node->right != NULL)
+		search_tree(node->right, env, info);
+}
+
+void	exec_tree(t_tree *node, char **env, t_pipe *info)
+{
+	if (node->type == T_SIMPLECMD)
+		exec_command(node, env, info);
+	if (node->type == T_PIPE)
+		handle_pipe(node, env, info);
+	if (node->type == T_REDIRECT)
+		handle_redirect(node, env, info);
+}
+
+void	handle_pipe(t_tree *node, char **env, t_pipe *info)
+{
+	// 파이프를 만나면 해야할 일: 
+	// 뒤에 파이프가 없다면 1로 리다이렉팅,
+	// 뒤에 파이프가 있다면 파이프의 write로 리다이렉팅.
+	// 앞에 파이프가 있었다면 그건 어차피 항상 0으로 왔을거라 알바 아님.
+	// N개의 파이프가 새로 파이프를 만들기보다 파이프끼리 파이프를 공유해서
+	// 사용할 수 있어야 함. 공유 파이프를 어떻게 전달할 것인가?
+	// 포크를 떠서 프로세스 종료시까지 기다려야한다.
+	// 그건 여기서 하지 말고, cmd 노드에서 포크 뜨고 실행시키는걸로 하자!
+	// 왜냐면 포크를 뜨는 순간 프로세스가 복제가 되서 노드를 중복 순회할 수도.
+
+	if (node->right)
+		info->next_pipe_exist = TRUE;
 	else
-	{
-		close(p_fd[1]);
-		dup2(p_fd[0], STDIN_FILENO);
-		close(p_fd[0]);
-		exec_command(node->right, env);
-		waitpid(pid, NULL, 0);
-	}
+		info->next_pipe_exist = FALSE;
 }
 
 void	handle_here_document(t_redirect *redirect, char **env)
@@ -125,7 +108,7 @@ void	handle_here_document(t_redirect *redirect, char **env)
 	unlink(tmp_filename);
 }
 
-void	handle_redirect(t_tree *node, char **env)
+void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 {
 	t_redirect	*redirect;
 	int			fd;
@@ -153,5 +136,5 @@ void	handle_redirect(t_tree *node, char **env)
 		dup2(fd, STDIN_FILENO);
 	close(fd);
 	if (node->right)
-		exec_command(node->right, env);
+		exec_command(node->right, env, info);
 }
