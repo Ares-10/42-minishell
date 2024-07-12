@@ -19,6 +19,7 @@ SRCS =  main.c					\
 		run/builtin/utils.c		\
 		run/exec_cmd.c			\
 		run/run.c				\
+		run/error.c				\
 
 OBJS = $(SRCS:.c=.o)
 
