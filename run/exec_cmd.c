@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:44:53 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/09 18:22:22 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/13 18:16:07 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ void	exec_argv(char *cmd, char **argv, char **env)
 	path = get_path(cmd, env);
 	if (execve(path, argv, env) == -1)
 	{
-		ft_putstr_fd("bash: ", 2);
-		ft_putendl_fd(cmd, 2);
-		ft_putstr_fd(": command not found", 2);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": command not found", 2);
 		ft_free(argv);
 		exit(EXIT_FAILURE);
 	}
