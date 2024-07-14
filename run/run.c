@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/12 21:42:21 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/14 13:27:57 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,36 @@ void	exec_tree(t_tree *node, char **env, t_pipe *info)
 
 void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 {
+	int	new_fd[2];
 	if (node->right)
 		info->next_pipe_exist = TRUE;
 	else
 		info->next_pipe_exist = FALSE;
+	if (info->prev_pipe_exist)
+	{
+		// 기존파이프의 R에서 가져오기
+		if (dup2(info->prev_fd[R], STDIN_FILENO) == -1)
+			error_and_exit("dup2 failed");
+	}
+	if (node->right)
+	{
+		// 뒤에 파이프가 있으면, 출력을 새파이프의 W로 리다이렉팅
+		// 					입력을 기존파이프의 R로 리다이렉팅
+		// 4개를 항상 가지고 있어야되는데..
+		if (pipe(new_fd) == -1)
+			error_and_exit("Pipe Failed");
+		// 출력을 새파이프의 끝으로 할당.
+		dup2(new_fd[W], STDOUT_FILENO);
+		// 안쓰니까 폐기
+		close(new_fd[W]);
+		// 얘는 왜 닫음? 닫으면 안돼. 
+		// close(new_fd[R]);
+		info->prev_fd[R] = new_fd[R];
+	}
+	else
+	{
+		dup2(info->original_stdout, STDOUT_FILENO);
+	}
 }
 
 void	handle_here_document(t_redirect *redirect, char **env)
