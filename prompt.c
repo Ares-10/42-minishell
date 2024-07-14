@@ -26,19 +26,42 @@ int	check_str(char *str)
 	return (1);
 }
 
-void	run(t_tree **tree, char **envp)
+static void	run(t_tree *tree, char **envp)
 {
 	t_pipe	*info;
 
 	init_pipe(&info);
-	search_tree(*tree, envp, info);
+	search_tree(tree, envp, info);
 	restore_io(*info);
+}
+
+static void	parse_and_run(char *input, char **envp)
+{
+	char	**strs;
+	t_tree	*parse_tree;
+	int		i;
+
+	i = -1;
+	strs = nquote_split(input, ';');
+	while (strs[++i])
+	{
+		if (strs[i][0] == ';')
+			parse_tree = parse(strs[i] + 1, envp);
+		else
+			parse_tree = parse(strs[i], envp);
+		if (parse_tree == NULL)
+			continue ;
+		run(parse_tree, envp);
+	}
+	i = -1;
+	while (strs[++i])
+		free(strs[i]);
+	free(strs);
 }
 
 void	start_shell(char **envp)
 {
 	char	*input;
-	t_tree	*parse_tree;
 
 	while (1)
 	{
@@ -46,8 +69,8 @@ void	start_shell(char **envp)
 		if (check_str(input))
 		{
 			add_history(input);
-			parse_tree = parse(input, envp);
-			run(&parse_tree, envp);
+			parse_and_run(input, envp);
+			free(input);
 			// printf("You entered: %s\n", input);
 		}
 		else if (!input)
@@ -55,6 +78,5 @@ void	start_shell(char **envp)
 			ft_putstr_fd("exit\n", 1);
 			exit(0);
 		}
-		free(input);
 	}
 }

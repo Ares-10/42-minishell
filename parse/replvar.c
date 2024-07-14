@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/14 14:38:35 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/14 15:20:03 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char	*replace_variable(char *str, char **envp)
 	char	**strs;
 	char	*tmp;
 
-	strs = var_split(str);
+	strs = nquote_split(str, '$');
 	i = 0;
 	new_str = ckm(ft_strdup(strs[0]));
 	while (strs[++i])
