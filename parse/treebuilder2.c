@@ -30,9 +30,6 @@ t_tree	*syntax_io_redirect(t_list *token_list)
 	if (token_list == NULL
 		|| ((t_token *)token_list->content)->type != T_REDIRECT)
 		return (NULL);
-	if (token_list->next == NULL
-		|| ((t_token *)token_list->next->content)->type != T_WORD)
-		return (puterr("wrong redirect input"));
 	redirect = (t_redirect *)xmalloc(sizeof(t_redirect));
 	token = (t_token *)token_list->content;
 	redirect->type = get_redirection_type(token->str);
