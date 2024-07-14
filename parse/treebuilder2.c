@@ -6,14 +6,15 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:36:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/10 00:28:16 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/14 17:03:57 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-static int	get_redirection_type(char *str);
-static char	**get_argv(t_list *token_list);
+static int		get_redirection_type(char *str);
+static char		**get_argv(t_list *token_list);
+static t_list	*get_cmd_token_list(t_list *token_list);
 
 /*
  * token_list는 pipe, redirect, null 중 하나
@@ -60,6 +61,7 @@ t_tree	*syntax_simple_cmd(t_list *token_list)
 	if (token_list == NULL || ((t_token *)token_list->content)->type != T_WORD)
 		return (puterr("wrong cmd input"));
 	cmd = (t_simplecmd *)xmalloc(sizeof(t_simplecmd));
+	token_list = get_cmd_token_list(token_list);
 	token = (t_token *)token_list->content;
 	cmd->file_path = ft_strdup(token->str);
 	cmd->argv = get_argv(token_list);
@@ -95,6 +97,28 @@ char	**get_argv(t_list *token_list)
 	}
 	argv[i] = NULL;
 	return (argv);
+}
+
+t_list	*get_cmd_token_list(t_list *token_list)
+{
+	t_token	*token;
+
+	while (token_list && !ft_strncmp(((t_token *)token_list->content)->str, "env", 4))
+	{
+		if (token_list->next)
+			token = token_list->next->content;
+		else
+			break ;
+		if (!(ft_strncmp(token->str, "echo", 5) == 0
+			|| ft_strncmp(token->str, "pwd", 4) == 0
+			|| ft_strncmp(token->str, "env", 4) == 0
+			|| ft_strncmp(token->str, "cd", 3) == 0
+			|| ft_strncmp(token->str, "export", 7) == 0
+			|| ft_strncmp(token->str, "unset", 6) == 0))
+			break ;
+		token_list = token_list->next;
+	}
+	return (token_list);
 }
 
 /* safe */
