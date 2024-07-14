@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/12 21:43:29 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/15 00:02:12 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,14 @@ t_tree	*parse(char *str, char **envp)
 	if (new_str == FAILURE)
 		parse_err("bad $var name");
 	tokenize(&token_list, new_str);
+	if (token_check(token_list) == FAILURE)
+	{
+		ft_lstclear(&token_list, delete_token);
+		return (FAILURE);
+	}
 	// ft_lstiter(token_list, prf); // 테스트용
 	parse_tree = syntax_pipeline(token_list);
-	// print_tree(parse_tree); // 테스트용
+	print_tree(parse_tree); // 테스트용
 	ft_lstclear(&token_list, delete_token);
 	return (parse_tree);
 }
