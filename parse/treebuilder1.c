@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 15:07:39 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/14 21:29:11 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/15 00:19:07 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,13 @@ t_tree	*syntax_redirects(t_list *token_list)
 
 	while (token_list && ((t_token *)token_list->content)->type == T_WORD)
 		token_list = token_list->next;
-	if (token_list == NULL || ((t_token *)token_list->content)->type == T_PIPE)
-		return (NULL);
 	tree = (t_tree *)xmalloc(sizeof(t_tree));
 	tree->data = NULL;
 	tree->type = T_REDIRECTS;
 	tree->left = syntax_io_redirect(token_list);
-	tree->right = syntax_redirects(token_list->next);
+	if (token_list == NULL || ((t_token *)token_list->content)->type == T_PIPE)
+		tree->right = NULL;
+	else
+		tree->right = syntax_redirects(token_list->next);
 	return (tree);
 }

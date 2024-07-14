@@ -6,14 +6,15 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:36:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/14 19:13:07 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/15 00:09:12 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-static int		get_redirection_type(char *str);
-static char		**get_argv(t_list *token_list);
+static int	get_redirection_type(char *str);
+static char	*get_file_path(t_list *token_list);
+static char	**get_argv(t_list *token_list);
 
 /*
  * token_list는 pipe, redirect, null 중 하나
@@ -27,8 +28,7 @@ t_tree	*syntax_io_redirect(t_list *token_list)
 	t_redirect	*redirect;
 	t_token		*token;
 
-	if (token_list == NULL
-		|| ((t_token *)token_list->content)->type != T_REDIRECT)
+	if (token_list == NULL || ((t_token *)token_list->content)->type == T_PIPE)
 		return (NULL);
 	redirect = (t_redirect *)xmalloc(sizeof(t_redirect));
 	token = (t_token *)token_list->content;
@@ -52,17 +52,13 @@ t_tree	*syntax_simple_cmd(t_list *token_list)
 {
 	t_tree		*tree;
 	t_simplecmd	*cmd;
-	t_token		*token;
+	char		*file_path;
 
-	if (token_list == NULL || ((t_token *)token_list->content)->type != T_WORD)
-		return (puterr("wrong cmd input"));
-	while (token_list && token_list->next
-		&& !ft_strncmp(((t_token *)token_list->content)->str, "env", 4)
-		&& ((t_token *)token_list->next->content)->type == T_WORD)
-		token_list = token_list->next;
+	file_path = get_file_path(token_list);
+	if (file_path == NULL)
+		return (NULL);
 	cmd = (t_simplecmd *)xmalloc(sizeof(t_simplecmd));
-	token = (t_token *)token_list->content;
-	cmd->file_path = ft_strdup(token->str);
+	cmd->file_path = file_path;
 	cmd->argv = get_argv(token_list);
 	tree = (t_tree *)xmalloc(sizeof(t_tree));
 	tree->type = T_SIMPLECMD;
@@ -73,28 +69,57 @@ t_tree	*syntax_simple_cmd(t_list *token_list)
 }
 
 /* safe */
-char	**get_argv(t_list *token_list)
+char	*get_file_path(t_list *token_list)
 {
-	int		count;
-	int		i;
-	char	**argv;
-	t_list	*ptr;
+	t_token		*token;
+	char		*file_path;
 
-	ptr = token_list->next;
-	count = 2;
-	while (ptr != NULL && ((t_token *)ptr->content)->type == T_WORD)
+	file_path = NULL;
+	while (token_list && ((t_token *)token_list->content)->type != T_PIPE)
 	{
-		ptr = ptr->next;
-		count++;
-	}
-	argv = (char **)xmalloc(sizeof(char *) * count);
-	i = -1;
-	while (++i < count - 1)
-	{
-		argv[i] = ckm(ft_strdup(((t_token *)token_list->content)->str));
+		token = token_list->content;
+		if (token->type == T_REDIRECT)
+			token_list = token_list->next;
+		else
+		{
+			if (file_path == NULL)
+				file_path = ckm(ft_strdup(token->str));
+			else if (!ft_strncmp(file_path, "env", 4))
+			{
+				free(file_path);
+				file_path = ckm(ft_strdup(token->str));
+			}
+		}
 		token_list = token_list->next;
 	}
-	argv[i] = NULL;
+	return (file_path);
+}
+
+char	**get_argv(t_list *token_list)
+{
+	char		**argv;
+	t_list		*t;
+	int			i;
+
+	i = 0;
+	t = token_list;
+	while (t && ((t_token *)t->content)->type != T_PIPE && ++i)
+		t = t->next;
+	argv = (char **)xmalloc(sizeof(char *) * (i + 1));
+	i = -1;
+	while (token_list && ((t_token *)token_list->content)->type != T_PIPE)
+	{
+		if (((t_token *)token_list->content)->type == T_REDIRECT)
+		{
+			token_list = token_list->next->next;
+			continue ;
+		}
+		if (argv[0] && ft_strncmp(argv[0], "env", 4) == 0)
+			free(argv[i--]);
+		argv[++i] = ft_strdup(((t_token *)token_list->content)->str);
+		token_list = token_list->next;
+	}
+	argv[++i] = NULL;
 	return (argv);
 }
 
