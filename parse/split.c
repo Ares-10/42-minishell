@@ -35,7 +35,7 @@ static char	*get_word(char const *s, int i)
 	while (s[len + i]
 		&& !(s[len + i] == '$' && check_quote(s, len + i) != 1))
 		len++;
-	return (ft_substr(s, i, len));
+	return (ckm(ft_substr(s, i, len)));
 }
 
 /* safe */
@@ -45,22 +45,14 @@ char	**var_split(char const *s)
 	int		j;
 	int		i;
 
-	strs = (char **)malloc(sizeof(char *) * (word_count(s) + 1));
-	if (strs == NULL)
-		puterr_exit("malloc failed");
+	strs = (char **)xmalloc(sizeof(char *) * (word_count(s) + 1));
 	j = 0;
 	i = 0;
 	if (s[0] == '$')
-	{
-		strs[j] = ft_strdup("");
-		if (strs[j++] == NULL)
-			puterr_exit("malloc failed");
-	}
+		strs[j] = ckm(ft_strdup(""));
 	while (s[i] != '\0')
 	{
 		strs[j] = get_word(s, i);
-		if (strs[j] == NULL)
-			puterr_exit("malloc failed");
 		i += ft_strlen(strs[j]);
 		j++;
 	}
