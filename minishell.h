@@ -93,6 +93,7 @@ typedef struct s_pipe
 void	set_signal(void);
 void	start_shell(char **envp);
 
+/* parse/parse.c */
 t_tree	*parse(char *str, char **envp);
 
 /* error.c */
@@ -101,6 +102,9 @@ void	*puterr(char *msg);
 void	*xmalloc(int size);
 void	*ckm(void *ptr);
 void	search_tree(t_tree *node, char **env, t_pipe *info);
+
+/* split.c */
+char	**nquote_split(const char *str, char c);
 
 void	init_pipe(t_pipe **info);
 void	restore_io(t_pipe info);
