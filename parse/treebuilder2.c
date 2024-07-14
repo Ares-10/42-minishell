@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:36:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/14 19:09:06 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/14 19:11:04 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ t_tree	*syntax_simple_cmd(t_list *token_list)
 
 	if (token_list == NULL || ((t_token *)token_list->content)->type != T_WORD)
 		return (puterr("wrong cmd input"));
-	while (token_list && !ft_strncmp(((t_token *)token_list->content)->str, "env", 4)
-		&& token_list->next && ((t_token *)token_list->content)->type == T_WORD)
+	while (token_list && token_list->next
+		&& !ft_strncmp(((t_token *)token_list->content)->str, "env", 4)
+		&& ((t_token *)token_list->content)->type == T_WORD)
 		token_list = token_list->next;
 	cmd = (t_simplecmd *)xmalloc(sizeof(t_simplecmd));
 	token = (t_token *)token_list->content;
