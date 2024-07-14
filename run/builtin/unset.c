@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:45:36 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/12 15:27:38 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/14 14:11:20 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	builtin_unset(char **argv, char ***env)
 	int	i;
 
 	i = 1;
-	if (argv[i] != NULL)
+	while (argv[i] != NULL)
 	{
 		if (ft_strcmp(argv[i], "?") != 0)
 			remove_env_var(argv[i], env);
