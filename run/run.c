@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/14 13:27:57 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/14 13:34:35 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,15 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 	}
 }
 
-void	handle_here_document(t_redirect *redirect, char **env)
+void	handle_here_document(t_redirect *redirect, char **en, t_pipe *info)
 {
 	char	*line;
 	int		tmp_fd;
 	char	*tmp_filename;
 	struct termios	term;
 
+	if (dup2(info->original_stdin, STDIN_FILENO) == -1)
+		error_and_exit("dup2 failed");
 	// 에코 끔
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
@@ -154,7 +156,7 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 		fd = open(redirect->file_path, O_RDONLY);
 	else if (redirect->type == HERE_DOCUMENT)
 	{
-		handle_here_document(redirect, env);
+		handle_here_document(redirect, env, info);
 		return ;
 	}
 	if (fd < 0)
