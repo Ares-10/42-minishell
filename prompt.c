@@ -26,6 +26,15 @@ int	check_str(char *str)
 	return (1);
 }
 
+void	run(t_tree **tree, char **envp)
+{
+	t_pipe	*info;
+
+	init_pipe(&info);
+	search_tree(*tree, envp, info);
+	restore_io(*info);
+}
+
 void	start_shell(char **envp)
 {
 	char	*input;
@@ -38,6 +47,7 @@ void	start_shell(char **envp)
 		{
 			add_history(input);
 			parse_tree = parse(input, envp);
+			run(&parse_tree, envp);
 			// printf("You entered: %s\n", input);
 		}
 		else if (!input)

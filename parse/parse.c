@@ -96,14 +96,11 @@ t_tree	*parse(char *str, char **envp)
 
 	new_str = replace_variable(str, envp);
 	if (new_str == FAILURE)
-		parse_err("bad var name");
+		parse_err("bad $var name");
 	tokenize(&token_list, new_str);
 	// ft_lstiter(token_list, prf); // 테스트용
 	parse_tree = syntax_pipeline(token_list);
-	print_tree(parse_tree);
-	init_pipe(&info);
-	search_tree(parse_tree, envp, info);
-	restore_io(*info);
+	// print_tree(parse_tree); // 테스트용
 	ft_lstclear(&token_list, delete_token);
 	return (parse_tree);
 }
