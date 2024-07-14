@@ -27,6 +27,8 @@ OBJS = $(SRCS:.c=.o)
 
 LDFLAGS=-L/usr/local/opt/readline/lib
 CPPFLAGS=-I/usr/local/opt/readline/include
+#LDFLAGS = -L/opt/homebrew/opt/readline/lib
+#CPPFLAGS = -I/opt/homebrew/opt/readline/include
 
 LIBS = -lreadline		\
 		Libft/libft.a	\
