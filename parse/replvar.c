@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/10 01:09:10 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/14 14:38:35 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,11 @@ static char	*get_env_value(char *name, char **envp)
 		if (ft_strncmp(name, envp[i], ft_strlen(name)) == 0
 			&& envp[i][ft_strlen(name)] == '=')
 		{
-			env_value = ft_strdup(p + 1);
-			if (env_value == NULL)
-				puterr_exit("malloc failed");
+			env_value = ckm(ft_strdup(p + 1));
 			return (env_value);
 		}
 	}
-	env_value = ft_strdup("");
-	if (env_value == NULL)
-		puterr_exit("malloc failed");
+	env_value = ckm(ft_strdup(""));
 	return (env_value);
 }
 
@@ -94,9 +90,7 @@ static int	replace_var(char **str, char **envp)
 	env_value = get_env_value(var_name, envp);
 	free(var_name);
 	tmp = *str;
-	*str = ft_strjoin(env_value, *str + var_len);
-	if (*str == NULL)
-		puterr_exit("malloc failed");
+	*str = ckm(ft_strjoin(env_value, *str + var_len));
 	free(tmp);
 	free(env_value);
 	return (SUCCESS);
