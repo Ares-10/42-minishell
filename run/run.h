@@ -6,14 +6,14 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/12 21:38:43 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/14 18:02:09 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RUN_H
 # define RUN_H
 
-# include "minishell.h"
+# include "../minishell.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
