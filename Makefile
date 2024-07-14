@@ -6,6 +6,7 @@ SRCS =  main.c					\
 		error.c					\
 		parse/parse.c			\
 		parse/token.c			\
+		parse/tokenchecker.c	\
 		parse/quote.c			\
 		parse/replvar.c			\
 		parse/split.c			\

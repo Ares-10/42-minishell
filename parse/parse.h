@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:23:19 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/14 15:23:01 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/14 23:09:32 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ char	*replace_variable(char *str, char **envp);
 /* token.c */
 void	tokenize(t_list **token_list, char *str);
 void	delete_token(void *token);
+
+/* tokenchecker.c */
+int		token_check(t_list *token_list);
 
 /* split.c */
 char	**nquote_split(const char *str, char c);
