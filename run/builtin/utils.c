@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/12 21:17:51 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/14 13:28:06 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,39 +83,28 @@ void	wait_all_child(t_pipe *info, char **env)
 void	exec_command(t_tree *node, char **env, t_pipe *info)
 {
 	t_simplecmd	*cmd;
-	int			new_fd[2];
 	pid_t		pid;
 
 	cmd = (t_simplecmd *)node->data;
 	if (execute_builtin(cmd, env, info) == FALSE)
 	{
-		if (info->next_pipe_exist && pipe(new_fd) < 0)
-			pexit("Pipe Failed");
 		pid = fork();
 		if (pid < 0)
 			puterr_exit("Fork failed");
 		if (pid == 0)
-		{
-			if (info->next_pipe_exist)
-			{
-				dup2(new_fd[W], STDOUT_FILENO);
-				close(new_fd[R]);
-				close(new_fd[W]);
-			}
 			exec_argv(cmd->file_path, cmd->argv, env);
-		}
 		else
 		{
 			info->total_child_cnt++;
-			close(info->prev_fd[R]);
-			close(info->prev_fd[W]);
+			// close(info->prev_fd[R]);
+			// close(info->prev_fd[W]);
 			if (info->next_pipe_exist)
 			{
-				info->prev_fd[R] = new_fd[R];
-				info->prev_fd[W] = new_fd[W];
-				dup2(info->prev_fd[R], STDIN_FILENO);
-				close(info->prev_fd[R]);
-				close(info->prev_fd[W]);
+				// info->prev_fd[R] = new_fd[R];
+				// info->prev_fd[W] = new_fd[W];
+				// dup2(info->prev_fd[R], STDIN_FILENO);
+				// close(info->prev_fd[R]);
+				// close(info->prev_fd[W]);
 			}
 			else
 				wait_all_child(info, env);
