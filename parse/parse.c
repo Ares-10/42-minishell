@@ -91,7 +91,6 @@ t_tree	*parse(char *str, char **envp)
 {
 	t_list	*token_list;
 	t_tree	*parse_tree;
-	t_pipe	*info;
 	char	*new_str;
 
 	new_str = replace_variable(str, envp);
