@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:44:53 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/07 22:38:28 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/14 13:50:51 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static char	*get_path(char *cmd, char **env)
 	i = -1;
 	// split에서 환경변수 자체가 없어서 실패할 경우(널 들어갈 경우)
 	// 안 터지도록 함수 수정이 필요함. 
+	if (my_getenv("PATH", env) == NULL)
+		return (cmd);
 	allpath = ft_split(my_getenv("PATH", env), ':');
 	if (!allpath)
 		exit(EXIT_FAILURE);
@@ -78,19 +80,17 @@ static char	*get_path(char *cmd, char **env)
 	return (cmd);
 }
 
-void	exec_argv(char *cmd, char **env)
+void	exec_argv(char *cmd, char **argv, char **env)
 {
-	char	**s_cmd;
 	char	*path;
 
-	s_cmd = ft_split(cmd, ' ');
-	path = get_path(s_cmd[0], env);
-	if (execve(path, s_cmd, env) == -1)
+	path = get_path(cmd, env);
+	if (execve(path, argv, env) == -1)
 	{
-		ft_putstr_fd("bash: ", 2);
-		ft_putendl_fd(s_cmd[0], 2);
-		ft_putstr_fd(": command not found", 2);
-		ft_free(s_cmd);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": command not found", 2);
+		ft_free(argv);
 		exit(EXIT_FAILURE);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/07 22:35:38 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/12 21:38:43 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,25 @@
 # include <sys/wait.h>
 # define TRUE 1
 # define FALSE 0
+# define R 0
+# define W 1
 
 int		ft_strcmp(const char *s1, const char *s2);
 
-void	exec_argv(char *cmd, char **env);
+void	exec_argv(char *cmd, char **argv, char **env);
+void	exec_command(t_tree *node, char **env, t_pipe *info);
 
 void	builtin_echo(char **argv);
 void	builtin_cd(char **argv, char **env);
 void	builtin_pwd(void);
 void	builtin_export(char **argv, char ***env);
 void	builtin_unset(char **argv, char ***env);
-void	builtin_env(char **env);
+void	builtin_env(char **argv, char **env);
 void	builtin_exit(char **argv);
+
+int		ft_setenv(char ***env, char *var);
+
+void	write_error(char *msg);
+void	error_and_exit(char *msg);
 
 #endif

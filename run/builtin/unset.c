@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:45:36 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/07 22:34:17 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/14 14:11:20 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ static void	remove_env_var(char *var, char ***env)
 
 void	builtin_unset(char **argv, char ***env)
 {
-	if (argv[1] != NULL)
-		remove_env_var(argv[1], env);
+	int	i;
+
+	i = 1;
+	while (argv[i] != NULL)
+	{
+		if (ft_strcmp(argv[i], "?") != 0)
+			remove_env_var(argv[i], env);
+		i++;
+	}
 }

@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/07 21:45:48 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/12 15:12:49 by seojepar         ###   ########.fr       */
+/*   Created: 2024/07/12 20:53:31 by seojepar          #+#    #+#             */
+/*   Updated: 2024/07/12 21:35:10 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 
-void	builtin_env(char **argv, char **env)
+void	write_error(char *msg)
 {
-	int	i;
+	write(STDERR_FILENO, msg, ft_strlen(msg));
+}
 
-	if (argv[1] != NULL)
-	{
-		printf("env: %s: No such file or directory", argv[1]);
-		return ;
-	}
-	// 0은 ? 있어서 제외
-	i = 1;
-	while (env[i] != NULL)
-	{
-		printf("%s\n", env[i]);
-		i++;
-	}
+void	error_and_exit(char *msg)
+{
+	write_error(msg);
+	exit(EXIT_FAILURE);
 }
