@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/14 13:41:51 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/15 12:14:04 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	search_tree(t_tree *node, char **env, t_pipe *info)
 
 void	exec_tree(t_tree *node, char **env, t_pipe *info)
 {
-	if (node->type == T_SIMPLECMD)
+	if (node->type == T_SIMPLECMD && !info->io_flag)
 		exec_command(node, env, info);
 	if (node->type == T_PIPE)
 		handle_pipe(node, env, info);
@@ -60,10 +60,8 @@ void	exec_tree(t_tree *node, char **env, t_pipe *info)
 void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 {
 	int	new_fd[2];
-	if (node->right)
-		info->next_pipe_exist = TRUE;
-	else
-		info->next_pipe_exist = FALSE;
+
+	info->io_flag = FALSE;
 	if (info->prev_pipe_exist)
 	{
 		// 기존파이프의 R에서 가져오기
@@ -72,6 +70,8 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 	}
 	if (node->right)
 	{
+		*env = ckm(ft_strdup("?=0"));
+		info->next_pipe_exist = TRUE;
 		// 뒤에 파이프가 있으면, 출력을 새파이프의 W로 리다이렉팅
 		// 					입력을 기존파이프의 R로 리다이렉팅
 		// 4개를 항상 가지고 있어야되는데..
@@ -87,7 +87,9 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 	}
 	else
 	{
-		dup2(info->original_stdout, STDOUT_FILENO);
+		info->next_pipe_exist = FALSE;
+		if (dup2(info->original_stdout, STDOUT_FILENO) == -1)
+			error_and_exit("dup2 failed");
 	}
 }
 
@@ -148,6 +150,8 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 	int			fd;
 
 	redirect = (t_redirect *)node->data;
+	if (redirect->type != HERE_DOCUMENT && info->io_flag)
+		return ;
 	if (redirect->type == OUTPUT_REDIRECT)
 		fd = open(redirect->file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (redirect->type == APPEND_REDIRECT)
@@ -160,7 +164,14 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 		return ;
 	}
 	if (fd < 0)
-		error_and_exit("open failed");
+	{
+		free(*env);
+		*env = ckm(ft_strdup("?=1"));
+		info->io_flag = TRUE;
+		write_error("minishell: ");
+		perror(redirect->file_path);
+		return ;
+	}
 	if (redirect->type == OUTPUT_REDIRECT || redirect->type == APPEND_REDIRECT)
 		dup2(fd, STDOUT_FILENO);
 	else if (redirect->type == INPUT_REDIRECT)
