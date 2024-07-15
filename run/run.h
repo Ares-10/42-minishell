@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/14 18:02:09 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/15 13:32:23 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # define FALSE 0
 # define R 0
 # define W 1
+# define ERROR -1
+# define FOUND 1
+# define NOT_FOUND 0
 
 int		ft_strcmp(const char *s1, const char *s2);
 
@@ -38,8 +41,12 @@ void	builtin_env(char **argv, char **env);
 void	builtin_exit(char **argv);
 
 int		ft_setenv(char ***env, char *var);
+char	*ft_getenv(char *name, char **env);
 
 void	write_error(char *msg);
 void	error_and_exit(char *msg);
+
+void	free_double(char **var);
+
 
 #endif
