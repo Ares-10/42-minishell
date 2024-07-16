@@ -3,22 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojepar <seojepar@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/12 21:16:25 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/12 21:39:00 by seojepar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: seojepar <seojepar@student.42seoul.kr>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/24 17:02:44 by hyungcho           #+#    #+#             */
-/*   Updated: 2024/07/ㅋ12 13:18:01 by seojepar         ###   ########.fr       */
+/*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
+/*   Updated: 2024/07/15 12:11:05 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +76,7 @@ typedef struct s_pipe
 	int	total_child_cnt;
 	int	original_stdin;
 	int	original_stdout;
+	int	io_flag;
 }	t_pipe;
 
 void	set_signal(void);
