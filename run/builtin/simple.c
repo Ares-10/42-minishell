@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:38:24 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/15 13:32:16 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:39:45 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	check_if_option(char *str)
 	return (TRUE);
 }
 
-void	builtin_echo(char **argv)
+void	builtin_echo(char **argv, char **env)
 {
 	int	i;
 	int	need_newline;
@@ -52,6 +52,8 @@ void	builtin_echo(char **argv)
 	}
 	if (need_newline)
 		printf("\n");
+	free(*env);
+	*env = ckm(ft_strdup("?=0"));
 }
 
 int	dir_in_path(char *name, char *path)
