@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:22:11 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/14 14:29:35 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:57:21 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	tokenize(t_list **token_list, char *str)
 		ft_lstadd_back(token_list, node);
 		i += size;
 	}
-	if (check_quote(str, i))
-		puterr_exit("quote must be pair");
 }
 
 t_token	*new_token(const char *str, int size)

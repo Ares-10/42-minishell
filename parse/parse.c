@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/15 00:02:12 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:57:42 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,44 @@ void	*parse_err(char *msg)
 	return (FAILURE);
 }
 
+static int	check_unsupported_str(char *str)
+{
+	int	i;
+	int	flag;
+	int	quote_flag;
+
+	quote_flag = 0;
+	i = -1;
+	while (str[++i])
+	{
+		flag = check_quote(str, i);
+		if (flag == 0 && (str[i] == ';' || str[i] == '\\'))
+		{
+			puterr("parse: unsupported input");
+			return (FAILURE);
+		}
+		if (flag == -1)
+			quote_flag = !quote_flag;
+	}
+	if (quote_flag == 1)
+	{
+		puterr("parse: quote must be pair");
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
 t_tree	*parse(char *str, char **envp)
 {
 	t_list	*token_list;
 	t_tree	*parse_tree;
 	char	*new_str;
 
+	if (check_unsupported_str(str) == FAILURE)
+		return (FAILURE);
 	new_str = replace_variable(str, envp);
 	if (new_str == FAILURE)
-		parse_err("bad $var name");
+		return (puterr("parse: invalid $ format"));
 	tokenize(&token_list, new_str);
 	if (token_check(token_list) == FAILURE)
 	{
@@ -104,7 +133,7 @@ t_tree	*parse(char *str, char **envp)
 	}
 	// ft_lstiter(token_list, prf); // 테스트용
 	parse_tree = syntax_pipeline(token_list);
-	print_tree(parse_tree); // 테스트용
+	// print_tree(parse_tree); // 테스트용
 	ft_lstclear(&token_list, delete_token);
 	return (parse_tree);
 }
