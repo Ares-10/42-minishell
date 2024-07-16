@@ -6,11 +6,12 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:44:53 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/15 12:30:03 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 17:18:33 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
+#include "parse.h"
 
 static void	ft_free(char **ptr)
 {
@@ -89,6 +90,8 @@ void	exec_argv(char *cmd, char **argv, char **env)
 		ft_putstr_fd(cmd, 2);
 		ft_putendl_fd(": command not found", 2);
 		ft_free(argv);
-		exit(EXIT_FAILURE);
+		// free(*env);
+		// *env = ckm(ft_strdup("?=127"));
+		exit(127);
 	}
 }
