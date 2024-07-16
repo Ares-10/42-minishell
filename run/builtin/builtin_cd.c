@@ -6,12 +6,14 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:45:29 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 16:51:04 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 17:01:15 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 #include <dirent.h>
+
+static char	*find_cdpath(char *dirname, char **env);
 
 void	builtin_cd(char **argv, char **env)
 {
@@ -72,7 +74,7 @@ int	dir_in_path(char *name, char *path)
 	return (NOT_FOUND);
 }
 
-char	*find_cdpath(char *dirname, char **env)
+static char	*find_cdpath(char *dirname, char **env)
 {
 	char	*cdpath_env;
 	char	**split_path;
