@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 16:50:42 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 17:01:23 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	execute_builtin(t_simplecmd *cmd, char **env, t_pipe *info)
 	else if (ft_strcmp(cmd->file_path, "cd") == 0)
 		builtin_cd(cmd->argv, env);
 	else if (ft_strcmp(cmd->file_path, "pwd") == 0)
-		builtin_pwd();
+		builtin_pwd(env);
 	else if (ft_strcmp(cmd->file_path, "export") == 0)
 		builtin_export(cmd->argv, &env);
 	else if (ft_strcmp(cmd->file_path, "unset") == 0)
@@ -38,7 +38,7 @@ int	execute_builtin(t_simplecmd *cmd, char **env, t_pipe *info)
 	else if (ft_strcmp(cmd->file_path, "env") == 0)
 		builtin_env(cmd->argv, env);
 	else if (ft_strcmp(cmd->file_path, "exit") == 0)
-		builtin_exit(cmd->argv);
+		builtin_exit(cmd->argv, env);
 	else
 	{
 		info->prev_pipe_exist = FALSE;
