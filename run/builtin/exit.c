@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:46:18 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/07 22:34:22 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 14:51:03 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
+#include <stdint.h>
 
 void	builtin_exit(char **argv)
 {
-	int	status;
+	uint8_t exit_code;
 
-	status = 0;
+	write_error("exit\n");
+	if (argv[1] != NULL && argv[2] != NULL)
+	{
+		write_error("minishell: exit: too many arguments");
+		return ;
+	}
+	exit_code = 0;
 	if (argv[1] != NULL)
-		status = atoi(argv[1]);
-	exit(status);
+		exit_code = (atoi(argv[1]) % 256);
+	exit(exit_code);
 }
