@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/15 12:14:04 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:31:33 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 	}
 	if (node->right)
 	{
+		free(*env);
 		*env = ckm(ft_strdup("?=0"));
 		info->next_pipe_exist = TRUE;
 		// 뒤에 파이프가 있으면, 출력을 새파이프의 W로 리다이렉팅
