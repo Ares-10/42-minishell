@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/14 13:28:06 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 17:17:51 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int	execute_builtin(t_simplecmd *cmd, char **env, t_pipe *info)
 {
 	info->prev_pipe_exist = TRUE;
 	if (ft_strcmp(cmd->file_path, "echo") == 0)
-		builtin_echo(cmd->argv);
+		builtin_echo(cmd->argv, env);
 	else if (ft_strcmp(cmd->file_path, "cd") == 0)
 		builtin_cd(cmd->argv, env);
 	else if (ft_strcmp(cmd->file_path, "pwd") == 0)
-		builtin_pwd();
+		builtin_pwd(env);
 	else if (ft_strcmp(cmd->file_path, "export") == 0)
 		builtin_export(cmd->argv, &env);
 	else if (ft_strcmp(cmd->file_path, "unset") == 0)
@@ -38,7 +38,7 @@ int	execute_builtin(t_simplecmd *cmd, char **env, t_pipe *info)
 	else if (ft_strcmp(cmd->file_path, "env") == 0)
 		builtin_env(cmd->argv, env);
 	else if (ft_strcmp(cmd->file_path, "exit") == 0)
-		builtin_exit(cmd->argv);
+		builtin_exit(cmd->argv, env);
 	else
 	{
 		info->prev_pipe_exist = FALSE;
@@ -58,7 +58,7 @@ void	wait_all_child(t_pipe *info, char **env)
 	int		i;
 	int		state;
 	char	*exit_str;
-	char	*new;
+	char	*tmp;
 
 	i = 0;
 	while (i < info->total_child_cnt)
@@ -66,18 +66,14 @@ void	wait_all_child(t_pipe *info, char **env)
 		waitpid(-1, &state, 0);
 		i++;
 	}
-	// exit_str = ft_itoa(state);
-	// if (!exit_str)
-	// 	puterr_exit("Malloc Failed");
-	// new = ft_strjoin("?=", exit_str);
-	// if (!new)
-	// {
-	// 	free(exit_str);
-	// 	puterr_exit("Malloc Failed");
-	// }
-	// ft_setenv(env, new);
-	// free(new);
-	// free(exit_str);
+	if (WIFEXITED(state))
+        state = WEXITSTATUS(state);
+    else if (WIFSIGNALED(state))
+        state = WTERMSIG(state);
+	free(*env);
+	tmp = ckm(ft_itoa(state % 256));
+	*env = ckm(ft_strjoin("?=", tmp));
+	free(tmp);
 }
 
 void	exec_command(t_tree *node, char **env, t_pipe *info)
@@ -96,17 +92,7 @@ void	exec_command(t_tree *node, char **env, t_pipe *info)
 		else
 		{
 			info->total_child_cnt++;
-			// close(info->prev_fd[R]);
-			// close(info->prev_fd[W]);
-			if (info->next_pipe_exist)
-			{
-				// info->prev_fd[R] = new_fd[R];
-				// info->prev_fd[W] = new_fd[W];
-				// dup2(info->prev_fd[R], STDIN_FILENO);
-				// close(info->prev_fd[R]);
-				// close(info->prev_fd[W]);
-			}
-			else
+			if (!info->next_pipe_exist)
 				wait_all_child(info, env);
 			info->prev_pipe_exist = TRUE;
 		}

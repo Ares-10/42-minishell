@@ -1,57 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   simple.c                                           :+:      :+:    :+:   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/07 21:38:24 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/15 13:32:16 by seojepar         ###   ########.fr       */
+/*   Created: 2024/07/16 16:45:29 by seojepar          #+#    #+#             */
+/*   Updated: 2024/07/16 17:01:15 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 #include <dirent.h>
 
-int	check_if_option(char *str)
+static char	*find_cdpath(char *dirname, char **env);
+
+void	builtin_cd(char **argv, char **env)
 {
-	char	*tmp = str;
-	if (*str != '-' || *(str + 1) == '\0')
-		return (FALSE);
-	str++;
-	while (*str)
+	char	*msg;
+	char	*dest;
+	DIR		*dir;
+
+	if (argv[1] == NULL)
+		dest = ft_getenv("HOME", env);
+	else
 	{
-		if (*str != 'n')
-			return (FALSE);
-		str++;
+		dest = find_cdpath(argv[1], env);
+		if (dest != NULL)
+		{
+			chdir(dest);
+			free(dest);
+		}
+		dest = ckm(ft_strdup(argv[1]));
 	}
-	return (TRUE);
-}
-
-void	builtin_echo(char **argv)
-{
-	int	i;
-	int	need_newline;
-
-	i = 1;
-	need_newline = TRUE;
-	while (argv[i])
+	if (chdir(dest) == -1)
 	{
-		if (check_if_option(argv[i]))
-			need_newline = FALSE;
+		write_error("minishell: cd: ");
+		if (dest == NULL)
+			write_error("HOME not set\n");
 		else
-			break ;
-		i++;
+			perror(dest);
+		free(*env);
+		*env = ckm(ft_strdup("?=1"));
 	}
-	while (argv[i])
+	else
 	{
-		printf("%s", argv[i]);
-		if (argv[i + 1])
-			printf(" ");
-		i++;
+		*env = ckm(ft_strdup("?=0"));
+		// set_env_pwd(env);
 	}
-	if (need_newline)
-		printf("\n");
 }
 
 int	dir_in_path(char *name, char *path)
@@ -78,7 +74,7 @@ int	dir_in_path(char *name, char *path)
 	return (NOT_FOUND);
 }
 
-char	*find_cdpath(char *dirname, char **env)
+static char	*find_cdpath(char *dirname, char **env)
 {
 	char	*cdpath_env;
 	char	**split_path;
@@ -123,49 +119,4 @@ void	set_env_pwd(char ***env)
 	// 키, 밸류, env를 매개변수로 갖게 export를 수정해야겠다. 너무 불편하다. 
 	// pwd및 oldpwd builtin_export 불러서 수정해야함.
 	// builtin_export(, env);
-}
-
-void	builtin_cd(char **argv, char **env)
-{
-	char	*msg;
-	char	*dest;
-	DIR		*dir;
-
-	if (argv[1] == NULL)
-		dest = ft_getenv("HOME", env);
-	else
-	{
-		dest = find_cdpath(argv[1], env);
-		if (dest != NULL)
-		{
-			chdir(dest);
-			free(dest);
-		}
-		dest = ckm(ft_strdup(argv[1]));
-	}
-	if (chdir(dest) == -1)
-	{		
-		write_error("minishell: cd: ");
-		if (dest == NULL)
-			write_error("HOME not set\n");
-		else
-			perror(dest);
-		free(*env);
-		*env = ckm(ft_strdup("?=1"));
-	}
-	else
-	{
-		*env = ckm(ft_strdup("?=0"));
-		// set_env_pwd(env);
-	}
-}
-
-void	builtin_pwd(void)
-{
-	char	cwd[1024];
-
-	if (getcwd(cwd, sizeof(cwd)))
-		printf("%s\n", cwd);
-	else
-		perror("pwd failed");
 }

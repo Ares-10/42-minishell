@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/15 13:32:23 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:58:58 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ int		ft_strcmp(const char *s1, const char *s2);
 void	exec_argv(char *cmd, char **argv, char **env);
 void	exec_command(t_tree *node, char **env, t_pipe *info);
 
-void	builtin_echo(char **argv);
+void	builtin_echo(char **argv, char **env);
 void	builtin_cd(char **argv, char **env);
-void	builtin_pwd(void);
+void	builtin_pwd(char **env);
 void	builtin_export(char **argv, char ***env);
 void	builtin_unset(char **argv, char ***env);
 void	builtin_env(char **argv, char **env);
-void	builtin_exit(char **argv);
+void	builtin_exit(char **argv, char **env);
 
 int		ft_setenv(char ***env, char *var);
 char	*ft_getenv(char *name, char **env);
