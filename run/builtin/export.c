@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 16:32:17 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:37:34 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,10 @@ void	builtin_export(char **argv, char ***env)
 	int		idx;
 	char	*equal;
 	char	*key;
+	int		err_flag;
 
 	key = NULL;
+	err_flag = FALSE;
 	if (argv[1] == NULL)
 	{
 		i = 1;
@@ -86,6 +88,7 @@ void	builtin_export(char **argv, char ***env)
 			equal = ft_strchr(argv[i], '=');
 			if (equal == 0 || equal == argv[i] || !valid_shell_name(argv[i]))
 			{
+				err_flag = TRUE;
 				write_error("minishell: export: ");
 				write_error(argv[i]);
 				write_error(": not a valid identifier\n");
@@ -107,4 +110,9 @@ void	builtin_export(char **argv, char ***env)
 		if (key != NULL)
 			free(key);
 	}
+	free(**env);
+	if (err_flag)
+		(*env)[0] = ft_strdup("?=1");
+	else
+		(*env)[0] = ft_strdup("?=0");
 }
