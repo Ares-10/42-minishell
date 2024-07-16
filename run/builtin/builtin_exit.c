@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/07 21:45:48 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 15:00:50 by seojepar         ###   ########.fr       */
+/*   Created: 2024/07/07 21:46:18 by seojepar          #+#    #+#             */
+/*   Updated: 2024/07/16 16:50:55 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
-#include "parse.h"
+#include <stdint.h>
 
-void	builtin_env(char **argv, char **env)
+void	builtin_exit(char **argv)
 {
-	int	i;
+	uint8_t	exit_code;
 
-	if (argv[1] != NULL)
+	write_error("exit\n");
+	if (argv[1] != NULL && argv[2] != NULL)
 	{
-		printf("env: %s: No such file or directory", argv[1]);
-		free(env[0]);
-		env[0] = ckm(ft_strdup("?=127"));
+		write_error("minishell: exit: too many arguments");
 		return ;
 	}
-	// 0은 ? 있어서 제외
-	i = 1;
-	while (env[i] != NULL)
-	{
-		printf("%s\n", env[i]);
-		i++;
-	}
-	free(env[0]);
-	env[0] = ckm(ft_strdup("?=0"));
+	exit_code = 0;
+	if (argv[1] != NULL)
+		exit_code = (atoi(argv[1]) % 256);
+	exit(exit_code);
 }

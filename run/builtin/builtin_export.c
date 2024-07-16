@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 16:37:34 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:49:39 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	find_key_in_env(char *key, char **env)
 
 	i = 0;
 	key_len = ft_strlen(key);
-	while(env[i] != NULL)
+	while (env[i] != NULL)
 	{
 		if (ft_strncmp(key, env[i], key_len) == 0)
 			return (i);
@@ -73,17 +73,14 @@ void	builtin_export(char **argv, char ***env)
 	err_flag = FALSE;
 	if (argv[1] == NULL)
 	{
-		i = 1;
-		while((*env)[i] != NULL)
-		{
+		i = 0;
+		while ((*env)[i++] != NULL)
 			printf("declare -x %s\n", (*env)[i]);
-			i++;
-		}
 	}
 	else
 	{
 		i = 1;
-		while(argv[i] != NULL)
+		while (argv[i] != NULL)
 		{
 			equal = ft_strchr(argv[i], '=');
 			if (equal == 0 || equal == argv[i] || !valid_shell_name(argv[i]))

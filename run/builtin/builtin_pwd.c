@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/07 21:46:18 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 14:51:03 by seojepar         ###   ########.fr       */
+/*   Created: 2024/07/16 16:46:50 by seojepar          #+#    #+#             */
+/*   Updated: 2024/07/16 16:47:00 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
-#include <stdint.h>
 
-void	builtin_exit(char **argv)
+void	builtin_pwd(void)
 {
-	uint8_t exit_code;
+	char	cwd[1024];
 
-	write_error("exit\n");
-	if (argv[1] != NULL && argv[2] != NULL)
-	{
-		write_error("minishell: exit: too many arguments");
-		return ;
-	}
-	exit_code = 0;
-	if (argv[1] != NULL)
-		exit_code = (atoi(argv[1]) % 256);
-	exit(exit_code);
+	if (getcwd(cwd, sizeof(cwd)))
+		printf("%s\n", cwd);
+	else
+		perror("pwd failed");
 }

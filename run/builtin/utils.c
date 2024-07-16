@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 16:39:58 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:50:42 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,6 @@ void	wait_all_child(t_pipe *info, char **env)
 		waitpid(-1, &state, 0);
 		i++;
 	}
-	// exit_str = ft_itoa(state);
-	// if (!exit_str)
-	// 	puterr_exit("Malloc Failed");
-	// new = ft_strjoin("?=", exit_str);
-	// if (!new)
-	// {
-	// 	free(exit_str);
-	// 	puterr_exit("Malloc Failed");
-	// }
-	// ft_setenv(env, new);
-	// free(new);
-	// free(exit_str);
 }
 
 void	exec_command(t_tree *node, char **env, t_pipe *info)
@@ -96,17 +84,7 @@ void	exec_command(t_tree *node, char **env, t_pipe *info)
 		else
 		{
 			info->total_child_cnt++;
-			// close(info->prev_fd[R]);
-			// close(info->prev_fd[W]);
-			if (info->next_pipe_exist)
-			{
-				// info->prev_fd[R] = new_fd[R];
-				// info->prev_fd[W] = new_fd[W];
-				// dup2(info->prev_fd[R], STDIN_FILENO);
-				// close(info->prev_fd[R]);
-				// close(info->prev_fd[W]);
-			}
-			else
+			if (!info->next_pipe_exist)
 				wait_all_child(info, env);
 			info->prev_pipe_exist = TRUE;
 		}

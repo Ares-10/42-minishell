@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:45:36 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/14 14:11:20 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:50:07 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
+
+static void	remove_env_var(char *var, char ***env);
+
+void	builtin_unset(char **argv, char ***env)
+{
+	int	i;
+
+	i = 1;
+	while (argv[i] != NULL)
+	{
+		if (ft_strcmp(argv[i], "?") != 0)
+			remove_env_var(argv[i], env);
+		i++;
+	}
+}
 
 static void	remove_env_var(char *var, char ***env)
 {
@@ -32,19 +47,6 @@ static void	remove_env_var(char *var, char ***env)
 			(*env)[i] = NULL;
 			break ;
 		}
-		i++;
-	}
-}
-
-void	builtin_unset(char **argv, char ***env)
-{
-	int	i;
-
-	i = 1;
-	while (argv[i] != NULL)
-	{
-		if (ft_strcmp(argv[i], "?") != 0)
-			remove_env_var(argv[i], env);
 		i++;
 	}
 }
