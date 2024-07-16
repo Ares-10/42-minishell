@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 15:04:44 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:32:17 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	builtin_export(char **argv, char ***env)
 	char	*equal;
 	char	*key;
 
+	key = NULL;
 	if (argv[1] == NULL)
 	{
 		i = 1;
@@ -83,12 +84,7 @@ void	builtin_export(char **argv, char ***env)
 		while(argv[i] != NULL)
 		{
 			equal = ft_strchr(argv[i], '=');
-			if (equal == 0)
-			{
-				i++;
-				continue ;
-			}
-			if (equal == argv[i])
+			if (equal == 0 || equal == argv[i] || !valid_shell_name(argv[i]))
 			{
 				write_error("minishell: export: ");
 				write_error(argv[i]);
@@ -96,17 +92,11 @@ void	builtin_export(char **argv, char ***env)
 				i++;
 				continue ;
 			}
+			if (key != NULL)
+				free(key);
 			key = ft_substr(argv[i], 0, equal - argv[i] + 1);
 			if (key == NULL)
 				puterr_exit("malloc failed");
-			if (valid_shell_name(key) == FALSE)
-			{
-				write_error("minishell: export: ");
-				write_error(argv[i]);
-				write_error(": not a valid identifier\n");
-				i++;
-				continue ;
-			}
 			idx = find_key_in_env(key, *env);
 			if (idx < 0)
 				ft_setenv(env, argv[i]);
@@ -114,7 +104,7 @@ void	builtin_export(char **argv, char ***env)
 				change_env(env, argv[i], idx);
 			i++;
 		}
-		if (i != 1)
+		if (key != NULL)
 			free(key);
 	}
 }
