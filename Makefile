@@ -1,36 +1,38 @@
 NAME = minishell
 
-SRCS =  main.c					\
-		signal.c				\
-		prompt.c				\
-		error.c					\
-		parse/parse.c			\
-		parse/token.c			\
-		parse/tokenchecker.c	\
-		parse/quote.c			\
-		parse/replvar.c			\
-		parse/split.c			\
-		parse/treebuilder1.c	\
-		parse/treebuilder2.c	\
-		run/builtin/env.c		\
-		run/builtin/exit.c		\
-		run/builtin/export.c	\
-		run/builtin/simple.c	\
-		run/builtin/unset.c		\
-		run/builtin/utils.c		\
-		run/exec_cmd.c			\
-		run/run.c				\
-		run/error.c				\
-		run/free.c				\
+SRCS =  main.c							\
+		signal.c						\
+		prompt.c						\
+		error.c							\
+		parse/parse.c					\
+		parse/token.c					\
+		parse/tokenchecker.c			\
+		parse/quote.c					\
+		parse/replvar.c					\
+		parse/split.c					\
+		parse/treebuilder1.c			\
+		parse/treebuilder2.c			\
+		run/builtin/builtin_cd.c		\
+		run/builtin/builtin_echo.c		\
+		run/builtin/builtin_env.c		\
+		run/builtin/builtin_exit.c		\
+		run/builtin/builtin_export.c	\
+		run/builtin/builtin_pwd.c		\
+		run/builtin/builtin_unset.c		\
+		run/builtin/utils.c				\
+		run/error.c						\
+		run/exec_cmd.c					\
+		run/free.c						\
+		run/run.c						\
 
 OBJS = $(SRCS:.c=.o)
 
 #CFLAGS =	-Wall -Wextra -Werror
 
-#LDFLAGS=-L/usr/local/opt/readline/lib
-#CPPFLAGS=-I/usr/local/opt/readline/include
-LDFLAGS = -L/opt/homebrew/opt/readline/lib
-CPPFLAGS = -I/opt/homebrew/opt/readline/include
+LDFLAGS=-L/usr/local/opt/readline/lib
+CPPFLAGS=-I/usr/local/opt/readline/include
+# LDFLAGS = -L/opt/homebrew/opt/readline/lib
+# CPPFLAGS = -I/opt/homebrew/opt/readline/include
 
 LIBS = -lreadline		\
 		Libft/libft.a	\
