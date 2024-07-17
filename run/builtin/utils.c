@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 22:17:38 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:31:38 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info)
 	else if (ft_strcmp(cmd->file_path, "env") == 0)
 		builtin_env(cmd->argv, *env);
 	else if (ft_strcmp(cmd->file_path, "exit") == 0)
-		builtin_exit(cmd->argv, *env);
+		builtin_exit(cmd->argv, *env, info);
 	else
 		return (0);
 	return (1);

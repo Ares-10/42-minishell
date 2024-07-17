@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 22:17:16 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:32:24 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	builtin_pwd(char **env);
 void	builtin_export(char **argv, char ***env, t_pipe *info);
 void	builtin_unset(char **argv, char ***env);
 void	builtin_env(char **argv, char **env);
-void	builtin_exit(char **argv, char **env);
+void    builtin_exit(char **argv, char **env, t_pipe *info);
 
 int		ft_setenv(char ***env, char *var);
 char	*ft_getenv(char *name, char **env);
