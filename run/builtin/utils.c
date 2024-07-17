@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 22:09:38 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:17:38 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info)
 	if (ft_strcmp(cmd->file_path, "echo") == 0)
 		builtin_echo(cmd->argv, *env);
 	else if (ft_strcmp(cmd->file_path, "cd") == 0)
-		builtin_cd(cmd->argv, *env);
+		builtin_cd(cmd->argv, env);
 	else if (ft_strcmp(cmd->file_path, "pwd") == 0)
 		builtin_pwd(*env);
 	else if (ft_strcmp(cmd->file_path, "export") == 0)

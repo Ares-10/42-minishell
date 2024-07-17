@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:45:29 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 21:47:02 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:22:33 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,22 @@
 #include <dirent.h>
 
 static char	*find_cdpath(char *dirname, char **env);
+static void	set_env_pwd(char ***env, char *old_pwd, char *new_pwd);
 
-void	builtin_cd(char **argv, char **env)
+void	builtin_cd(char **argv, char ***env)
 {
 	char	*msg;
+	char	old_pwd[1024];
+	char	new_pwd[1024];
 	char	*dest;
 	DIR		*dir;
 
+	getcwd(old_pwd, sizeof(old_pwd));
 	if (argv[1] == NULL)
-		dest = ft_getenv("HOME", env);
+		dest = ft_getenv("HOME", *env);
 	else
 	{
-		dest = find_cdpath(argv[1], env);
+		dest = find_cdpath(argv[1], *env);
 		if (dest != NULL)
 		{
 			chdir(dest);
@@ -40,13 +44,15 @@ void	builtin_cd(char **argv, char **env)
 			write_error("HOME not set\n");
 		else
 			perror(dest);
-		free(*env);
-		*env = ckm(ft_strdup("?=1"));
+		free(**env);
+		**env = ckm(ft_strdup("?=1"));
 	}
 	else
 	{
-		*env = ckm(ft_strdup("?=0"));
-		// set_env_pwd(env);
+		getcwd(new_pwd, sizeof(new_pwd));
+		free(**env);
+		**env = ckm(ft_strdup("?=0"));
+		set_env_pwd(env, old_pwd, new_pwd);
 	}
 }
 
@@ -114,9 +120,15 @@ static char	*find_cdpath(char *dirname, char **env)
 상대경로에서도 작동하더라고. chdir가.
 */
 
-void	set_env_pwd(char ***env)
+static void	set_env_pwd(char ***env, char *old_pwd, char *new_pwd)
 {
-	// 키, 밸류, env를 매개변수로 갖게 export를 수정해야겠다. 너무 불편하다. 
-	// pwd및 oldpwd builtin_export 불러서 수정해야함.
-	// builtin_export(, env);
+	char	*tmp_oldpwd;
+	char	*tmp_newpwd;
+
+	tmp_oldpwd = ckm(ft_strjoin("OLDPWD=", old_pwd));
+	ft_setenv(env, tmp_oldpwd);
+	free(tmp_oldpwd);
+	tmp_newpwd = ckm(ft_strjoin("PWD=", new_pwd));
+	ft_setenv(env, tmp_newpwd);
+	free(tmp_newpwd);
 }
