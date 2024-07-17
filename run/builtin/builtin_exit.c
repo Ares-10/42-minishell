@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:46:18 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 11:26:02 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:34:29 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_numeric(char *str)
 	return (*str == '\0');
 }
 
-void	builtin_exit(char **argv, char **env)
+void	builtin_exit(char **argv, char **env, t_pipe *info)
 {
 	uint8_t	exit_code;
 
@@ -46,5 +46,8 @@ void	builtin_exit(char **argv, char **env)
 			write_error("minishell: exit: numeric argument required\n");
 		}
 	}
-	exit(exit_code);
+	free(*env);
+	*env = ft_strdup("?=0");
+	if (!info->next_pipe_exist && !info->prev_pipe_exist)
+		exit(exit_code);
 }
