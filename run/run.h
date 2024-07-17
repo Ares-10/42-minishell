@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 22:06:44 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:17:16 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	exec_argv(char *cmd, char **argv, char **env);
 void	exec_tree(t_tree *node, char ***env, t_pipe *info);
 
 void	builtin_echo(char **argv, char **env);
-void	builtin_cd(char **argv, char **env);
+void	builtin_cd(char **argv, char ***env);
 void	builtin_pwd(char **env);
 void	builtin_export(char **argv, char ***env, t_pipe *info);
 void	builtin_unset(char **argv, char ***env);
