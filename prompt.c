@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/17 19:41:50 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:06:02 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_str(char *str)
 	return (1);
 }
 
-static void	run(t_tree *tree, char **envp)
+static void	run(t_tree *tree, char ***envp)
 {
 	t_pipe	*info;
 
@@ -35,7 +35,7 @@ static void	run(t_tree *tree, char **envp)
 	restore_io(*info);
 }
 
-void	start_shell(char **envp)
+void	start_shell(char ***envp)
 {
 	char	*input;
 	t_tree	*parse_tree;
@@ -46,7 +46,7 @@ void	start_shell(char **envp)
 		if (check_str(input))
 		{
 			add_history(input);
-			parse_tree = parse(input, envp);
+			parse_tree = parse(input, *envp);
 			if (parse_tree != FAILURE)
 				run(parse_tree, envp);
 			free_tree(&parse_tree);

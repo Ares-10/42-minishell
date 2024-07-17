@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojepar <seojepar@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:55 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 19:04:07 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:08:18 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,6 @@ int	main(int argc, char **argv, char **envp)
 	env = get_env(envp);
 	set_term();
 	set_signal();
-	start_shell(env);
+	start_shell(&env);
 	exit(0);
 }
