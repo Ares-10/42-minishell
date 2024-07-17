@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 11:04:16 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 16:56:11 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	valid_shell_name(char *name)
 	return (TRUE);
 }
 
-void	builtin_export(char **argv, char ***env)
+void	builtin_export(char **argv, char ***env, t_pipe *info)
 {
 	int		i;
 	int		idx;
@@ -90,10 +90,10 @@ void	builtin_export(char **argv, char ***env)
 				write_error(argv[i]);
 				write_error(": not a valid identifier\n");	
 			}
-			else if (equal != 0)
+			else if (equal != 0 && !info->prev_pipe_exist && !info->next_pipe_exist)
 			{
 				if (key != NULL)
-				free(key);
+					free(key);
 				key = ft_substr(argv[i], 0, equal - argv[i] + 1);
 				if (key == NULL)
 					puterr_exit("malloc failed");
@@ -108,7 +108,7 @@ void	builtin_export(char **argv, char ***env)
 		if (key != NULL)
 			free(key);
 	}
-	free(**env);
+	free((*env)[0]);
 	if (err_flag)
 		(*env)[0] = ft_strdup("?=1");
 	else
