@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:46:18 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 23:16:41 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:28:03 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int ft_strtoll(const char *str, long long *out)
 	int			sign;
 	int			digit;
 
+	while (*str == ' ')
+		str++;
 	if (*str == '-')
 	{
 		sign = -1;
