@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:46:18 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 23:04:16 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:28:03 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int ft_strtoll(const char *str, long long *out)
 	int			sign;
 	int			digit;
 
+	while (*str == ' ')
+		str++;
 	if (*str == '-')
 	{
 		sign = -1;
@@ -61,7 +63,7 @@ void	builtin_exit(char **argv, char **env, t_pipe *info)
 
 	if (argv[1] != NULL && argv[2] != NULL)
 	{
-		write_error("minishell: exit: too many arguments\n");
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		free(*env);
 		*env = ft_strdup("?=1");
 		return ;
@@ -74,7 +76,7 @@ void	builtin_exit(char **argv, char **env, t_pipe *info)
 		else
 		{
 			exit_code = 255;
-			write_error("minishell: exit: numeric argument required\n");
+			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 		}
 	}
 	free(*env);

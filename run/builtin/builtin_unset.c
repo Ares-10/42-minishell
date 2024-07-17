@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:45:36 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 16:50:07 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:35:56 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,13 @@ void	builtin_unset(char **argv, char ***env)
 	i = 1;
 	while (argv[i] != NULL)
 	{
-		if (ft_strcmp(argv[i], "?") != 0)
+		if (*(argv[i]) == '\0')
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd("unset: ''", 2);
+			ft_putendl_fd(": not a valid identifier", 2);
+		}
+		else if (ft_strcmp(argv[i], "?") != 0)
 			remove_env_var(argv[i], env);
 		i++;
 	}

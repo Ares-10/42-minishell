@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 22:15:19 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:19:46 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info);
 void	restore_io(t_pipe info)
 {
 	if (dup2(info.original_stdin, STDIN_FILENO) == -1)
-		error_and_exit("dup2 failed");
+		pexit("dup2 failed");
 	if (dup2(info.original_stdout, STDOUT_FILENO) == -1)
-		error_and_exit("dup2 failed");
+		pexit("dup2 failed");
 }
 
 void	init_pipe(t_pipe **info)
@@ -30,13 +30,13 @@ void	init_pipe(t_pipe **info)
 	*info = xmalloc(sizeof(t_pipe));
 	(*info)->total_child_cnt = 0;
 	if (pipe((*info)->prev_fd) < 0)
-		error_and_exit("pipe failed");
+		pexit("pipe failed");
 	(*info)->prev_pipe_exist = FALSE;
 	(*info)->next_pipe_exist = FALSE;
 	(*info)->original_stdin = dup(STDIN_FILENO);
 	(*info)->original_stdout = dup(STDOUT_FILENO);
 	if ((*info)->original_stdin == -1 || (*info)->original_stdout == -1)
-		error_and_exit("dup failed");
+		pexit("dup failed");
 }
 
 void	search_tree(t_tree *node, char ***env, t_pipe *info)
@@ -69,7 +69,7 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 	{
 		// 기존파이프의 R에서 가져오기
 		if (dup2(info->prev_fd[R], STDIN_FILENO) == -1)
-			error_and_exit("dup2 failed");
+			pexit("dup2 failed");
 	}
 	if (node->right)
 	{
@@ -80,7 +80,7 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 		// 					입력을 기존파이프의 R로 리다이렉팅
 		// 4개를 항상 가지고 있어야되는데..
 		if (pipe(new_fd) == -1)
-			error_and_exit("Pipe Failed");
+			pexit("Pipe Failed");
 		// 출력을 새파이프의 끝으로 할당.
 		dup2(new_fd[W], STDOUT_FILENO);
 		// 안쓰니까 폐기
@@ -93,7 +93,7 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 	{
 		info->next_pipe_exist = FALSE;
 		if (dup2(info->original_stdout, STDOUT_FILENO) == -1)
-			error_and_exit("dup2 failed");
+			pexit("dup2 failed");
 	}
 }
 
@@ -105,7 +105,7 @@ void	handle_here_document(t_redirect *redirect, char **en, t_pipe *info)
 	struct termios	term;
 
 	if (dup2(info->original_stdin, STDIN_FILENO) == -1)
-		error_and_exit("dup2 failed");
+		pexit("dup2 failed");
 	// 에코 끔
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
@@ -118,7 +118,7 @@ void	handle_here_document(t_redirect *redirect, char **en, t_pipe *info)
 	tmp_filename = ".tmp";
 	tmp_fd = open(tmp_filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (tmp_fd < 0)
-		error_and_exit("Failed to open temporary file");
+		pexit("Failed to open temporary file");
 	while (1)
 	{
 		line = readline("> ");
@@ -136,7 +136,7 @@ void	handle_here_document(t_redirect *redirect, char **en, t_pipe *info)
 	close(tmp_fd);
 	tmp_fd = open(tmp_filename, O_RDONLY);
 	if (tmp_fd < 0)
-		error_and_exit("Failed to reopen temporary file");
+		pexit("Failed to reopen temporary file");
 	dup2(tmp_fd, STDIN_FILENO);
 	close(tmp_fd);
 	unlink(tmp_filename);
@@ -172,8 +172,8 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 		free(*env);
 		*env = ckm(ft_strdup("?=1"));
 		info->io_flag = TRUE;
-		write_error("minishell: ");
-		perror(redirect->file_path);
+		ft_putstr_fd("minishell: ", 2);
+		pexit(redirect->file_path);
 		return ;
 	}
 	if (redirect->type == OUTPUT_REDIRECT || redirect->type == APPEND_REDIRECT)

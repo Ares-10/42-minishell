@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 22:03:04 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:17:28 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,10 @@ void	builtin_export(char **argv, char ***env, t_pipe *info)
 	{
 		i = 0;
 		while ((*env)[i++] != NULL)
-			printf("declare -x %s\n", (*env)[i]);
+		{
+			ft_putstr_fd("declare -x ", 1);
+			ft_putendl_fd((*env)[i], 1);
+		}
 	}
 	else
 	{
@@ -97,9 +100,9 @@ void	builtin_export(char **argv, char ***env, t_pipe *info)
 			if (equal == argv[i] || !valid_shell_name(argv[i]))
 			{
 				err_flag = TRUE;
-				write_error("minishell: export: ");
-				write_error(argv[i]);
-				write_error(": not a valid identifier\n");	
+				ft_putstr_fd("minishell: export: ", 2);
+				ft_putstr_fd(argv[i], 2);
+				ft_putendl_fd(": not a valid identifier", 2);
 			}
 			else if (equal != 0 && !info->prev_pipe_exist && !info->next_pipe_exist)
 			{

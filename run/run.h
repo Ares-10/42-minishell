@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 22:32:24 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:19:46 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ void    builtin_exit(char **argv, char **env, t_pipe *info);
 int		ft_setenv(char ***env, char *var);
 char	*ft_getenv(char *name, char **env);
 
-void	write_error(char *msg);
-void	error_and_exit(char *msg);
+void	pexit(char *msg);
 
 void	free_double(char **var);
 
