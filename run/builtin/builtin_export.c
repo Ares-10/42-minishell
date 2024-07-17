@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 16:56:11 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 22:03:04 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,24 @@ static void	change_env(char ***env, char *arg, int idx)
 
 int	ft_setenv(char ***env, char *var)
 {
-	int	i;
+	int		i;
+	char	**new_env;
 
 	i = 0;
 	while ((*env)[i] != NULL)
 		i++;
-	(*env)[i] = ft_strdup(var);
-	(*env)[i + 1] = NULL;
+	new_env = xmalloc(sizeof(char *) * (i + 2));
+	i = 0;
+	while ((*env)[i] != NULL)
+	{
+		new_env[i] = (*env)[i];
+		i++;
+	}
+	new_env[i] = ckm(ft_strdup(var));
+	new_env[i + 1] = NULL;
+	free(*env);
+	*env = new_env;
+	// 이렇게 하면, 딱 그.. env가 가리키고 있던 값 하나만 수정이 되겠지?
 	return (1);
 }
 
@@ -108,9 +119,9 @@ void	builtin_export(char **argv, char ***env, t_pipe *info)
 		if (key != NULL)
 			free(key);
 	}
-	free((*env)[0]);
-	if (err_flag)
-		(*env)[0] = ft_strdup("?=1");
-	else
-		(*env)[0] = ft_strdup("?=0");
+	// free((*env)[0]);
+	// if (err_flag)
+	// 	(*env)[0] = ft_strdup("?=1");
+	// else
+	// 	(*env)[0] = ft_strdup("?=0");
 }
