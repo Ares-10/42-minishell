@@ -95,6 +95,9 @@ void	search_tree(t_tree *node, char **env, t_pipe *info);
 /* split.c */
 char	**nquote_split(const char *str, char c);
 
+/* treedestroyer.c */
+void	free_tree(t_tree **tree);
+
 void	init_pipe(t_pipe **info);
 void	restore_io(t_pipe info);
 

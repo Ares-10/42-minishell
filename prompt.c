@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/16 12:59:53 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/17 19:13:44 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,13 @@ void	start_shell(char **envp)
 			parse_tree = parse(input, envp);
 			if (parse_tree != FAILURE)
 				run(parse_tree, envp);
-			free(input);
+			free_tree(&parse_tree);
 		}
 		else if (!input)
 		{
 			ft_putstr_fd("exit\n", 1);
 			exit(0);
 		}
+		free(input);
 	}
 }

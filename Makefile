@@ -12,6 +12,7 @@ SRCS =  main.c							\
 		parse/split.c					\
 		parse/treebuilder1.c			\
 		parse/treebuilder2.c			\
+		parse/treedestroyer.c			\
 		run/builtin/builtin_cd.c		\
 		run/builtin/builtin_echo.c		\
 		run/builtin/builtin_env.c		\
@@ -29,10 +30,10 @@ OBJS = $(SRCS:.c=.o)
 
 #CFLAGS =	-Wall -Wextra -Werror
 
-LDFLAGS=-L/usr/local/opt/readline/lib
-CPPFLAGS=-I/usr/local/opt/readline/include
-# LDFLAGS = -L/opt/homebrew/opt/readline/lib
-# CPPFLAGS = -I/opt/homebrew/opt/readline/include
+#LDFLAGS=-L/usr/local/opt/readline/lib
+#CPPFLAGS=-I/usr/local/opt/readline/include
+LDFLAGS = -L/opt/homebrew/opt/readline/lib
+CPPFLAGS = -I/opt/homebrew/opt/readline/include
 
 LIBS = -lreadline		\
 		Libft/libft.a	\

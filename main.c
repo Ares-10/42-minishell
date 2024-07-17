@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:55 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/10 01:04:35 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/17 19:04:07 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,16 @@ static char	**get_env(char **envp)
 	return (env);
 }
 
+void	f()
+{
+	system("leaks minishell");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	**env;
 
+	atexit(f);
 	env = get_env(envp);
 	set_term();
 	set_signal();
