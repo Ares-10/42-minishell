@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:22:11 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/16 12:57:21 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/17 15:59:43 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,18 +82,21 @@ void	delete_token(void *token)
 
 void	remove_quote(char *str)
 {
-	int	i;
-	int	new_index;
+	int		i;
+	int		new_index;
+	char	*dup;
 
+	dup = ckm(ft_strdup(str));
 	i = -1;
 	new_index = 0;
-	while (str[++i])
+	while (dup[++i])
 	{
-		if (check_quote(str, i) != -1)
+		if (check_quote(dup, i) != -1)
 		{
-			str[new_index] = str[i];
+			str[new_index] = dup[i];
 			new_index++;
 		}
 	}
 	str[new_index] = '\0';
+	free(dup);
 }
