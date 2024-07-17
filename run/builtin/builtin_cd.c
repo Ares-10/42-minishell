@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:45:29 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 22:22:33 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:19:46 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	builtin_cd(char **argv, char ***env)
 	}
 	if (chdir(dest) == -1)
 	{
-		write_error("minishell: cd: ");
+		ft_putstr_fd("minishell: cd: ", 2);
 		if (dest == NULL)
-			write_error("HOME not set\n");
+			ft_putstr_fd("HOME not set\n", 2);
 		else
-			perror(dest);
+			pexit(dest);
 		free(**env);
 		**env = ckm(ft_strdup("?=1"));
 	}
