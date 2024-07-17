@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/16 12:57:42 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/17 19:39:42 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ t_tree	*parse(char *str, char **envp)
 	if (new_str == FAILURE)
 		return (puterr("parse: invalid $ format"));
 	tokenize(&token_list, new_str);
+	free(new_str);
 	if (token_check(token_list) == FAILURE)
 	{
 		ft_lstclear(&token_list, delete_token);

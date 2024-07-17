@@ -6,19 +6,20 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 16:15:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/14 15:20:03 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/17 19:35:51 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-static void	free_strs(char **strs)
+static void	free_strs(char ***strs)
 {
 	int	i;
 
 	i = -1;
-	while (strs[++i])
-		free(strs[i]);
+	while ((*strs)[++i])
+		free((*strs)[i]);
+	free(*strs);
 }
 
 /* safe */
@@ -105,13 +106,16 @@ char	*replace_variable(char *str, char **envp)
 	char	*tmp;
 
 	strs = nquote_split(str, '$');
-	i = 0;
-	new_str = ckm(ft_strdup(strs[0]));
+	i = -1;
+	if (strs[0][0] != '$')
+		new_str = ckm(ft_strdup(strs[++i]));
+	else
+		new_str = ckm(ft_strdup(""));
 	while (strs[++i])
 	{
 		if (replace_var(&strs[i], envp) == FAILURE)
 		{
-			free_strs(strs);
+			free_strs(&strs);
 			free(new_str);
 			return (FAILURE);
 		}
@@ -119,6 +123,6 @@ char	*replace_variable(char *str, char **envp)
 		new_str = ckm(ft_strjoin(new_str, strs[i]));
 		free(tmp);
 	}
-	free_strs(strs);
+	free_strs(&strs);
 	return (new_str);
 }
