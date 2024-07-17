@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 22:31:38 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:12:26 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info)
 
 void	pexit(char *msg)
 {
-	printf("%s", msg);
+	ft_putstr_fd(msg, 2);
 	exit(1);
 }
 

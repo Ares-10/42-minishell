@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:38:24 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 16:48:37 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:09:17 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ void	builtin_echo(char **argv, char **env)
 	}
 	while (argv[i])
 	{
-		printf("%s", argv[i]);
+		ft_putstr_fd(argv[i], 1);
 		if (argv[i + 1])
-			printf(" ");
+			ft_putstr_fd(" ", 1);
 		i++;
 	}
 	if (need_newline)
-		printf("\n");
+		ft_putstr_fd("\n", 1);
 	free(*env);
 	*env = ckm(ft_strdup("?=0"));
 }

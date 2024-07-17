@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:46:50 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 16:58:42 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:11:53 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	builtin_pwd(char **env)
 
 	if (getcwd(cwd, sizeof(cwd)))
 	{
-		printf("%s\n", cwd);
+		ft_putendl_fd(cwd, 1);
 		free(*env);
 		*env = ckm(ft_strdup("?=0"));
 	}

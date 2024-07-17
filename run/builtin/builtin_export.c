@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 22:03:04 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:11:15 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,10 @@ void	builtin_export(char **argv, char ***env, t_pipe *info)
 	{
 		i = 0;
 		while ((*env)[i++] != NULL)
-			printf("declare -x %s\n", (*env)[i]);
+		{
+			ft_putstr_fd("declare -x ", 1);
+			ft_putendl_fd((*env)[i], 1);
+		}
 	}
 	else
 	{
