@@ -6,13 +6,15 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/19 18:01:03 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 20:55:26 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-/* 테스트용입니다 */
+/*
+ * 테스트용입니다
+ *
 void	prf(void *t)
 {
 	t_token	*token;
@@ -31,10 +33,6 @@ void	prf(void *t)
 		puterr_exit("type failed");
 }
 
-/*
- * 테스트용입니다
- * 전위순회순으로 트리를 출력합니다
- */
 void	print_tree(t_tree *tree)
 {
 	int			type;
@@ -79,6 +77,7 @@ void	print_tree(t_tree *tree)
 	if (tree->right != NULL)
 		print_tree(tree->right);
 }
+*/
 
 void	*parse_err(char *msg)
 {
@@ -132,9 +131,7 @@ t_tree	*parse(char *str, char **envp)
 		ft_lstclear(&token_list, delete_token);
 		return (FAILURE);
 	}
-	// ft_lstiter(token_list, prf); // 테스트용
 	parse_tree = syntax_pipeline(token_list);
-	// print_tree(parse_tree); // 테스트용
 	ft_lstclear(&token_list, delete_token);
 	return (parse_tree);
 }
