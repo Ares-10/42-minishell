@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:46:18 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 23:28:03 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 16:49:31 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int ft_strtoll(const char *str, long long *out)
 	int			sign;
 	int			digit;
 
+	sign = +1;
 	while (*str == ' ')
 		str++;
 	if (*str == '-')
@@ -28,10 +29,7 @@ int ft_strtoll(const char *str, long long *out)
 		str++;
 	}
 	else if (*str == '+')
-	{
-		sign = +1;
 		str++;
-	}
 	result = 0;
 	if (*str == '\0')
 		return (ERROR);
@@ -75,8 +73,8 @@ void	builtin_exit(char **argv, char **env, t_pipe *info)
 			exit_code = (input % 256);
 		else
 		{
-			exit_code = 255;
 			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+			exit_code = 255;
 		}
 	}
 	free(*env);
