@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 17:01:34 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:24:43 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 		info->io_flag = TRUE;
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(redirect->file_path, 2);
-		ft_putstr_fd(": No such file or directory", 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		return ;
 	}
 	if (redirect->type == OUTPUT_REDIRECT || redirect->type == APPEND_REDIRECT)
