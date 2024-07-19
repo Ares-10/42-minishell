@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 16:26:13 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 16:53:40 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ void	wait_all_child(t_pipe *info, char **env)
 			state = 130;
 		else if (WTERMSIG(state) == SIGQUIT)
 			state = 131;
-		else
-			state = 128 + state;
 	}
 	free(*env);
 	tmp = ckm(ft_itoa(state % 256));
