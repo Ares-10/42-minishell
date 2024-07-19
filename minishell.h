@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/17 22:07:58 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 16:20:10 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_pipe
 }	t_pipe;
 
 void	set_signal(void);
+void	set_child_signal(void);
 void	start_shell(char ***envp);
 
 /* parse/parse.c */

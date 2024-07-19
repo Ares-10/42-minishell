@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 23:12:26 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 16:26:13 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,15 @@ void	wait_all_child(t_pipe *info, char **env)
 	}
 	if (WIFEXITED(state))
         state = WEXITSTATUS(state);
-    else if (WIFSIGNALED(state))
-        state = WTERMSIG(state);
+	if (WIFSIGNALED(state))
+	{
+		if (WTERMSIG(state) == SIGINT)
+			state = 130;
+		else if (WTERMSIG(state) == SIGQUIT)
+			state = 131;
+		else
+			state = 128 + state;
+	}
 	free(*env);
 	tmp = ckm(ft_itoa(state % 256));
 	*env = ckm(ft_strjoin("?=", tmp));
@@ -80,6 +87,7 @@ void	exec_command(t_tree *node, char ***env, t_pipe *info)
 	cmd = (t_simplecmd *)node->data;
 	if (execute_builtin(cmd, env, info) == FALSE)
 	{
+		set_child_signal();
 		pid = fork();
 		if (pid < 0)
 			puterr_exit("Fork failed");
@@ -90,6 +98,7 @@ void	exec_command(t_tree *node, char ***env, t_pipe *info)
 			info->total_child_cnt++;
 			if (!info->next_pipe_exist)
 				wait_all_child(info, *env);
+			set_signal();
 		}
 	}
 }
