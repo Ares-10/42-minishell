@@ -56,13 +56,6 @@ clean :
 
 fclean : clean
 	rm -rf $(NAME)
-	rm -rf	run/builtin/echo.o		\
-			run/builtin/env.o		\
-			run/builtin/exit.o		\
-			run/builtin/export.o	\
-			run/builtin/pwd.o		\
-			run/builtin/unset.o		\
-			run/builtin/simple.o	\
 
 re : fclean all
 
