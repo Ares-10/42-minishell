@@ -30,11 +30,13 @@ SRCS =  main.c							\
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS =	-Wall -Wextra -Werror
+CFLAGS =	-Wall -Wextra -Werror \
+#-fsanitize=address
 
 # LDFLAGS=-L/usr/local/opt/readline/lib
 # CPPFLAGS=-I/usr/local/opt/readline/include
-LDFLAGS = -L/opt/homebrew/opt/readline/lib
+LDFLAGS = -L/opt/homebrew/opt/readline/lib\
+#-fsanitize=address
 CPPFLAGS = -I/opt/homebrew/opt/readline/include
 
 LIBS = -lreadline		\

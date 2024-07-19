@@ -6,7 +6,7 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:36:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/15 00:09:12 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/19 20:51:53 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ char	**get_argv(t_list *token_list)
 	while (t && ((t_token *)t->content)->type != T_PIPE && ++i)
 		t = t->next;
 	argv = (char **)xmalloc(sizeof(char *) * (i + 1));
+	argv[0] = NULL;
 	i = -1;
 	while (token_list && ((t_token *)token_list->content)->type != T_PIPE)
 	{
