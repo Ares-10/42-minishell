@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/17 22:06:02 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 20:00:18 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void	run(t_tree *tree, char ***envp)
 	init_pipe(&info);
 	search_tree(tree, envp, info);
 	restore_io(*info);
+	free(info);
 }
 
 void	start_shell(char ***envp)
