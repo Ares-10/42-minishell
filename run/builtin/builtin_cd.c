@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:45:29 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 16:39:22 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:00:31 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,25 @@
 static char	*find_cdpath(char *dirname, char **env);
 static void	set_env_pwd(char ***env, char *old_pwd, char *new_pwd);
 
+void	put_error_cd(char *dest, char ***env)
+{
+	ft_putstr_fd("minishell: cd: ", 2);
+	if (dest == NULL)
+		ft_putstr_fd("HOME not set\n", 2);
+	else
+	{
+		ft_putstr_fd(dest, 2);
+		ft_putendl_fd(": No such file or directory", 2);
+	}
+	free(**env);
+	**env = ckm(ft_strdup("?=1"));
+}
+
 void	builtin_cd(char **argv, char ***env)
 {
-	char	*msg;
 	char	old_pwd[1024];
 	char	new_pwd[1024];
 	char	*dest;
-	DIR		*dir;
 
 	getcwd(old_pwd, sizeof(old_pwd));
 	if (argv[1] == NULL)
@@ -30,26 +42,12 @@ void	builtin_cd(char **argv, char ***env)
 	else
 	{
 		dest = find_cdpath(argv[1], *env);
-		if (dest != NULL)
-		{
-			chdir(dest);
+		if (dest != NULL && chdir(dest) == 0)
 			free(dest);
-		}
 		dest = ckm(ft_strdup(argv[1]));
 	}
 	if (chdir(dest) == -1)
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		if (dest == NULL)
-			ft_putstr_fd("HOME not set\n", 2);
-		else
-		{
-			ft_putstr_fd(dest, 2);
-			ft_putendl_fd(": No such file or directory", 2);
-		}
-		free(**env);
-		**env = ckm(ft_strdup("?=1"));
-	}
+		put_error_cd(dest, env);
 	else
 	{
 		getcwd(new_pwd, sizeof(new_pwd));
@@ -89,7 +87,6 @@ static char	*find_cdpath(char *dirname, char **env)
 	char	**split_path;
 	char	*ret;
 	int		i;
-	DIR		*dir;
 
 	cdpath_env = ft_getenv("CDPATH", env);
 	if (cdpath_env == NULL)

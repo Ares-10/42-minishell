@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/19 16:20:10 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:51:35 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@
 # define APPEND_REDIRECT 2
 # define INPUT_REDIRECT 3
 # define HERE_DOCUMENT 4
-
 
 typedef struct s_token
 {

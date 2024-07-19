@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:44:53 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/16 17:18:33 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:52:08 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ void	exec_argv(char *cmd, char **argv, char **env)
 		ft_putstr_fd(cmd, 2);
 		ft_putendl_fd(": command not found", 2);
 		ft_free(argv);
-		// free(*env);
-		// *env = ckm(ft_strdup("?=127"));
 		exit(127);
 	}
 }

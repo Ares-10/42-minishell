@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:38:24 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 23:09:17 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:49:21 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,6 @@ void	builtin_echo(char **argv, char **env)
 
 static int	check_if_option(char *str)
 {
-	char	*tmp;
-
-	tmp = str;
 	if (*str != '-' || *(str + 1) == '\0')
 		return (FALSE);
 	str++;

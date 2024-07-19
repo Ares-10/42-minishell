@@ -6,18 +6,60 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 16:36:07 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:21:14 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
+#include "builtin.h"
 
-static void	change_env(char ***env, char *arg, int idx)
+void	builtin_export(char **argv, char ***env, t_pipe *info)
 {
-	free((*env)[idx]);
-	(*env)[idx] = ft_strdup(arg);
-	if ((*env)[idx] == NULL)
-		puterr_exit("malloc failed");
+	int		i;
+	int		err_flag;
+
+	err_flag = FALSE;
+	if (argv[1] == NULL)
+		put_declare_x(*env);
+	else
+	{
+		i = 1;
+		while (argv[i] != NULL)
+			export_single(argv[i++], &err_flag, env, info);
+	}
+	free((*env)[0]);
+	if (err_flag)
+		(*env)[0] = ft_strdup("?=1");
+	else
+		(*env)[0] = ft_strdup("?=0");
+}
+
+void	export_single(char *arg, int *err_flag, char ***env, t_pipe *info)
+{
+	char	*key;
+	int		idx;
+	char	*equal;
+
+	key = NULL;
+	equal = ft_strchr(arg, '=');
+	if (equal == arg || !valid_shell_name(arg))
+	{
+		*err_flag = TRUE;
+		ft_putstr_fd("minishell: export: ", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putendl_fd(": not a valid identifier", 2);
+	}
+	else if (equal != 0 && !info->prev_pipe_exist \
+	&& !info->next_pipe_exist)
+	{
+		key = ckm(ft_substr(arg, 0, equal - arg + 1));
+		idx = find_key_in_env(key, *env);
+		if (idx < 0)
+			ft_setenv(env, arg);
+		else
+			change_env(env, arg, idx);
+		free(key);
+	}
 }
 
 int	ft_setenv(char ***env, char *var)
@@ -39,11 +81,16 @@ int	ft_setenv(char ***env, char *var)
 	new_env[i + 1] = NULL;
 	free(*env);
 	*env = new_env;
-	// 이렇게 하면, 딱 그.. env가 가리키고 있던 값 하나만 수정이 되겠지?
 	return (1);
 }
 
-static int	find_key_in_env(char *key, char **env)
+void	change_env(char ***env, char *arg, int idx)
+{
+	free((*env)[idx]);
+	(*env)[idx] = ckm(ft_strdup(arg));
+}
+
+int	find_key_in_env(char *key, char **env)
 {
 	int		i;
 	size_t	key_len;
@@ -57,74 +104,4 @@ static int	find_key_in_env(char *key, char **env)
 		i++;
 	}
 	return (-1);
-}
-
-int	valid_shell_name(char *name)
-{
-	if (ft_isdigit(*name))
-		return (FALSE);
-	while (*name && *name != '=')
-	{
-		if (!(ft_isalnum(*name) || *name == '_'))
-			return (FALSE);
-		name++;
-	}
-	return (TRUE);
-}
-
-void	builtin_export(char **argv, char ***env, t_pipe *info)
-{
-	int		i;
-	int		idx;
-	char	*equal;
-	char	*key;
-	int		err_flag;
-
-	key = NULL;
-	err_flag = FALSE;
-	if (argv[1] == NULL)
-	{
-		i = 0;
-		while ((*env)[i++] != NULL)
-		{
-			ft_putstr_fd("declare -x ", 1);
-			ft_putendl_fd((*env)[i], 1);
-		}
-	}
-	else
-	{
-		i = 1;
-		while (argv[i] != NULL)
-		{
-			equal = ft_strchr(argv[i], '=');
-			if (equal == argv[i] || !valid_shell_name(argv[i]))
-			{
-				err_flag = TRUE;
-				ft_putstr_fd("minishell: export: ", 2);
-				ft_putstr_fd(argv[i], 2);
-				ft_putendl_fd(": not a valid identifier", 2);
-			}
-			else if (equal != 0 && !info->prev_pipe_exist && !info->next_pipe_exist)
-			{
-				if (key != NULL)
-					free(key);
-				key = ft_substr(argv[i], 0, equal - argv[i] + 1);
-				if (key == NULL)
-					puterr_exit("malloc failed");
-				idx = find_key_in_env(key, *env);
-				if (idx < 0)
-					ft_setenv(env, argv[i]);
-				else
-					change_env(env, argv[i], idx);
-			}
-			i++;
-		}
-		if (key != NULL)
-			free(key);
-	}
-	free((*env)[0]);
-	if (err_flag)
-		(*env)[0] = ft_strdup("?=1");
-	else
-		(*env)[0] = ft_strdup("?=0");
 }

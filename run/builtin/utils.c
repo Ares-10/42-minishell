@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 16:56:40 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:54:03 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	wait_all_child(t_pipe *info, char **env)
 {
 	int		i;
 	int		state;
-	char	*exit_str;
 	char	*tmp;
 
 	i = 0;
@@ -63,7 +62,7 @@ void	wait_all_child(t_pipe *info, char **env)
 		i++;
 	}
 	if (WIFEXITED(state))
-        state = WEXITSTATUS(state);
+		state = WEXITSTATUS(state);
 	else if (WIFSIGNALED(state))
 	{
 		if (WTERMSIG(state) == SIGINT)

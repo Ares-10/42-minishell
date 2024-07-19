@@ -18,20 +18,22 @@ SRCS =  main.c							\
 		run/builtin/builtin_env.c		\
 		run/builtin/builtin_exit.c		\
 		run/builtin/builtin_export.c	\
+		run/builtin/builtin_export2.c	\
 		run/builtin/builtin_pwd.c		\
 		run/builtin/builtin_unset.c		\
 		run/builtin/utils.c				\
-		run/error.c						\
+		run/handle.c					\
 		run/exec_cmd.c					\
 		run/free.c						\
+		run/terminal.c					\
 		run/run.c						\
 
 OBJS = $(SRCS:.c=.o)
 
-#CFLAGS =	-Wall -Wextra -Werror
+CFLAGS =	-Wall -Wextra -Werror
 
-#LDFLAGS=-L/usr/local/opt/readline/lib
-#CPPFLAGS=-I/usr/local/opt/readline/include
+# LDFLAGS=-L/usr/local/opt/readline/lib
+# CPPFLAGS=-I/usr/local/opt/readline/include
 LDFLAGS = -L/opt/homebrew/opt/readline/lib
 CPPFLAGS = -I/opt/homebrew/opt/readline/include
 

@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:46:18 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 16:49:31 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:18:28 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,31 @@
 #include <stdint.h>
 #include <limits.h>
 
-int ft_strtoll(const char *str, long long *out)
+int	set_sign(char **str, int *sign, long long *result)
+{
+	*sign = +1;
+	while (**str == ' ')
+		(*str)++;
+	if (**str == '-')
+	{
+		*sign = -1;
+		(*str)++;
+	}
+	else if (**str == '+')
+		(*str)++;
+	*result = 0;
+	if (**str == '\0')
+		return (ERROR);
+	return (TRUE);
+}
+
+int	ft_strtoll(char *str, long long *out)
 {
 	long long	result;
 	int			sign;
 	int			digit;
 
-	sign = +1;
-	while (*str == ' ')
-		str++;
-	if (*str == '-')
-	{
-		sign = -1;
-		str++;
-	}
-	else if (*str == '+')
-		str++;
-	result = 0;
-	if (*str == '\0')
+	if (set_sign(&str, &sign, &result) == ERROR)
 		return (ERROR);
 	while (*str)
 	{
