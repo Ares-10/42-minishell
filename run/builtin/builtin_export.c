@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/17 23:17:28 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 16:36:07 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,9 @@ void	builtin_export(char **argv, char ***env, t_pipe *info)
 		if (key != NULL)
 			free(key);
 	}
-	// free((*env)[0]);
-	// if (err_flag)
-	// 	(*env)[0] = ft_strdup("?=1");
-	// else
-	// 	(*env)[0] = ft_strdup("?=0");
+	free((*env)[0]);
+	if (err_flag)
+		(*env)[0] = ft_strdup("?=1");
+	else
+		(*env)[0] = ft_strdup("?=0");
 }
