@@ -93,3 +93,27 @@ void	exec_argv(char *cmd, char **argv, char **env)
 		exit(127);
 	}
 }
+
+void	exec_command(t_tree *node, char ***env, t_pipe *info)
+{
+	t_simplecmd	*cmd;
+	pid_t		pid;
+
+	cmd = (t_simplecmd *)node->data;
+	if (execute_builtin(cmd, env, info) == FALSE)
+	{
+		set_child_signal();
+		pid = fork();
+		if (pid < 0)
+			puterr_exit("Fork failed");
+		if (pid == 0)
+			exec_argv(cmd->file_path, cmd->argv, *env);
+		else
+		{
+			info->total_child_cnt++;
+			set_signal();
+		}
+	}
+	if (!info->next_pipe_exist)
+		wait_all_child(info, *env);
+}

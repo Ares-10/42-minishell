@@ -31,6 +31,7 @@ static void	run(t_tree *tree, char ***envp)
 	t_pipe	*info;
 
 	init_pipe(&info);
+	init_exit(*envp);
 	search_tree(tree, envp, info);
 	restore_io(*info);
 	free(info);
@@ -58,5 +59,6 @@ void	start_shell(char ***envp)
 			ft_putstr_fd("exit\n", 1);
 			exit(0);
 		}
+		g_sig = 0;
 	}
 }

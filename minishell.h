@@ -41,6 +41,8 @@
 # define INPUT_REDIRECT 3
 # define HERE_DOCUMENT 4
 
+int	g_sig;
+
 typedef struct s_token
 {
 	int		type;
@@ -99,6 +101,7 @@ char	**nquote_split(const char *str, char c);
 void	free_tree(t_tree **tree);
 
 void	init_pipe(t_pipe **info);
+void	init_exit(char **env);
 void	restore_io(t_pipe info);
 
 #endif

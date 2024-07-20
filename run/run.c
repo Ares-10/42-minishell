@@ -57,3 +57,12 @@ void	exec_tree(t_tree *node, char ***env, t_pipe *info)
 	if (node->type == T_REDIRECT)
 		handle_redirect(node, *env, info);
 }
+
+void	init_exit(char **env)
+{
+	if (g_sig == SIGINT)
+	{
+		free(*env);
+		*env = ckm(ft_strdup("?=0"));
+	}
+}

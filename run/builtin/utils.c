@@ -49,65 +49,43 @@ void	pexit(char *msg)
 	exit(1);
 }
 
+void	wait_all(t_pipe *info, int *state)
+{
+	int	i;
+
+	i = 0;
+	while (i < info->total_child_cnt)
+	{
+		waitpid(-1, state, 0);
+		i++;
+	}
+	if (WIFEXITED(*state))
+		*state = WEXITSTATUS(*state);
+	else if (WIFSIGNALED(*state))
+	{
+		if (WTERMSIG(*state) == SIGINT)
+			*state = 130;
+		else if (WTERMSIG(*state) == SIGQUIT)
+			*state = 131;
+		else
+			*state = 128 + *state;
+	}
+}
+
 void	wait_all_child(t_pipe *info, char **env)
 {
-	int		i;
 	int		state;
 	char	*tmp;
 
-	i = 0;
 	if (info->total_child_cnt == 0)
 		return ;
-	while (i < info->total_child_cnt)
-	{
-		waitpid(-1, &state, 0);
-		i++;
-	}
-	if (WIFEXITED(state))
-		state = WEXITSTATUS(state);
-	else if (WIFSIGNALED(state))
-	{
-		if (WTERMSIG(state) == SIGINT)
-			state = 130;
-		else if (WTERMSIG(state) == SIGQUIT)
-			state = 131;
-		else
-			state = 128 + state;
-	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	wait_all(info, &state);
 	free(*env);
 	tmp = ckm(ft_itoa(state % 256));
 	*env = ckm(ft_strjoin("?=", tmp));
 	free(tmp);
-}
-
-void 	f(void)
-{
-	system("leaks minishell");
-}
-
-void	exec_command(t_tree *node, char ***env, t_pipe *info)
-{
-	t_simplecmd	*cmd;
-	pid_t		pid;
-
-	cmd = (t_simplecmd *)node->data;
-	if (execute_builtin(cmd, env, info) == FALSE)
-	{
-		set_child_signal();
-		pid = fork();
-		if (pid < 0)
-			puterr_exit("Fork failed");
-		if (pid == 0)
-		{
-			// atexit(f);
-			exec_argv(cmd->file_path, cmd->argv, *env);
-		}
-		else
-		{
-			info->total_child_cnt++;
-			set_signal();
-		}
-	}
-	if (!info->next_pipe_exist)
-		wait_all_child(info, *env);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
