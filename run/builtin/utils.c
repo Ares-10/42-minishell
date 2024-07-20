@@ -56,6 +56,8 @@ void	wait_all_child(t_pipe *info, char **env)
 	char	*tmp;
 
 	i = 0;
+	if (info->total_child_cnt == 0)
+		return ;
 	while (i < info->total_child_cnt)
 	{
 		waitpid(-1, &state, 0);
@@ -97,7 +99,7 @@ void	exec_command(t_tree *node, char ***env, t_pipe *info)
 			puterr_exit("Fork failed");
 		if (pid == 0)
 		{
-			atexit(f);
+			// atexit(f);
 			exec_argv(cmd->file_path, cmd->argv, *env);
 		}
 		else
