@@ -73,7 +73,7 @@ void	builtin_exit(char **argv, char **env, t_pipe *info)
 		*env = ft_strdup("?=1");
 		return ;
 	}
-	exit_code = 0;
+	exit_code = ft_atoi(ft_getenv("?", env));
 	if (argv[1] != NULL)
 	{
 		if (ft_strtoll(argv[1], &input) == TRUE)
