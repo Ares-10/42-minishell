@@ -14,9 +14,9 @@
 
 static void	sig_handler(int sig)
 {
+	g_sig = sig;
 	if (sig == SIGINT)
 	{
-		g_sig = SIGINT;
 		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 1);
@@ -37,6 +37,7 @@ void	set_signal(void)
 
 static void	child_sig_handler(int sig)
 {
+	g_sig = sig;
 	if (sig == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);

@@ -31,7 +31,6 @@ static void	run(t_tree *tree, char ***envp)
 	t_pipe	*info;
 
 	init_pipe(&info);
-	init_exit(*envp);
 	search_tree(tree, envp, info);
 	restore_io(*info);
 	free(info);
@@ -48,6 +47,7 @@ void	start_shell(char ***envp)
 		if (check_str(input))
 		{
 			add_history(input);
+			init_exit_sig(*envp);
 			parse_tree = parse(input, *envp);
 			if (parse_tree != FAILURE)
 				run(parse_tree, envp);

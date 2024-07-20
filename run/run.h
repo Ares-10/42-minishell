@@ -54,7 +54,7 @@ void	free_double(char **var);
 void	init_term(t_pipe *info, struct termios *term, char **line, int *tmp);
 void	restore_term(int tmp, struct termios *term, char **env);
 
-int     execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
+int		execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
 void	wait_all_child(t_pipe *info, char **env);
 
 #endif

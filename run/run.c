@@ -58,11 +58,11 @@ void	exec_tree(t_tree *node, char ***env, t_pipe *info)
 		handle_redirect(node, *env, info);
 }
 
-void	init_exit(char **env)
+void	init_exit_sig(char **env)
 {
 	if (g_sig == SIGINT)
 	{
 		free(*env);
-		*env = ckm(ft_strdup("?=0"));
+		*env = ckm(ft_strdup("?=1"));
 	}
 }

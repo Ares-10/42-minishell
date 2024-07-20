@@ -101,7 +101,7 @@ char	**nquote_split(const char *str, char c);
 void	free_tree(t_tree **tree);
 
 void	init_pipe(t_pipe **info);
-void	init_exit(char **env);
+void	init_exit_sig(char **env);
 void	restore_io(t_pipe info);
 
 #endif
