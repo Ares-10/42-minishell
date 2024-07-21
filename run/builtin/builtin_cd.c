@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:45:29 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 18:00:31 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:53:49 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	put_error_cd(char *dest, char ***env)
 	if (dest == NULL)
 		ft_putstr_fd("HOME not set\n", 2);
 	else
-	{
-		ft_putstr_fd(dest, 2);
-		ft_putendl_fd(": No such file or directory", 2);
-	}
+		perror(dest);
 	free(**env);
 	**env = ckm(ft_strdup("?=1"));
 }
