@@ -6,11 +6,18 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:38:00 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 18:44:53 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:06:35 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
+
+void	do_sigint_heredoc(int signum)
+{
+	(void)signum;
+	ft_putstr_fd("\n", 2);
+	exit (1);
+}
 
 void	init_term(t_pipe *info, struct termios *term, char **line, int *tmp)
 {
@@ -21,7 +28,7 @@ void	init_term(t_pipe *info, struct termios *term, char **line, int *tmp)
 	tcgetattr(STDIN_FILENO, term);
 	term->c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSANOW, term);
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, do_sigint_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 	*line = NULL;
 	tmp_name = ".tmp";
