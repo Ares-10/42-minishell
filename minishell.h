@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/19 17:51:35 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 14:39:48 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,6 @@ void	*puterr(char *msg);
 void	*xmalloc(int size);
 void	*ckm(void *ptr);
 void	search_tree(t_tree *node, char ***env, t_pipe *info);
-
-/* split.c */
-char	**nquote_split(const char *str, char c);
 
 /* treedestroyer.c */
 void	free_tree(t_tree **tree);
