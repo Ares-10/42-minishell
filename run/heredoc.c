@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:01:49 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 16:06:48 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:25:39 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ static void	get_line_heredoc(t_redirect *redirect, int tmp_fd)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			ft_putstr_fd("\033[1A\033[2C", 1);
 			break ;
+		}
 		if (ft_strcmp(line, redirect->file_path) == 0)
 		{
 			free(line);
