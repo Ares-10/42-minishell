@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:45:29 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 16:53:49 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:02:24 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ static char	*find_cdpath(char *dirname, char **env)
 		if (dir_in_path(dirname, split_path[i]))
 		{
 			ret = ft_strdup(split_path[i]);
-			free_double(split_path);
+			ft_free(split_path);
 			return (ret);
 		}
 		i++;
 	}
-	free_double(split_path);
+	ft_free(split_path);
 	return (NULL);
 }
 

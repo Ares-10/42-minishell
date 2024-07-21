@@ -6,14 +6,14 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 18:16:13 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:03:58 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 
 void	exec_tree(t_tree *node, char ***env, t_pipe *info);
-void	exec_command(t_tree *node, char ***env, t_pipe *info);
+void	handle_cmd(t_tree *node, char ***env, t_pipe *info);
 void	handle_pipe(t_tree *node, char **env, t_pipe *info);
 void	handle_redirect(t_tree *node, char **env, t_pipe *info);
 
@@ -51,7 +51,7 @@ void	search_tree(t_tree *node, char ***env, t_pipe *info)
 void	exec_tree(t_tree *node, char ***env, t_pipe *info)
 {
 	if (node->type == T_SIMPLECMD && !info->io_flag)
-		exec_command(node, env, info);
+		handle_cmd(node, env, info);
 	if (node->type == T_PIPE)
 		handle_pipe(node, *env, info);
 	if (node->type == T_REDIRECT)

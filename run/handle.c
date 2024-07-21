@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:15:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 16:06:29 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:05:05 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,28 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 	else if (redirect->type == INPUT_REDIRECT)
 		dup2(fd, STDIN_FILENO);
 	close(fd);
+}
+
+void	handle_cmd(t_tree *node, char ***env, t_pipe *info)
+{
+	t_simplecmd	*cmd;
+	pid_t		pid;
+
+	cmd = (t_simplecmd *)node->data;
+	if (execute_builtin(cmd, env, info) == FALSE)
+	{
+		set_child_signal();
+		pid = fork();
+		if (pid < 0)
+			puterr_exit("Fork failed");
+		if (pid == 0)
+			ft_execve(cmd->file_path, cmd->argv, *env);
+		else
+		{
+			info->total_child_cnt++;
+			set_signal();
+		}
+	}
+	if (!info->next_pipe_exist)
+		wait_all_child(info, *env);
 }
