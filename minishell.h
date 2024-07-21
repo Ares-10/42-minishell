@@ -94,13 +94,13 @@ void	puterr_exit(char *msg);
 void	*puterr(char *msg);
 void	*xmalloc(int size);
 void	*ckm(void *ptr);
-void	search_tree(t_tree *node, char ***env, t_pipe *info);
 
 /* treedestroyer.c */
 void	free_tree(t_tree **tree);
 
 /* run.c */
 void	init_pipe(t_pipe **info);
+void	search_tree(t_tree *node, char ***env, t_pipe *info);
 void	restore_io(t_pipe info);
 
 #endif
