@@ -25,8 +25,7 @@ SRCS =  main.c							\
 		run/handle.c					\
 		run/child_signal.c				\
 		run/heredoc.c					\
-		run/exec_cmd.c					\
-		run/free.c						\
+		run/command.c					\
 		run/terminal.c					\
 		run/run.c						\
 
