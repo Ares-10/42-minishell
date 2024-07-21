@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:44:53 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 16:11:53 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:50:10 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,12 @@ void	exec_argv(char *cmd, char **argv, char **env)
 	else if (execve(path, argv, env) == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putendl_fd(": command not found", 2);
+		perror(cmd);
 		ft_free(argv);
-		exit(127);
+		if (errno == EPERM)
+			exit(126);
+		else
+			exit(127);
 	}
 }
 
