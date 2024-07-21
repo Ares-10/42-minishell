@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 18:38:59 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:43:54 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 void	handle_pipe(t_tree *node, char **env, t_pipe *info);
 void	handle_heredoc(t_redirect *redirect, char **env, t_pipe *info);
 void	handle_redirect(t_tree *node, char **env, t_pipe *info);
+void	handle_cmd(t_tree *node, char ***env, t_pipe *info);
 
 int		ft_strcmp(const char *s1, const char *s2);
 

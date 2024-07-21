@@ -6,16 +6,11 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 17:03:58 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:43:34 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
-
-void	exec_tree(t_tree *node, char ***env, t_pipe *info);
-void	handle_cmd(t_tree *node, char ***env, t_pipe *info);
-void	handle_pipe(t_tree *node, char **env, t_pipe *info);
-void	handle_redirect(t_tree *node, char **env, t_pipe *info);
 
 void	restore_io(t_pipe info)
 {
