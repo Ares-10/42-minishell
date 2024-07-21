@@ -101,7 +101,6 @@ void	free_tree(t_tree **tree);
 
 /* run.c */
 void	init_pipe(t_pipe **info);
-void	init_exit_sig(char **env);
 void	restore_io(t_pipe info);
 
 #endif
