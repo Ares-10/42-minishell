@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/21 15:06:11 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:26:43 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,12 @@ void	start_shell(char ***envp)
 			free(input);
 		}
 		else if (input == NULL)
+		{
+			printf("\033[1A");
+			printf("\033[3C");
+			printf("exit\n");
 			exit(0);
+		}
 		g_sig = 0;
 	}
 }
