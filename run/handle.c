@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:15:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 18:40:18 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:06:29 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,6 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 		if (dup2(info->original_stdout, STDOUT_FILENO) == -1)
 			pexit("dup2 failed");
 	}
-}
-
-void	handle_heredoc(t_redirect *redirect, char **env, t_pipe *info)
-{
-	char			*line;
-	int				tmp_fd;
-	struct termios	term;
-
-	init_term(info, &term, &line, &tmp_fd);
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-			break ;
-		if (ft_strcmp(line, redirect->file_path) == 0)
-		{
-			free(line);
-			break ;
-		}
-		write(tmp_fd, line, strlen(line));
-		write(tmp_fd, "\n", 1);
-		free(line);
-	}
-	restore_term(tmp_fd, &term, env);
 }
 
 static int	put_err_redirect(char **env, char *path, t_pipe *info)

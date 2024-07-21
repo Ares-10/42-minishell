@@ -6,12 +6,13 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:44:53 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 17:52:08 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:06:23 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 #include "parse.h"
+#include <dirent.h>
 
 static void	ft_free(char **ptr)
 {
@@ -82,9 +83,19 @@ static char	*get_path(char *cmd, char **env)
 void	exec_argv(char *cmd, char **argv, char **env)
 {
 	char	*path;
+	DIR		*dir;
 
 	path = get_path(cmd, env);
-	if (execve(path, argv, env) == -1)
+	dir = opendir(path);
+	if (dir != NULL)
+	{
+		closedir(dir);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": is a directory", 2);
+		exit(126);
+	}
+	else if (execve(path, argv, env) == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
@@ -102,7 +113,7 @@ void	exec_command(t_tree *node, char ***env, t_pipe *info)
 	cmd = (t_simplecmd *)node->data;
 	if (execute_builtin(cmd, env, info) == FALSE)
 	{
-		set_signal();
+		set_child_signal();
 		pid = fork();
 		if (pid < 0)
 			puterr_exit("Fork failed");
