@@ -102,6 +102,5 @@ void	free_tree(t_tree **tree);
 void	init_pipe(t_pipe **info);
 void	search_tree(t_tree *node, char ***env, t_pipe *info);
 void	restore_io(t_pipe info);
-void	set_child_signal(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 18:43:54 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 19:07:12 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,7 @@ int		execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
 void	wait_all_child(t_pipe *info, char **env);
 
 void	do_sigint_heredoc(int signum);
+
+void	set_child_signal(void);
 
 #endif

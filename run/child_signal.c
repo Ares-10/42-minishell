@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "run.h"
-#include "minishell.h"
+#include "../minishell.h"
 
 void	do_sigint_heredoc(int signum)
 {
