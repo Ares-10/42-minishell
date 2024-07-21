@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:44:53 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 17:05:05 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:07:01 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static char	*get_path(char *cmd, char **env)
 	return (cmd);
 }
 
-void	check_dir(char *path)
+void	check_dir(char *path, char *cmd)
 {
 	DIR		*dir;
 
@@ -100,7 +100,7 @@ void	ft_execve(char *cmd, char **argv, char **env)
 	char	*path;
 
 	path = get_path(cmd, env);
-	check_dir(path);
+	check_dir(path, cmd);
 	if (execve(path, argv, env) == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
