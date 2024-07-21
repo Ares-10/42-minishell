@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 17:05:05 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:38:59 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,7 @@ void	restore_term(int tmp, struct termios *term, char **env);
 
 int		execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
 void	wait_all_child(t_pipe *info, char **env);
+
+void	do_sigint_heredoc(int signum);
 
 #endif

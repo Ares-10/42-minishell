@@ -26,23 +26,17 @@ SRCS =  main.c							\
 		run/child_signal.c				\
 		run/heredoc.c					\
 		run/command.c					\
-		run/terminal.c					\
 		run/run.c						\
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS =	-Wall -Wextra -Werror \
-#-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 
-# LDFLAGS=-L/usr/local/opt/readline/lib
-# CPPFLAGS=-I/usr/local/opt/readline/include
-LDFLAGS = -L/opt/homebrew/opt/readline/lib\
-#-fsanitize=address
+LDFLAGS = -L/opt/homebrew/opt/readline/lib
 CPPFLAGS = -I/opt/homebrew/opt/readline/include
 
 LIBS = -lreadline		\
 		Libft/libft.a	\
-
 
 all : $(NAME)
 
