@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/19 17:51:35 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 14:39:48 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,10 @@ typedef struct s_pipe
 	int	io_flag;
 }	t_pipe;
 
+/* signal.c */
 void	set_signal(void);
-void	set_child_signal(void);
+
+/* prompt.c */
 void	start_shell(char ***envp);
 
 /* parse/parse.c */
@@ -94,14 +96,11 @@ void	*xmalloc(int size);
 void	*ckm(void *ptr);
 void	search_tree(t_tree *node, char ***env, t_pipe *info);
 
-/* split.c */
-char	**nquote_split(const char *str, char c);
-
 /* treedestroyer.c */
 void	free_tree(t_tree **tree);
 
+/* run.c */
 void	init_pipe(t_pipe **info);
-void	init_exit_sig(char **env);
 void	restore_io(t_pipe info);
 
 #endif

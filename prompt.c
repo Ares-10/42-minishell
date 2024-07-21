@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/19 20:00:18 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:31:46 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ int	check_str(char *str)
 	if (!str[i])
 		return (0);
 	return (1);
+}
+
+static void	init_exit_sig(char **env)
+{
+	if (g_sig == SIGINT)
+	{
+		free(*env);
+		*env = ckm(ft_strdup("?=1"));
+	}
 }
 
 static void	run(t_tree *tree, char ***envp)
@@ -51,12 +60,13 @@ void	start_shell(char ***envp)
 			parse_tree = parse(input, *envp);
 			if (parse_tree != FAILURE)
 				run(parse_tree, envp);
+			set_signal();
 			free_tree(&parse_tree);
 			free(input);
 		}
-		else if (!input)
+		else if (input == NULL)
 		{
-			ft_putstr_fd("exit\n", 1);
+			printf("\033[1A\033[14Cexit\n");
 			exit(0);
 		}
 		g_sig = 0;
