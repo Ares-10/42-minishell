@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:44:53 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 16:50:10 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:05:05 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parse.h"
 #include <dirent.h>
 
-static void	ft_free(char **ptr)
+void	ft_free(char **ptr)
 {
 	size_t	i;
 
@@ -80,12 +80,10 @@ static char	*get_path(char *cmd, char **env)
 	return (cmd);
 }
 
-void	exec_argv(char *cmd, char **argv, char **env)
+void	check_dir(char *path)
 {
-	char	*path;
 	DIR		*dir;
 
-	path = get_path(cmd, env);
 	dir = opendir(path);
 	if (dir != NULL)
 	{
@@ -95,38 +93,28 @@ void	exec_argv(char *cmd, char **argv, char **env)
 		ft_putendl_fd(": is a directory", 2);
 		exit(126);
 	}
-	else if (execve(path, argv, env) == -1)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		perror(cmd);
-		ft_free(argv);
-		if (errno == EPERM)
-			exit(126);
-		else
-			exit(127);
-	}
 }
 
-void	exec_command(t_tree *node, char ***env, t_pipe *info)
+void	ft_execve(char *cmd, char **argv, char **env)
 {
-	t_simplecmd	*cmd;
-	pid_t		pid;
+	char	*path;
 
-	cmd = (t_simplecmd *)node->data;
-	if (execute_builtin(cmd, env, info) == FALSE)
+	path = get_path(cmd, env);
+	check_dir(path);
+	if (execve(path, argv, env) == -1)
 	{
-		set_child_signal();
-		pid = fork();
-		if (pid < 0)
-			puterr_exit("Fork failed");
-		if (pid == 0)
-			exec_argv(cmd->file_path, cmd->argv, *env);
+		ft_putstr_fd("minishell: ", 2);
+		ft_free(argv);
+		if (errno != 2)
+		{
+			perror(cmd);
+			exit(126);
+		}
 		else
 		{
-			info->total_child_cnt++;
-			set_signal();
+			ft_putstr_fd(cmd, 2);
+			ft_putendl_fd(": command not found", 2);
+			exit(127);
 		}
 	}
-	if (!info->next_pipe_exist)
-		wait_all_child(info, *env);
 }

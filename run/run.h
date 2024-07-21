@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 18:44:13 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:05:05 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info);
 
 int		ft_strcmp(const char *s1, const char *s2);
 
-void	exec_argv(char *cmd, char **argv, char **env);
+void	ft_execve(char *cmd, char **argv, char **env);
 void	exec_tree(t_tree *node, char ***env, t_pipe *info);
 
 void	builtin_echo(char **argv, char **env);
@@ -49,7 +49,7 @@ char	*ft_getenv(char *name, char **env);
 
 void	pexit(char *msg);
 
-void	free_double(char **var);
+void	ft_free(char **var);
 
 void	init_term(t_pipe *info, struct termios *term, char **line, int *tmp);
 void	restore_term(int tmp, struct termios *term, char **env);
