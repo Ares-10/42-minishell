@@ -102,7 +102,7 @@ void	exec_command(t_tree *node, char ***env, t_pipe *info)
 	cmd = (t_simplecmd *)node->data;
 	if (execute_builtin(cmd, env, info) == FALSE)
 	{
-		set_child_signal();
+		set_signal();
 		pid = fork();
 		if (pid < 0)
 			puterr_exit("Fork failed");

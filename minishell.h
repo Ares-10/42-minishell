@@ -80,8 +80,10 @@ typedef struct s_pipe
 	int	io_flag;
 }	t_pipe;
 
+/* signal.c */
 void	set_signal(void);
-void	set_child_signal(void);
+
+/* prompt.c */
 void	start_shell(char ***envp);
 
 /* parse/parse.c */

@@ -34,25 +34,3 @@ void	set_signal(void)
 	signal(SIGQUIT, sig_handler);
 	signal(SIGTERM, sig_handler);
 }
-
-static void	child_sig_handler(int sig)
-{
-	g_sig = sig;
-	if (sig == SIGINT)
-	{
-		ft_putstr_fd("\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 1);
-	}
-	else if (sig == SIGQUIT)
-		rl_redisplay();
-	else if (sig == SIGTERM)
-		exit(0);
-}
-
-void	set_child_signal(void)
-{
-	signal(SIGINT, child_sig_handler);
-	signal(SIGQUIT, child_sig_handler);
-	signal(SIGTERM, child_sig_handler);
-}
