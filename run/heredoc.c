@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:01:49 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/22 15:22:28 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:49:00 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	heredoc_parent(char **env, int fd[2], pid_t pid)
 	state = WEXITSTATUS(state);
 	if (state == 1)
 	{
+		g_sig = SIGINT;
 		free(*env);
 		*env = ft_strdup("?=1");
 	}
@@ -90,6 +91,8 @@ void	handle_heredoc(t_redirect *redirect, char **env, t_pipe *info)
 	struct termios	term;
 	pid_t			pid;
 
+	if (g_sig == SIGINT)
+		return ;
 	if (pipe(fd) == -1)
 		pexit("pipe failed");
 	pid = fork();

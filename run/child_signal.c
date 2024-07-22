@@ -6,16 +6,16 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:11:38 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 18:38:51 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:45:39 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
-#include "../minishell.h"
+#include "minishell.h"
 
 void	do_sigint_heredoc(int signum)
 {
-	(void)signum;
+	g_sig = signum;
 	ft_putstr_fd("\n", 2);
 	exit (1);
 }

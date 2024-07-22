@@ -30,6 +30,8 @@ SRCS =  main.c							\
 
 OBJS = $(SRCS:.c=.o)
 
+INC = ./include
+
 CFLAGS = -Wall -Wextra -Werror
 
 LDFLAGS = -L/opt/homebrew/opt/readline/lib
@@ -42,17 +44,21 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	@$(MAKE) -C ./Libft bonus
-	cc $(LDFLAGS) $^ $(LIBS) -o $(NAME)
+	@cc $(LDFLAGS) $^ $(LIBS) -o $(NAME)
+	@echo "Minishell Built Complete!"
 
 %.o: %.c
-	cc $(CFLAGS)  $(CPPFLAGS) -c $< -o $@ -I. -I./parse -I./run
+	@echo "Compiling $<"
+	@cc $(CFLAGS) $(CPPFLAGS) -c $< -o $@ -I$(INC)
+	@tput cuu1; tput el
 
 clean :
 	@$(MAKE) -C ./Libft fclean
-	rm -rf $(OBJS)
+	@rm -rf $(OBJS)
+	@echo "Cleaning Complete!"
 
 fclean : clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
 
 re : fclean all
 
