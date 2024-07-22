@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:01:49 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/22 15:05:37 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:22:28 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	init_term(t_pipe *info, struct termios *term, char **line)
 {
 	if (dup2(info->original_stdin, STDIN_FILENO) == -1)
+		pexit("dup2 failed");
+	if (dup2(info->original_stdout, STDOUT_FILENO) == -1)
 		pexit("dup2 failed");
 	tcgetattr(STDIN_FILENO, term);
 	term->c_lflag &= ~(ECHOCTL);
@@ -34,35 +36,12 @@ void	restore_term(struct termios *term, char **env)
 	*env = ft_strdup("?=0");
 }
 
-static void	wait_heredoc(char **env, pid_t pid)
-{
-	int	state;
-
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	waitpid(pid, &state, 0);
-	state = WEXITSTATUS(state);
-	if (state == 1)
-	{
-		free(*env);
-		*env = ft_strdup("?=1");
-	}
-	else if (state == 0)
-	{
-		free(*env);
-		*env = ft_strdup("?=0");
-	}
-	set_signal();
-}
-
 static void	readline_heredoc(t_redirect *redirect, int fd[2])
 {
 	char	*line;
 
-	printf("hi1\n");
 	while (1)
 	{
-		printf("hi2\n");
 		line = readline("> ");
 		if (!line)
 		{
@@ -83,7 +62,23 @@ static void	readline_heredoc(t_redirect *redirect, int fd[2])
 
 void	heredoc_parent(char **env, int fd[2], pid_t pid)
 {
-	wait_heredoc(env, pid);
+	int	state;
+
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	waitpid(pid, &state, 0);
+	state = WEXITSTATUS(state);
+	if (state == 1)
+	{
+		free(*env);
+		*env = ft_strdup("?=1");
+	}
+	else if (state == 0)
+	{
+		free(*env);
+		*env = ft_strdup("?=0");
+	}
+	set_signal();
 	dup2(fd[R], STDIN_FILENO);
 	close(fd[R]);
 }

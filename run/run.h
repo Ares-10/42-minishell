@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 19:07:12 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:19:22 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	pexit(char *msg);
 
 void	ft_free(char **var);
 
-void	init_term(t_pipe *info, struct termios *term, char **line, int *tmp);
-void	restore_term(int tmp, struct termios *term, char **env);
+void	init_term(t_pipe *info, struct termios *term, char **line);
+void	restore_term(struct termios *term, char **env);
 
 int		execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
 void	wait_all_child(t_pipe *info, char **env);
