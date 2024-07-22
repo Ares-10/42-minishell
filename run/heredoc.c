@@ -6,16 +6,14 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:01:49 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 18:38:17 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:05:37 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 
-void	init_term(t_pipe *info, struct termios *term, char **line, int *tmp)
+void	init_term(t_pipe *info, struct termios *term, char **line)
 {
-	char	*tmp_name;
-
 	if (dup2(info->original_stdin, STDIN_FILENO) == -1)
 		pexit("dup2 failed");
 	tcgetattr(STDIN_FILENO, term);
@@ -24,21 +22,10 @@ void	init_term(t_pipe *info, struct termios *term, char **line, int *tmp)
 	signal(SIGINT, do_sigint_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 	*line = NULL;
-	tmp_name = ".tmp";
-	*tmp = open(tmp_name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
-	if (tmp < 0)
-		pexit("Failed to open temporary file");
 }
 
-void	restore_term(int tmp, struct termios *term, char **env)
+void	restore_term(struct termios *term, char **env)
 {
-	close(tmp);
-	tmp = open(".tmp", O_RDONLY);
-	if (tmp < 0)
-		pexit("Failed to reopen temporary file");
-	dup2(tmp, STDIN_FILENO);
-	close(tmp);
-	unlink(".tmp");
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	term->c_lflag |= ECHOCTL;
@@ -47,13 +34,13 @@ void	restore_term(int tmp, struct termios *term, char **env)
 	*env = ft_strdup("?=0");
 }
 
-static void	wait_heredoc(char **env)
+static void	wait_heredoc(char **env, pid_t pid)
 {
 	int	state;
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	waitpid(-1, &state, 0);
+	waitpid(pid, &state, 0);
 	state = WEXITSTATUS(state);
 	if (state == 1)
 	{
@@ -68,12 +55,14 @@ static void	wait_heredoc(char **env)
 	set_signal();
 }
 
-static void	get_line_heredoc(t_redirect *redirect, int tmp_fd)
+static void	readline_heredoc(t_redirect *redirect, int fd[2])
 {
 	char	*line;
 
+	printf("hi1\n");
 	while (1)
 	{
+		printf("hi2\n");
 		line = readline("> ");
 		if (!line)
 		{
@@ -85,29 +74,43 @@ static void	get_line_heredoc(t_redirect *redirect, int tmp_fd)
 			free(line);
 			break ;
 		}
-		write(tmp_fd, line, strlen(line));
-		write(tmp_fd, "\n", 1);
+		write(fd[W], line, strlen(line));
+		write(fd[W], "\n", 1);
 		free(line);
 	}
+	close(fd[W]);
+}
+
+void	heredoc_parent(char **env, int fd[2], pid_t pid)
+{
+	wait_heredoc(env, pid);
+	dup2(fd[R], STDIN_FILENO);
+	close(fd[R]);
 }
 
 void	handle_heredoc(t_redirect *redirect, char **env, t_pipe *info)
 {
 	char			*line;
-	int				tmp_fd;
+	int				fd[2];
 	struct termios	term;
 	pid_t			pid;
 
+	if (pipe(fd) == -1)
+		pexit("pipe failed");
 	pid = fork();
 	if (pid == -1)
 		pexit("fork failed");
 	if (pid == 0)
 	{
-		init_term(info, &term, &line, &tmp_fd);
-		get_line_heredoc(redirect, tmp_fd);
-		restore_term(tmp_fd, &term, env);
+		close(fd[R]);
+		init_term(info, &term, &line);
+		readline_heredoc(redirect, fd);
+		restore_term(&term, env);
 		exit (0);
 	}
 	else
-		wait_heredoc(env);
+	{
+		close(fd[W]);
+		heredoc_parent(env, fd, pid);
+	}
 }
