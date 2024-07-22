@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/22 17:45:39 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/22 23:01:38 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define ERROR -1
 # define FOUND 1
 # define NOT_FOUND 0
+# define BUF_SIZE 10
 
 void	handle_pipe(t_tree *node, char **env, t_pipe *info);
 void	handle_heredoc(t_redirect *redirect, char **env, t_pipe *info);
@@ -52,14 +53,16 @@ void	pexit(char *msg);
 
 void	ft_free(char **var);
 
-void	init_term(t_pipe *info, struct termios *term, char **line);
+void	init_term(t_pipe *info, struct termios *term);
 void	restore_term(struct termios *term, char **env);
 
 int		execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
 void	wait_all_child(t_pipe *info, char **env);
 
-void	do_sigint_heredoc(int signum);
-
 void	set_child_signal(void);
+void	do_sigint_heredoc(int signum);
+void	do_sigterm_heredoc(int signum);
+void	sig_echo_off(struct termios *term);
+void	sig_echo_on(struct termios *term);
 
 #endif

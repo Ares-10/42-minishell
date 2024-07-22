@@ -34,8 +34,8 @@ INC = ./include
 
 CFLAGS = -Wall -Wextra -Werror
 
-LDFLAGS = -L/opt/homebrew/opt/readline/lib
-CPPFLAGS = -I/opt/homebrew/opt/readline/include
+LDFLAGS = -L/usr/local/opt/readline/lib
+CPPFLAGS = -I/usr/local/opt/readline/include
 
 LIBS = -lreadline		\
 		Libft/libft.a	\
@@ -45,7 +45,7 @@ all : $(NAME)
 $(NAME) : $(OBJS)
 	@$(MAKE) -C ./Libft bonus
 	@cc $(LDFLAGS) $^ $(LIBS) -o $(NAME)
-	@echo "Minishell Built Complete!"
+	@echo "Minishell"
 
 %.o: %.c
 	@echo "Compiling $<"

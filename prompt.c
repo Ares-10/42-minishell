@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/21 15:31:46 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/22 22:13:14 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ static void	init_exit_sig(char **env)
 		free(*env);
 		*env = ckm(ft_strdup("?=1"));
 	}
+	if (g_sig == SIGTERM)
+	{
+		free(*env);
+		*env = ckm(ft_strdup("?=0"));
+	}
+	g_sig = 0;
 }
 
 static void	run(t_tree *tree, char ***envp)
