@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:15:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 17:05:05 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/23 10:59:39 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	handle_cmd(t_tree *node, char ***env, t_pipe *info)
 	cmd = (t_simplecmd *)node->data;
 	if (execute_builtin(cmd, env, info) == FALSE)
 	{
-		set_child_signal();
+		signal(SIGINT, child_sig_handler);
 		pid = fork();
 		if (pid < 0)
 			puterr_exit("Fork failed");

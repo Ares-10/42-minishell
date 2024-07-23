@@ -6,22 +6,38 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:47:21 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/22 23:17:33 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:03:03 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 
+void	init_str(char **str)
+{
+	if (*str)
+		free(*str);
+	*str = ckm(ft_strdup(""));
+}
+
+static void	custom_strjoin(char **first, char *second)
+{
+	char	*joined;
+
+	joined = ckm(ft_strjoin(*first, second));
+	free(*first);
+	*first = joined;
+}
+
 static int	handle_input(char *buf, char **total, int *first_read)
 {
 	int		bytes_read;
 	char	*newline;
-	char	*new_total;
 
 	if (*first_read)
 	{
 		ft_putstr_fd("> ", 1);
-		*first_read = 0;
+		*first_read = FALSE;
+		init_str(total);
 	}
 	if (g_sig == SIGINT)
 		return (-1);
@@ -32,21 +48,11 @@ static int	handle_input(char *buf, char **total, int *first_read)
 	newline = ft_strchr(buf, '\n');
 	if (newline)
 	{
-		*newline = '\0';
-		*first_read = 1;
+		*(newline) = '\0';
+		*first_read = TRUE;
 	}
-	new_total = ckm(ft_strjoin(*total, buf));
-	free(*total);
-	*total = new_total;
-	return ((newline != NULL) + 1);
-}
-
-static void	finalize_heredoc(int fd[2], char **total)
-{
-	write(fd[W], *total, strlen(*total));
-	write(fd[W], "\n", 1);
-	free(*total);
-	close(fd[W]);
+	custom_strjoin(total, buf);
+	return ((newline == NULL) + 1);
 }
 
 static void	readline_heredoc(t_redirect *redirect, int fd[2])
@@ -56,36 +62,21 @@ static void	readline_heredoc(t_redirect *redirect, int fd[2])
 	int		first_read;
 	int		result;
 
-	total = ckm(ft_strdup(""));
-	first_read = 1;
+	total = NULL;
+	first_read = TRUE;
 	while (1)
 	{
 		result = handle_input(buf, &total, &first_read);
 		if (result == 0 || result == -1)
 			break ;
-		if (result == 1 && ft_strcmp(total, redirect->file_path) == 0)
-		{
-			finalize_heredoc(fd, &total);
-			total = ckm(ft_strdup(""));
-		}
+		else if (result == 1 && ft_strcmp(total, redirect->file_path) == 0)
+			break ;
+		else if (result == 1)
+			ft_putendl_fd(total, fd[W]);
 	}
-	finalize_heredoc(fd, &total);
-}
-
-static void	set_heredoc_signal(struct termios *term)
-{
-	struct sigaction	sa;
-
-	sig_echo_off(term);
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = do_sigint_heredoc;
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-	{
-		perror("sigaction");
-		exit(EXIT_FAILURE);
-	}
-	signal(SIGQUIT, SIG_IGN);
+	if (total)
+		free(total);
+	close(fd[W]);
 }
 
 void	handle_heredoc(t_redirect *redirect, char **env, t_pipe *info)

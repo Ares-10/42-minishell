@@ -6,20 +6,36 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:11:38 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/22 23:17:25 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:00:25 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 #include "minishell.h"
 
-void	do_sigint_heredoc(int signum)
+static void	do_sigint_heredoc(int signum)
 {
 	g_sig = signum;
 	ft_putendl_fd("", 1);
 }
 
-static void	child_sig_handler(int sig)
+void	set_heredoc_signal(struct termios *term)
+{
+	struct sigaction	sa;
+
+	sig_echo_off(term);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = do_sigint_heredoc;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		perror("sigaction");
+		exit(EXIT_FAILURE);
+	}
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	child_sig_handler(int sig)
 {
 	g_sig = sig;
 	if (sig == SIGINT)
@@ -32,13 +48,6 @@ static void	child_sig_handler(int sig)
 		rl_redisplay();
 	else if (sig == SIGTERM)
 		exit(0);
-}
-
-void	set_child_signal(void)
-{
-	signal(SIGINT, child_sig_handler);
-	signal(SIGQUIT, child_sig_handler);
-	signal(SIGTERM, child_sig_handler);
 }
 
 void	sig_echo_off(struct termios *term)
