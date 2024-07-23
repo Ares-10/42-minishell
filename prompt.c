@@ -6,11 +6,16 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/23 10:54:04 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:51:41 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <termios.h>
+#include <sys/ioctl.h>
 
 int	check_str(char *str)
 {
@@ -51,13 +56,22 @@ static void	run(t_tree *tree, char ***envp)
 	free(info);
 }
 
+static void	exit_seq(int row, int col)
+{
+	printf("\033[%d;%dH%s\n", row - 1, col + 14, "exit");
+	exit(0);
+}
+
 void	start_shell(char ***envp)
 {
 	char	*input;
 	t_tree	*parse_tree;
+	int		row;
+	int		col;
 
 	while (1)
 	{
+		get_cursor_position(&row, &col);
 		input = readline("[minishell] % ");
 		if (check_str(input))
 		{
@@ -71,9 +85,6 @@ void	start_shell(char ***envp)
 			free(input);
 		}
 		else if (input == NULL)
-		{
-			printf("\033[1A\033[14Cexit\n");
-			exit(0);
-		}
+			exit_seq(row, col);
 	}
 }

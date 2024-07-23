@@ -22,9 +22,10 @@ SRCS =  main.c							\
 		run/builtin/builtin_pwd.c		\
 		run/builtin/builtin_unset.c		\
 		run/builtin/utils.c				\
+		run/cursor.c					\
 		run/handle.c					\
 		run/error.c						\
-		run/child_signal.c				\
+		run/run_signal.c				\
 		run/heredoc.c					\
 		run/command.c					\
 		run/run.c						\
