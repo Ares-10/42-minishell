@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:15:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 17:05:05 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/23 12:09:56 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 	info->io_flag = FALSE;
 	if (info->next_pipe_exist)
 		info->prev_pipe_exist = TRUE;
-	if (info->prev_pipe_exist && dup2(info->prev_fd[R], STDIN_FILENO) == -1)
-		pexit("dup2 failed");
+	if (info->prev_pipe_exist)
+		safe_dup2(info->prev_fd[R], STDIN_FILENO);
 	if (node->right)
 	{
 		free(*env);
@@ -28,15 +28,14 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 		info->next_pipe_exist = TRUE;
 		if (pipe(new_fd) == -1)
 			pexit("Pipe Failed");
-		dup2(new_fd[W], STDOUT_FILENO);
+		safe_dup2(new_fd[W], STDOUT_FILENO);
 		close(new_fd[W]);
 		info->prev_fd[R] = new_fd[R];
 	}
 	else
 	{
 		info->next_pipe_exist = FALSE;
-		if (dup2(info->original_stdout, STDOUT_FILENO) == -1)
-			pexit("dup2 failed");
+		safe_dup2(info->original_stdout, STDOUT_FILENO);
 	}
 }
 
@@ -69,7 +68,7 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 	else
 	{
 		(void)fd;
-		handle_heredoc(redirect, env, info);
+		exec_heredoc(redirect, env, info);
 		return ;
 	}
 	if (fd < 0 && put_err_redirect(env, redirect->file_path, info))
@@ -89,7 +88,7 @@ void	handle_cmd(t_tree *node, char ***env, t_pipe *info)
 	cmd = (t_simplecmd *)node->data;
 	if (execute_builtin(cmd, env, info) == FALSE)
 	{
-		set_child_signal();
+		signal(SIGINT, child_sig_handler);
 		pid = fork();
 		if (pid < 0)
 			puterr_exit("Fork failed");

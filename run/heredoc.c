@@ -5,109 +5,99 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 16:01:49 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 18:38:17 by seojepar         ###   ########.fr       */
+/*   Created: 2024/07/22 22:47:21 by seojepar          #+#    #+#             */
+/*   Updated: 2024/07/23 12:08:59 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 
-void	init_term(t_pipe *info, struct termios *term, char **line, int *tmp)
+void	init_str(char **str)
 {
-	char	*tmp_name;
-
-	if (dup2(info->original_stdin, STDIN_FILENO) == -1)
-		pexit("dup2 failed");
-	tcgetattr(STDIN_FILENO, term);
-	term->c_lflag &= ~(ECHOCTL);
-	tcsetattr(STDIN_FILENO, TCSANOW, term);
-	signal(SIGINT, do_sigint_heredoc);
-	signal(SIGQUIT, SIG_IGN);
-	*line = NULL;
-	tmp_name = ".tmp";
-	*tmp = open(tmp_name, O_CREAT | O_WRONLY | O_TRUNC, 0600);
-	if (tmp < 0)
-		pexit("Failed to open temporary file");
+	if (*str)
+		free(*str);
+	*str = ckm(ft_strdup(""));
 }
 
-void	restore_term(int tmp, struct termios *term, char **env)
+static void	custom_strjoin(char **first, char *second)
 {
-	close(tmp);
-	tmp = open(".tmp", O_RDONLY);
-	if (tmp < 0)
-		pexit("Failed to reopen temporary file");
-	dup2(tmp, STDIN_FILENO);
-	close(tmp);
-	unlink(".tmp");
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	term->c_lflag |= ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, term);
-	free(*env);
-	*env = ft_strdup("?=0");
+	char	*joined;
+
+	joined = ckm(ft_strjoin(*first, second));
+	free(*first);
+	*first = joined;
 }
 
-static void	wait_heredoc(char **env)
+static int	prompt(char *buf, char **total, int *first_read)
 {
-	int	state;
+	int		bytes_read;
+	char	*newline;
 
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	waitpid(-1, &state, 0);
-	state = WEXITSTATUS(state);
-	if (state == 1)
+	if (*first_read)
 	{
-		free(*env);
-		*env = ft_strdup("?=1");
+		ft_putstr_fd("> ", 1);
+		*first_read = FALSE;
+		init_str(total);
 	}
-	else if (state == 0)
+	if (g_sig == SIGINT)
+		return (-1);
+	bytes_read = read(1, buf, BUF_SIZE);
+	if (bytes_read <= 0)
+		return (bytes_read);
+	buf[bytes_read] = '\0';
+	newline = ft_strchr(buf, '\n');
+	if (newline)
 	{
-		free(*env);
-		*env = ft_strdup("?=0");
+		*(newline) = '\0';
+		*first_read = TRUE;
 	}
-	set_signal();
+	custom_strjoin(total, buf);
+	return ((newline == NULL) + 1);
 }
 
-static void	get_line_heredoc(t_redirect *redirect, int tmp_fd)
+static void	readline_heredoc(t_redirect *redirect, int fd[2])
 {
-	char	*line;
+	char	buf[BUF_SIZE + 1];
+	char	*total;
+	int		first_read;
+	int		result;
 
+	total = NULL;
+	first_read = TRUE;
 	while (1)
 	{
-		line = readline("> ");
-		if (!line)
-		{
-			ft_putstr_fd("\033[1A\033[2C", 1);
+		result = prompt(buf, &total, &first_read);
+		if (result == 0 || result == -1)
 			break ;
-		}
-		if (ft_strcmp(line, redirect->file_path) == 0)
-		{
-			free(line);
+		else if (result == 1 && ft_strcmp(total, redirect->file_path) == 0)
 			break ;
-		}
-		write(tmp_fd, line, strlen(line));
-		write(tmp_fd, "\n", 1);
-		free(line);
+		else if (result == 1)
+			ft_putendl_fd(total, fd[W]);
 	}
+	if (total)
+		free(total);
+	close(fd[W]);
 }
 
-void	handle_heredoc(t_redirect *redirect, char **env, t_pipe *info)
+void	exec_heredoc(t_redirect *redirect, char **env, t_pipe *info)
 {
-	char			*line;
-	int				tmp_fd;
+	int				fd[2];
+	int				old[2];
 	struct termios	term;
-	pid_t			pid;
 
-	pid = fork();
-	if (pid == -1)
-		pexit("fork failed");
-	if (pid == 0)
-	{
-		init_term(info, &term, &line, &tmp_fd);
-		get_line_heredoc(redirect, tmp_fd);
-		restore_term(tmp_fd, &term, env);
-		exit (0);
-	}
-	else
-		wait_heredoc(env);
+	if (g_sig == SIGINT)
+		return ;
+	if (pipe(fd) == -1)
+		pexit("pipe failed");
+	save_load_io(old, SAVE);
+	restore_io(*info);
+	set_heredoc_signal(&term);
+	readline_heredoc(redirect, fd);
+	save_load_io(old, LOAD);
+	dup2(fd[R], STDIN_FILENO);
+	close(fd[R]);
+	set_signal();
+	sig_echo_on(&term);
+	free(*env);
+	*env = ft_strdup("?=0");
 }

@@ -59,23 +59,26 @@ CFLAGS = -c -Wall -Wextra -Werror
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	ar -r $@ $^
+	@echo "Libft 생성 완료.."
+	@ar -r $@ $^
 
 %.o: %.c
-	cc $(CFLAGS) $< -o $@ -I.
+	@echo "Compiling $<"
+	@cc $(CFLAGS) $< -o $@ -I.
+	@tput cuu1; tput el
 
 clean :
-	rm -rf $(OBJS) $(OBJS_BONUS) _BONUS
+	@rm -rf $(OBJS) $(OBJS_BONUS) _BONUS
 
 fclean : clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
 
 re : fclean all
 
 bonus :	_BONUS
 
 _BONUS : $(OBJS) $(OBJS_BONUS)
-	touch _BONUS
-	ar -r $(NAME) $^
+	@touch _BONUS
+	@ar -r $(NAME) $^
 
 .PHONY : all clean fclean re bonus

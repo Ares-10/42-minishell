@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:23:19 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/14 23:09:32 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:45:39 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_H
 # define PARSE_H
 
-# include "../minishell.h"
+# include "minishell.h"
 
 /* replvar.c */
 char	*replace_variable(char *str, char **envp);

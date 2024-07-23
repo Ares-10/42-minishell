@@ -6,21 +6,36 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:11:38 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 18:38:51 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:00:25 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
-#include "../minishell.h"
+#include "minishell.h"
 
-void	do_sigint_heredoc(int signum)
+static void	do_sigint_heredoc(int signum)
 {
-	(void)signum;
-	ft_putstr_fd("\n", 2);
-	exit (1);
+	g_sig = signum;
+	ft_putendl_fd("", 1);
 }
 
-static void	child_sig_handler(int sig)
+void	set_heredoc_signal(struct termios *term)
+{
+	struct sigaction	sa;
+
+	sig_echo_off(term);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = do_sigint_heredoc;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		perror("sigaction");
+		exit(EXIT_FAILURE);
+	}
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	child_sig_handler(int sig)
 {
 	g_sig = sig;
 	if (sig == SIGINT)
@@ -35,9 +50,15 @@ static void	child_sig_handler(int sig)
 		exit(0);
 }
 
-void	set_child_signal(void)
+void	sig_echo_off(struct termios *term)
 {
-	signal(SIGINT, child_sig_handler);
-	signal(SIGQUIT, child_sig_handler);
-	signal(SIGTERM, child_sig_handler);
+	tcgetattr(STDIN_FILENO, term);
+	term->c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, term);
+}
+
+void	sig_echo_on(struct termios *term)
+{
+	term->c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, term);
 }

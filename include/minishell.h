@@ -6,14 +6,14 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/21 16:13:05 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:47:08 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "Libft/libft.h"
+# include "../Libft/libft.h"
 # include <stdio.h>
 # include <termios.h>
 # include <unistd.h>
