@@ -23,6 +23,7 @@ SRCS =  main.c							\
 		run/builtin/builtin_unset.c		\
 		run/builtin/utils.c				\
 		run/handle.c					\
+		run/error.c						\
 		run/child_signal.c				\
 		run/heredoc.c					\
 		run/command.c					\
@@ -30,10 +31,12 @@ SRCS =  main.c							\
 
 OBJS = $(SRCS:.c=.o)
 
+INC = ./include
+
 CFLAGS = -Wall -Wextra -Werror
 
-LDFLAGS = -L/opt/homebrew/opt/readline/lib
-CPPFLAGS = -I/opt/homebrew/opt/readline/include
+LDFLAGS = -L/usr/local/opt/readline/lib
+CPPFLAGS = -I/usr/local/opt/readline/include
 
 LIBS = -lreadline		\
 		Libft/libft.a	\
@@ -42,17 +45,21 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	@$(MAKE) -C ./Libft bonus
-	cc $(LDFLAGS) $^ $(LIBS) -o $(NAME)
+	@cc $(LDFLAGS) $^ $(LIBS) -o $(NAME)
+	@echo "Minishell"
 
 %.o: %.c
-	cc $(CFLAGS)  $(CPPFLAGS) -c $< -o $@ -I. -I./parse -I./run
+	@echo "Compiling $<"
+	@cc $(CFLAGS) $(CPPFLAGS) -c $< -o $@ -I$(INC)
+	@tput cuu1; tput el
 
 clean :
 	@$(MAKE) -C ./Libft fclean
-	rm -rf $(OBJS)
+	@rm -rf $(OBJS)
+	@echo "Cleaning Complete!"
 
 fclean : clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
 
 re : fclean all
 
