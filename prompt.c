@@ -24,7 +24,7 @@ int	check_str(char *str)
 	if (str == NULL)
 		return (0);
 	i = 0;
-	while (str[i] && (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)))
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
 		i++;
 	if (!str[i])
 		return (0);
