@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../include/parse.h"
 
 t_tree	*syntax_pipeline(t_list *token_list)
 {

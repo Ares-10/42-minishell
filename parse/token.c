@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../include/parse.h"
 
 static void	remove_quote(char *str);
 static int	get_token_size(const char *str);
