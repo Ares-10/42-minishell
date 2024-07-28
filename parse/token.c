@@ -6,11 +6,11 @@
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:22:11 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/17 15:59:43 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/07/28 18:10:28 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../include/parse.h"
 
 static void	remove_quote(char *str);
 static int	get_token_size(const char *str);
@@ -27,7 +27,7 @@ void	tokenize(t_list **token_list, char *str)
 	*token_list = NULL;
 	while (str[i])
 	{
-		while (str[i] && (str[i] == '\t' || str[i] == ' ' || str[i] == '\n'))
+		while (str[i] && (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)))
 			i++;
 		if (str[i] == '\0')
 			break ;
@@ -67,7 +67,7 @@ int	get_token_size(const char *str)
 	while (str[++i])
 	{
 		if (check_quote(str, i) == 0
-			&& (str[i] == ' ' || str[i] == '|'
+			&& (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13) || str[i] == '|'
 				|| str[i] == '<' || str[i] == '>'))
 			return (i);
 	}

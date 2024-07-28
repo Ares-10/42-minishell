@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../include/parse.h"
 
 void	free_tree(t_tree **t)
 {

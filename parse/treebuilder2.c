@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../include/parse.h"
 
 static int	get_redirection_type(char *str);
 static char	*get_file_path(t_list *token_list);
