@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/30 23:47:32 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/31 00:04:44 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	ft_execve(char *cmd, char **argv, char **env);
 int		is_builtin(char *name);
 int		exec_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
 void	decode_waitpid(int *state);
-void	set_env_zero(char **env, int val);
 
 int		builtin_echo(char **argv);
 int		builtin_cd(char **argv, char ***env);
