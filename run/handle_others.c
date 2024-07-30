@@ -1,43 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle.c                                           :+:      :+:    :+:   */
+/*   handle_others.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/19 18:15:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/23 12:09:56 by seojepar         ###   ########.fr       */
+/*   Created: 2024/07/30 23:55:56 by seojepar          #+#    #+#             */
+/*   Updated: 2024/07/30 23:56:40 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
-
-void	handle_pipe(t_tree *node, char **env, t_pipe *info)
-{
-	int	new_fd[2];
-
-	info->io_flag = FALSE;
-	if (info->next_pipe_exist)
-		info->prev_pipe_exist = TRUE;
-	if (info->prev_pipe_exist)
-		safe_dup2(info->prev_fd[R], STDIN_FILENO);
-	if (node->right)
-	{
-		free(*env);
-		*env = ckm(ft_strdup("?=0"));
-		info->next_pipe_exist = TRUE;
-		if (pipe(new_fd) == -1)
-			pexit("Pipe Failed");
-		safe_dup2(new_fd[W], STDOUT_FILENO);
-		close(new_fd[W]);
-		info->prev_fd[R] = new_fd[R];
-	}
-	else
-	{
-		info->next_pipe_exist = FALSE;
-		safe_dup2(info->original_stdout, STDOUT_FILENO);
-	}
-}
 
 static int	put_err_redirect(char **env, char *path, t_pipe *info)
 {
@@ -51,7 +24,7 @@ static int	put_err_redirect(char **env, char *path, t_pipe *info)
 	return (1);
 }
 
-void	handle_redirect(t_tree *node, char **env, t_pipe *info)
+void	handle_redirect(t_tree *node, char ***env, t_pipe *info)
 {
 	t_redirect	*redirect;
 	int			fd;
@@ -68,10 +41,10 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 	else
 	{
 		(void)fd;
-		exec_heredoc(redirect, env, info);
+		exec_heredoc(redirect, *env, info);
 		return ;
 	}
-	if (fd < 0 && put_err_redirect(env, redirect->file_path, info))
+	if (fd < 0 && put_err_redirect(*env, redirect->file_path, info))
 		return ;
 	if (redirect->type == OUTPUT_REDIRECT || redirect->type == APPEND_REDIRECT)
 		dup2(fd, STDOUT_FILENO);
@@ -84,22 +57,26 @@ void	handle_cmd(t_tree *node, char ***env, t_pipe *info)
 {
 	t_simplecmd	*cmd;
 	pid_t		pid;
+	int			state;
 
 	cmd = (t_simplecmd *)node->data;
-	if (execute_builtin(cmd, env, info) == FALSE)
+	if (!is_builtin(cmd->file_path))
 	{
 		signal(SIGINT, child_sig_handler);
 		pid = fork();
-		if (pid < 0)
-			puterr_exit("Fork failed");
 		if (pid == 0)
 			ft_execve(cmd->file_path, cmd->argv, *env);
 		else
 		{
-			info->total_child_cnt++;
+			waitpid(pid, &state, 0);
+			decode_waitpid(&state);
+			set_env_zero(*env, state);
 			set_signal();
 		}
 	}
-	if (!info->next_pipe_exist)
-		wait_all_child(info, *env);
+	else
+	{
+		state = exec_builtin(cmd, env, info);
+		set_env_zero(*env, state);
+	}
 }
