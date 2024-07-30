@@ -13,7 +13,7 @@
 #include "run.h"
 #include "builtin.h"
 
-void	builtin_export(char **argv, char ***env, t_pipe *info)
+int	builtin_export(char **argv, char ***env, t_pipe *info)
 {
 	int		i;
 	int		err_flag;
@@ -27,11 +27,7 @@ void	builtin_export(char **argv, char ***env, t_pipe *info)
 		while (argv[i] != NULL)
 			export_single(argv[i++], &err_flag, env, info);
 	}
-	free((*env)[0]);
-	if (err_flag)
-		(*env)[0] = ft_strdup("?=1");
-	else
-		(*env)[0] = ft_strdup("?=0");
+	return (err_flag);
 }
 
 void	export_single(char *arg, int *err_flag, char ***env, t_pipe *info)

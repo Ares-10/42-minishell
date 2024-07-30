@@ -21,14 +21,17 @@ SRCS =  main.c							\
 		run/builtin/builtin_export2.c	\
 		run/builtin/builtin_pwd.c		\
 		run/builtin/builtin_unset.c		\
-		run/builtin/utils.c				\
+		run/builtin/utils_wait.c		\
+		run/builtin/utils_builtin.c		\
 		run/cursor.c					\
-		run/handle.c					\
+		run/handle_pipe.c				\
+		run/handle_others.c				\
 		run/error.c						\
 		run/run_signal.c				\
 		run/heredoc.c					\
 		run/command.c					\
 		run/run.c						\
+		run/set_env_zero.c				\
 
 OBJS = $(SRCS:.c=.o)
 

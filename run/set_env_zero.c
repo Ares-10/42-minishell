@@ -1,39 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_export2.c                                  :+:      :+:    :+:   */
+/*   set_env_zero.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/19 18:13:51 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/26 17:53:51 by seojepar         ###   ########.fr       */
+/*   Created: 2024/07/30 14:26:38 by codespace         #+#    #+#             */
+/*   Updated: 2024/07/30 23:48:44 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
-#include "builtin.h"
 
-void	put_declare_x(char **env)
+void	set_env_zero(char **env, int val)
 {
-	int	i;
+	char	*tmp;
 
-	i = 0;
-	while (env[++i] != NULL)
-	{
-		ft_putstr_fd("declare -x ", 1);
-		ft_putendl_fd(env[i], 1);
-	}
-}
-
-int	valid_shell_name(char *name)
-{
-	if (ft_isdigit(*name))
-		return (FALSE);
-	while (*name && *name != '=')
-	{
-		if (!(ft_isalnum(*name) || *name == '_'))
-			return (FALSE);
-		name++;
-	}
-	return (TRUE);
+	free(*env);
+	tmp = ckm(ft_itoa(val));
+	*env = ckm(ft_strjoin("?=", tmp));
+	free(tmp);
 }
