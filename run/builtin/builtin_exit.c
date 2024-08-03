@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:46:18 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/25 23:07:15 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:18:28 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ void	builtin_exit(char **argv, char **env, t_pipe *info)
 			exit_code = 255;
 		}
 	}
-	else
-		exit_code = ft_atoi(ft_getenv("?", env));
 	free(*env);
 	*env = ft_strdup("?=0");
 	if (!info->next_pipe_exist && !info->prev_pipe_exist)
