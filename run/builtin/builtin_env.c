@@ -13,7 +13,7 @@
 #include "run.h"
 #include "parse.h"
 
-int	builtin_env(char **argv, char **env)
+void	builtin_env(char **argv, char **env)
 {
 	int	i;
 
@@ -22,7 +22,9 @@ int	builtin_env(char **argv, char **env)
 		ft_putstr_fd("env: ", 2);
 		ft_putstr_fd(argv[1], 2);
 		ft_putendl_fd(": No such file or directory", 2);
-		return (127);
+		free(env[0]);
+		env[0] = ckm(ft_strdup("?=127"));
+		return ;
 	}
 	i = 1;
 	while (env[i] != NULL)
@@ -30,5 +32,6 @@ int	builtin_env(char **argv, char **env)
 		ft_putendl_fd(env[i], 1);
 		i++;
 	}
-	return (0);
+	free(env[0]);
+	env[0] = ckm(ft_strdup("?=0"));
 }

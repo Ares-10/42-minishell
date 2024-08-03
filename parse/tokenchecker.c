@@ -22,7 +22,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../include/parse.h"
 
 static int	puterr_int_ret(char *msg)
 {

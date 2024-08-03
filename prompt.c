@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/31 00:05:48 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:51:41 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,15 @@ int	check_str(char *str)
 static void	init_exit_sig(char **env)
 {
 	if (g_sig == SIGINT)
-		set_env_zero(env, 1);
+	{
+		free(*env);
+		*env = ckm(ft_strdup("?=1"));
+	}
 	if (g_sig == SIGTERM)
-		set_env_zero(env, 0);
+	{
+		free(*env);
+		*env = ckm(ft_strdup("?=0"));
+	}
 	g_sig = 0;
 }
 
@@ -45,8 +51,7 @@ static void	run(t_tree *tree, char ***envp)
 	t_pipe	*info;
 
 	init_pipe(&info);
-	exec_node(tree, envp, info);
-	wait_all_child(info, *envp);
+	search_tree(tree, envp, info);
 	restore_io(*info);
 	free(info);
 }
