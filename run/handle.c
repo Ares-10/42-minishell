@@ -33,9 +33,6 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 			pexit("Pipe Failed");
 		safe_dup2(new_fd[W], STDOUT_FILENO);
 		close(new_fd[W]);
-		// 뒤가 있으면 파이프의 쓰는 쪽을 열고 
-		// 파이프의 읽는 쪽은 닫지 않는다. 왜? 뒤에서 써야하니까
-		
 		info->prev_fd[R] = new_fd[R];
 	}
 	else
