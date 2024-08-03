@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/23 12:13:51 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/03 22:04:38 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	sig_echo_on(struct termios *term);
 
 int		safe_dup(int fd);
 void	safe_dup2(int f, int s);
+void	safe_pipe(int fd[2]);
 
 void	save_load_io(int fd[2], int flag);
 

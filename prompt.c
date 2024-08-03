@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/23 15:51:41 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/03 21:47:52 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,14 @@ static void	run(t_tree *tree, char ***envp)
 	free(info);
 }
 
-static void	exit_seq(int row, int col)
-{
-	printf("\033[%d;%dH%s\n", row - 1, col + 14, "exit");
-	exit(0);
-}
-
 void	start_shell(char ***envp)
 {
 	char	*input;
 	t_tree	*parse_tree;
-	int		row;
-	int		col;
 
 	while (1)
 	{
-		get_cursor_position(&row, &col);
-		input = readline("[minishell] % ");
+		input = readline("[minishell] % \0337");
 		if (check_str(input))
 		{
 			add_history(input);
@@ -85,6 +76,9 @@ void	start_shell(char ***envp)
 			free(input);
 		}
 		else if (input == NULL)
-			exit_seq(row, col);
+		{
+			ft_putstr_fd("\0338exit\n", 1);
+			exit(0);
+		}
 	}
 }

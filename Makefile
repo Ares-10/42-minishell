@@ -22,7 +22,6 @@ SRCS =  main.c							\
 		run/builtin/builtin_pwd.c		\
 		run/builtin/builtin_unset.c		\
 		run/builtin/utils.c				\
-		run/cursor.c					\
 		run/handle.c					\
 		run/error.c						\
 		run/run_signal.c				\
@@ -34,7 +33,7 @@ OBJS = $(SRCS:.c=.o)
 
 INC = ./include
 
-CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror
 
 LDFLAGS = -L/usr/local/opt/readline/lib
 CPPFLAGS = -I/usr/local/opt/readline/include
