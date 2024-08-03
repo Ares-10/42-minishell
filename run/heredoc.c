@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:47:21 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/23 12:08:59 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:42:09 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	prompt(char *buf, char **total, int *first_read)
 	return ((newline == NULL) + 1);
 }
 
-static void	readline_heredoc(t_redirect *redirect, int fd[2])
+static int	readline_heredoc(t_redirect *redirect, int fd[2])
 {
 	char	buf[BUF_SIZE + 1];
 	char	*total;
@@ -77,6 +77,7 @@ static void	readline_heredoc(t_redirect *redirect, int fd[2])
 	if (total)
 		free(total);
 	close(fd[W]);
+	return(result != -1);
 }
 
 void	exec_heredoc(t_redirect *redirect, char **env, t_pipe *info)
@@ -92,7 +93,8 @@ void	exec_heredoc(t_redirect *redirect, char **env, t_pipe *info)
 	save_load_io(old, SAVE);
 	restore_io(*info);
 	set_heredoc_signal(&term);
-	readline_heredoc(redirect, fd);
+	if (!readline_heredoc(redirect, fd))
+		info->io_flag = TRUE;
 	save_load_io(old, LOAD);
 	dup2(fd[R], STDIN_FILENO);
 	close(fd[R]);

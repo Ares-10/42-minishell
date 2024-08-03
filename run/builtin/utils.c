@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 17:54:03 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:37:57 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	wait_all_child(t_pipe *info, char **env)
 	int		state;
 	char	*tmp;
 
-	if (info->total_child_cnt == 0)
+	if (info->total_child_cnt == 0 || g_sig == SIGINT)
 		return ;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
