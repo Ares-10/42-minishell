@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:15:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/03 18:54:06 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/03 19:04:02 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	handle_cmd(t_tree *node, char ***env, t_pipe *info)
 		pid = fork();
 		if (pid < 0)
 			puterr_exit("Fork failed");
-		if (pid == 0 && close(info->prev_fd[R]))
+		if (pid == 0 && (close(info->prev_fd[R]), 1))
 			ft_execve(cmd->file_path, cmd->argv, *env);
 		else
 		{
