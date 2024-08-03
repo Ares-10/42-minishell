@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/03 21:47:52 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/03 22:25:15 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	start_shell(char ***envp)
 
 	while (1)
 	{
-		input = readline("[minishell] % \0337");
+		input = readline("\033[0;32m[minishell] % \033[0m\0337");
 		if (check_str(input))
 		{
 			add_history(input);
