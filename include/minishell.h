@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/30 19:00:35 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:47:13 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,9 @@ void	free_tree(t_tree **tree);
 /* run.c */
 void	init_pipe(t_pipe **info);
 void	search_tree(t_tree *node, char ***env, t_pipe *info);
-void	exec_node(t_tree *node, char ***env, t_pipe *info);
 void	restore_io(t_pipe info);
 
 /* cursor.c */
 void	get_cursor_position(int *rows, int *cols);
-void	wait_all_child(t_pipe *info, char **env);
 
 #endif

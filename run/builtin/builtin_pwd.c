@@ -3,27 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:46:50 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/30 14:35:05 by codespace        ###   ########.fr       */
+/*   Updated: 2024/07/17 23:19:46 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 
-int	builtin_pwd(void)
+void	builtin_pwd(char **env)
 {
 	char	cwd[1024];
 
 	if (getcwd(cwd, sizeof(cwd)))
 	{
 		ft_putendl_fd(cwd, 1);
-		return (0);
+		free(*env);
+		*env = ckm(ft_strdup("?=0"));
 	}
 	else
 	{
 		pexit("pwd failed");
-		return (1);
+		free(*env);
+		*env = ckm(ft_strdup("?=1"));
 	}
 }

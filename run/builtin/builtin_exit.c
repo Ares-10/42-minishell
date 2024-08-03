@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:46:18 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/30 14:34:39 by codespace        ###   ########.fr       */
+/*   Updated: 2024/07/25 23:07:15 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	ft_strtoll(char *str, long long *out)
 	return (TRUE);
 }
 
-int	builtin_exit(char **argv, char **env)
+void	builtin_exit(char **argv, char **env, t_pipe *info)
 {
 	long long	input;
 	uint8_t		exit_code;
@@ -69,7 +69,9 @@ int	builtin_exit(char **argv, char **env)
 	if (argv[1] != NULL && argv[2] != NULL)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		return (1);
+		free(*env);
+		*env = ft_strdup("?=1");
+		return ;
 	}
 	exit_code = ft_atoi(ft_getenv("?", env));
 	if (argv[1] != NULL)
@@ -84,5 +86,8 @@ int	builtin_exit(char **argv, char **env)
 	}
 	else
 		exit_code = ft_atoi(ft_getenv("?", env));
-	exit(exit_code);
+	free(*env);
+	*env = ft_strdup("?=0");
+	if (!info->next_pipe_exist && !info->prev_pipe_exist)
+		exit(exit_code);
 }

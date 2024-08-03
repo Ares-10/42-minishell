@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/30 23:47:32 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/07/23 12:13:51 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,24 @@
 # define BUF_SIZE 3
 # define SAVE 0
 # define LOAD 1
-# define DULL 0
 
-void	handle_pipe(t_tree *node, char ***env, t_pipe *info);
+void	handle_pipe(t_tree *node, char **env, t_pipe *info);
 void	exec_heredoc(t_redirect *redirect, char **env, t_pipe *info);
-void	handle_redirect(t_tree *node, char ***env, t_pipe *info);
+void	handle_redirect(t_tree *node, char **env, t_pipe *info);
 void	handle_cmd(t_tree *node, char ***env, t_pipe *info);
 
 int		ft_strcmp(const char *s1, const char *s2);
 
 void	ft_execve(char *cmd, char **argv, char **env);
+void	exec_tree(t_tree *node, char ***env, t_pipe *info);
 
-int		is_builtin(char *name);
-int		exec_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
-void	decode_waitpid(int *state);
-void	set_env_zero(char **env, int val);
-
-int		builtin_echo(char **argv);
-int		builtin_cd(char **argv, char ***env);
-int		builtin_pwd(void);
-int		builtin_export(char **argv, char ***env, t_pipe *info);
-int		builtin_unset(char **argv, char ***env);
-int		builtin_env(char **argv, char **env);
-int		builtin_exit(char **argv, char **env);
+void	builtin_echo(char **argv, char **env);
+void	builtin_cd(char **argv, char ***env);
+void	builtin_pwd(char **env);
+void	builtin_export(char **argv, char ***env, t_pipe *info);
+void	builtin_unset(char **argv, char ***env);
+void	builtin_env(char **argv, char **env);
+void	builtin_exit(char **argv, char **env, t_pipe *info);
 
 int		ft_setenv(char ***env, char *var);
 char	*ft_getenv(char *name, char **env);
@@ -63,7 +58,7 @@ void	ft_free(char **var);
 void	init_term(t_pipe *info, struct termios *term);
 void	restore_term(struct termios *term, char **env);
 
-int		exec_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
+int		execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
 void	wait_all_child(t_pipe *info, char **env);
 
 void	child_sig_handler(int sig);
