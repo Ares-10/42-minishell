@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:15:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/03 18:21:30 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:54:06 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 		safe_dup2(info->prev_fd[R], STDIN_FILENO);
 		close(info->prev_fd[R]);
 	}
+	info->next_pipe_exist = FALSE;
 	if (node->right)
 	{
 		free(*env);
@@ -36,10 +37,7 @@ void	handle_pipe(t_tree *node, char **env, t_pipe *info)
 		info->prev_fd[R] = new_fd[R];
 	}
 	else
-	{
-		info->next_pipe_exist = FALSE;
 		safe_dup2(info->original_stdout, STDOUT_FILENO);
-	}
 }
 
 static int	put_err_redirect(char **env, char *path, t_pipe *info)
@@ -95,11 +93,8 @@ void	handle_cmd(t_tree *node, char ***env, t_pipe *info)
 		pid = fork();
 		if (pid < 0)
 			puterr_exit("Fork failed");
-		if (pid == 0)
-		{
-			close(info->prev_fd[R]);
+		if (pid == 0 && close(info->prev_fd[R]))
 			ft_execve(cmd->file_path, cmd->argv, *env);
-		}
 		else
 		{
 			info->total_child_cnt++;
@@ -107,9 +102,8 @@ void	handle_cmd(t_tree *node, char ***env, t_pipe *info)
 		}
 	}
 	close(STDIN_FILENO);
-	safe_dup2(info->original_stdin, STDIN_FILENO);
 	close(STDOUT_FILENO);
-	safe_dup2(info->original_stdout, STDOUT_FILENO);
+	restore_io(*info);
 	if (!info->next_pipe_exist)
 		wait_all_child(info, *env);
 }

@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:47:21 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/03 18:42:09 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:52:01 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	readline_heredoc(t_redirect *redirect, int fd[2])
 	if (total)
 		free(total);
 	close(fd[W]);
-	return(result != -1);
+	return (result != -1);
 }
 
 void	exec_heredoc(t_redirect *redirect, char **env, t_pipe *info)
