@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/06 18:26:07 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/06 21:51:54 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static void	run(t_tree *tree, char ***envp)
 		wait_all_child(info, *envp);
 	}
 	restore_io(*info);
+	sig_echo_off(STDIN_FILENO);
 	free(info);
 }
 

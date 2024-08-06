@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 20:53:58 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/06 21:38:24 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/06 21:47:41 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ static void	sig_handler(int sig)
 		rl_redisplay();
 	}
 	else if (sig == SIGQUIT)
+	{
+		rl_on_new_line();
 		rl_redisplay();
+	}
 	else if (sig == SIGTERM)
 		exit(0);
 }
