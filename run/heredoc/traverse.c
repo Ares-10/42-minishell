@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 17:13:24 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/06 18:28:18 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:32:42 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,17 @@ void	count_heredoc(t_tree *node, int *total)
 		count_heredoc(node->right, total);
 }
 
+static void	traverse_heredoc(t_tree *node, char **envp, t_pipe *info)
+{
+	if (node->type == T_REDIRECT \
+	&& ((t_redirect *)node->data)->type == HERE_DOC)
+		exec_heredoc(node->data, envp, info);
+	if (node->left != NULL)
+		traverse_heredoc(node->left, envp, info);
+	if (node->right != NULL)
+		traverse_heredoc(node->right, envp, info);
+}
+
 void	handle_heredoc(t_tree *node, char **envp, t_pipe *info)
 {
 	int	tmp;
@@ -34,11 +45,6 @@ void	handle_heredoc(t_tree *node, char **envp, t_pipe *info)
 		ft_putendl_fd("minishell: maximum here-document count exceeded", 2);
 		exit (2);
 	}
-	if (node->type == T_REDIRECT \
-	&& ((t_redirect *)node->data)->type == HERE_DOC)
-		exec_heredoc(node->data, envp, info);
-	if (node->left != NULL)
-		handle_heredoc(node->left, envp, info);
-	if (node->right != NULL)
-		handle_heredoc(node->right, envp, info);
+	else
+		traverse_heredoc(node, envp, info);
 }
