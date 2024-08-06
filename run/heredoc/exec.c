@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:47:21 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/03 22:06:54 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:28:10 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "run.h"
+#include "heredoc.h"
 
 static void	do_sigint_heredoc(int signum)
 {
@@ -85,18 +85,16 @@ void	exec_heredoc(t_redirect *redirect, char **env, t_pipe *info)
 	pid = fork();
 	if (pid == -1)
 		pexit("fork failed");
-	if (pid == 0)
+	else if (pid == 0)
 	{
-		restore_io(*info);
 		init_term2(info, &term, &line);
 		get_line_heredoc(redirect, pfd[W]);
-		exit (0);
+		exit (EXIT_SUCCESS);
 	}
 	else
 	{
 		close(pfd[W]);
-		dup2(pfd[R], STDIN_FILENO);
-		close(pfd[R]);
+		redirect->heredoc_fd = pfd[R];
 		wait_heredoc(env, info, pid);
 	}
 }

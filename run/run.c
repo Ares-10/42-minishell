@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/23 12:13:54 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/04 14:54:05 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ void	save_load_io(int fd[2], int flag)
 void	init_pipe(t_pipe **info)
 {
 	*info = xmalloc(sizeof(t_pipe));
-	(*info)->total_child_cnt = 0;
+	(*info)->child_num = 0;
 	if (pipe((*info)->prev_fd) < 0)
 		pexit("pipe failed");
 	(*info)->prev_pipe_exist = FALSE;
 	(*info)->next_pipe_exist = FALSE;
 	(*info)->original_stdin = safe_dup(STDIN_FILENO);
 	(*info)->original_stdout = safe_dup(STDOUT_FILENO);
+	(*info)->child_pids = NULL;
 }
 
 void	search_tree(t_tree *node, char ***env, t_pipe *info)

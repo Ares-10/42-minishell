@@ -6,15 +6,13 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/03 22:25:15 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:26:07 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <termios.h>
+#include "heredoc.h"
+#include "run.h"
 #include <sys/ioctl.h>
 
 int	check_str(char *str)
@@ -51,7 +49,13 @@ static void	run(t_tree *tree, char ***envp)
 	t_pipe	*info;
 
 	init_pipe(&info);
-	search_tree(tree, envp, info);
+	sig_echo_off(STDIN_FILENO);
+	handle_heredoc(tree, *envp, info);
+	if (g_sig == 0)
+	{
+		search_tree(tree, envp, info);
+		wait_all_child(info, *envp);
+	}
 	restore_io(*info);
 	free(info);
 }

@@ -6,14 +6,14 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/19 20:55:26 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/08/04 17:35:16 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parse.h"
 
 /*
- * í…ŒìŠ¤íŠ¸ìš©ìž…ë‹ˆë‹¤
+ * ?…Œ?Š¤?Š¸?š©?ž…?‹ˆ?‹¤
  *
 void	prf(void *t)
 {
@@ -67,7 +67,7 @@ void	print_tree(t_tree *tree)
 			printf("type: < | file_path: %s\n", redirect->file_path);
 		else if (redirect->type == APPEND_REDIRECT)
 			printf("type: >> | file_path: %s\n", redirect->file_path);
-		else if (redirect->type == HERE_DOCUMENT)
+		else if (redirect->type == HERE_DOC)
 			printf("type: << | file_path: %s\n", redirect->file_path);
 	}
 	else

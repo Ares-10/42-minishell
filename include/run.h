@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 21:40:28 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/03 22:04:38 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:57:34 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,11 @@ void	init_term(t_pipe *info, struct termios *term);
 void	restore_term(struct termios *term, char **env);
 
 int		execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info);
-void	wait_all_child(t_pipe *info, char **env);
 
 void	child_sig_handler(int sig);
 void	set_heredoc_signal(struct termios *term);
-void	sig_echo_off(struct termios *term);
-void	sig_echo_on(struct termios *term);
+int		sig_echo_on(int in_fd);
+int		sig_echo_off(int in_fd);
 
 int		safe_dup(int fd);
 void	safe_dup2(int f, int s);

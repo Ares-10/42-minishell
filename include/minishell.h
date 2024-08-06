@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/23 15:47:13 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:18:22 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define OUTPUT_REDIRECT 1
 # define APPEND_REDIRECT 2
 # define INPUT_REDIRECT 3
-# define HERE_DOCUMENT 4
+# define HERE_DOC 4
 
 int	g_sig;
 
@@ -60,6 +60,7 @@ typedef struct s_tree
 typedef struct s_redirect
 {
 	int		type;
+	int		heredoc_fd;
 	char	*file_path;
 }	t_redirect;
 
@@ -71,13 +72,14 @@ typedef struct s_simplecmd
 
 typedef struct s_pipe
 {
-	int	prev_fd[2];
-	int	prev_pipe_exist;
-	int	next_pipe_exist;
-	int	total_child_cnt;
-	int	original_stdin;
-	int	original_stdout;
-	int	io_flag;
+	int		prev_fd[2];
+	int		prev_pipe_exist;
+	int		next_pipe_exist;
+	int		child_num;
+	int		original_stdin;
+	int		original_stdout;
+	int		io_flag;
+	pid_t	*child_pids;
 }	t_pipe;
 
 /* signal.c */
@@ -102,8 +104,12 @@ void	free_tree(t_tree **tree);
 void	init_pipe(t_pipe **info);
 void	search_tree(t_tree *node, char ***env, t_pipe *info);
 void	restore_io(t_pipe info);
+void	wait_all_child(t_pipe *info, char **env);
 
 /* cursor.c */
 void	get_cursor_position(int *rows, int *cols);
+
+/* exec_heredoc.c */
+void	search_heredoc(t_tree *node, int *flag);
 
 #endif

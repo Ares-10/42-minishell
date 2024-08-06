@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:15:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/03 21:24:11 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:23:02 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 	int			fd;
 
 	redirect = (t_redirect *)node->data;
-	if (redirect->type != HERE_DOCUMENT && info->io_flag)
+	if (redirect->type != HERE_DOC && info->io_flag)
 		return ;
 	if (redirect->type == OUTPUT_REDIRECT)
 		fd = open(redirect->file_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -67,18 +67,32 @@ void	handle_redirect(t_tree *node, char **env, t_pipe *info)
 	else if (redirect->type == INPUT_REDIRECT)
 		fd = open(redirect->file_path, O_RDONLY);
 	else
-	{
-		(void)fd;
-		exec_heredoc(redirect, env, info);
-		return ;
-	}
+		fd = redirect->heredoc_fd;
 	if (fd < 0 && put_err_redirect(env, redirect->file_path, info))
 		return ;
 	if (redirect->type == OUTPUT_REDIRECT || redirect->type == APPEND_REDIRECT)
-		dup2(fd, STDOUT_FILENO);
-	else if (redirect->type == INPUT_REDIRECT)
-		dup2(fd, STDIN_FILENO);
+		safe_dup2(fd, STDOUT_FILENO);
+	else if (redirect->type == INPUT_REDIRECT || redirect->type == HERE_DOC)
+		safe_dup2(fd, STDIN_FILENO);
 	close(fd);
+}
+
+static void	add_pid_to_info(pid_t pid, t_pipe *info)
+{
+	int	idx;
+	int	*new;
+
+	new = xmalloc(sizeof(int) * (info->child_num + 1));
+	idx = 0;
+	while (idx < info->child_num)
+	{
+		new[idx] = info->child_pids[idx];
+		idx++;
+	}
+	new[idx] = pid;
+	if (info->child_pids)
+		free(info->child_pids);
+	info->child_pids = new;
 }
 
 void	handle_cmd(t_tree *node, char ***env, t_pipe *info)
@@ -89,21 +103,23 @@ void	handle_cmd(t_tree *node, char ***env, t_pipe *info)
 	cmd = (t_simplecmd *)node->data;
 	if (execute_builtin(cmd, env, info) == FALSE)
 	{
-		signal(SIGINT, child_sig_handler);
 		pid = fork();
 		if (pid < 0)
 			puterr_exit("Fork failed");
-		if (pid == 0 && (close(info->prev_fd[R]), 1))
+		if (pid == 0)
+		{
+			close(info->prev_fd[R]);
+			sig_echo_on(info->original_stdin);
 			ft_execve(cmd->file_path, cmd->argv, *env);
+		}
 		else
 		{
-			info->total_child_cnt++;
+			add_pid_to_info(pid, info);
+			info->child_num++;
 			set_signal();
 		}
 	}
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	restore_io(*info);
-	if (!info->next_pipe_exist)
-		wait_all_child(info, *env);
 }
