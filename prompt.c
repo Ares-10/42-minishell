@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "heredoc.h"
 #include "run.h"
 #include <sys/ioctl.h>
