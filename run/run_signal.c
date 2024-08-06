@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:11:38 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/04 16:07:18 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/06 21:38:28 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	child_sig_handler(int sig)
 	g_sig = sig;
 	if (sig == SIGINT)
 	{
-		dprintf(2, "are you there?");
 		ft_putstr_fd("\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 1);
