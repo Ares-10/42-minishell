@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:13:51 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 18:23:45 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 19:28:17 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,15 @@ int	valid_shell_name(char *name)
 		name++;
 	}
 	return (TRUE);
+}
+
+void	ft_addenv(char *key, char *val, char ***env)
+{
+	int	idx;
+
+	idx = find_key_in_env(key, *env);
+	if (idx < 0)
+		ft_setenv(env, val);
+	else
+		change_env(env, val, idx);
 }
