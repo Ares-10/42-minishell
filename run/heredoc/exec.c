@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:47:21 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/06 18:28:10 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:30:52 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ static void	get_line_heredoc(t_redirect *redirect, int out)
 
 	while (1)
 	{
-		line = readline("> \0337");
-		if (!line && (ft_putstr_fd("\0338", 1), 1))
+		line = readline("> ");
+		if (!line)
 			break ;
 		if (ft_strcmp(line, redirect->file_path) == 0)
 		{
