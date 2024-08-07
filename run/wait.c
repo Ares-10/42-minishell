@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:09:46 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/06 18:21:07 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:33:08 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	decode_exit(int state)
 	return (state);
 }
 
-static void	wait_all(t_pipe *info, int *state)
+static void	wait_all(t_pipe *info, int *state, char **env)
 {
 	int	i;
 	int	ret_wait;
@@ -52,7 +52,10 @@ static void	wait_all(t_pipe *info, int *state)
 		ret_wait = 0;
 		i++;
 	}
-	*state = decode_exit(*state);
+	if (info->builtin_last_flag)
+		*state = ft_atoi(ft_getenv("?", env));
+	else
+		*state = decode_exit(*state);
 }
 
 void	wait_all_child(t_pipe *info, char **env)
@@ -64,7 +67,7 @@ void	wait_all_child(t_pipe *info, char **env)
 		return ;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	wait_all(info, &state);
+	wait_all(info, &state, env);
 	free(*env);
 	tmp = ckm(ft_itoa(state % 256));
 	*env = ckm(ft_strjoin("?=", tmp));
