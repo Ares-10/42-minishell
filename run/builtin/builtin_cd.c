@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:45:29 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/07 19:27:55 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 19:36:12 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,7 @@
 #include <dirent.h>
 
 static char	*find_cdpath(char *dirname, char **env);
-/*
-1. argv[1] 이 널인가?
-	- 널이다: HOME 에 접근해서 패스로 가져온다. 
-	- 널이 아니다: 2. /로 시작하는가? - 시작한다: 바로 패스로 사용
-								- 시작안한다: CDPATH뒤에 슬래쉬를 붙여서 서치한다.
-									- 성공했다면, 절대경로를 프린트해줘야한다.
-	pwd를 새디렉토리로 바꾸고, oldpwd를 전 디렉토리로 세팅해준다.
-
-원래는, /가 있는지 없는지 여부 등을 검사해서 조인하고 하려고 했는데
-그냥 문득 생각해보니까 그냥 디렉토리를 두번 열면 되는거 아닌가? 해서 그렇게 로직을 바꿨다.
-상대경로에서도 작동하더라고. chdir가.
-*/
+static void	set_env_pwd(char ***env, char *old_pwd, char *new_pwd);
 
 void	put_error_cd(char *dest, char ***env)
 {
@@ -62,8 +51,7 @@ void	builtin_cd(char **argv, char ***env)
 		getcwd(new_pwd, sizeof(new_pwd));
 		free(**env);
 		**env = ckm(ft_strdup("?=0"));
-		ft_addenv("OLDPWD", old_pwd, env);
-		ft_addenv("PWD", new_pwd, env);
+		set_env_pwd(env, old_pwd, new_pwd);
 	}
 }
 
@@ -115,4 +103,29 @@ static char	*find_cdpath(char *dirname, char **env)
 	}
 	ft_free(split_path);
 	return (NULL);
+}
+
+/*
+1. argv[1] 이 널인가?
+	- 널이다: HOME 에 접근해서 패스로 가져온다. 
+	- 널이 아니다: 2. /로 시작하는가? - 시작한다: 바로 패스로 사용
+								- 시작안한다: CDPATH뒤에 슬래쉬를 붙여서 서치한다.
+									- 성공했다면, 절대경로를 프린트해줘야한다.
+	pwd를 새디렉토리로 바꾸고, oldpwd를 전 디렉토리로 세팅해준다.
+
+원래는, /가 있는지 없는지 여부 등을 검사해서 조인하고 하려고 했는데
+그냥 문득 생각해보니까 그냥 디렉토리를 두번 열면 되는거 아닌가? 해서 그렇게 로직을 바꿨다.
+상대경로에서도 작동하더라고. chdir가.
+*/
+
+static void	set_env_pwd(char ***env, char *old_pwd, char *new_pwd)
+{
+	char	*tmp;
+
+	tmp = ckm(ft_strjoin("OLDPWD=", old_pwd));
+	ft_addenv("OLDPWD", tmp, env);
+	free(tmp);
+	tmp = ckm(ft_strjoin("PWD=", new_pwd));
+	ft_addenv("PWD", tmp, env);
+	free(tmp);
 }
