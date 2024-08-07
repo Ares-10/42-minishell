@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:09:46 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/07 16:33:08 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:25:42 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,17 @@ void	wait_all_child(t_pipe *info, char **env)
 	free(tmp);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+}
+
+void	ft_free(char **ptr)
+{
+	size_t	i;
+
+	i = 0;
+	while (ptr[i])
+	{
+		free(ptr[i]);
+		i++;
+	}
+	free(ptr);
 }
