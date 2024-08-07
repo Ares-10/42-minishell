@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/19 18:21:14 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 19:26:12 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,7 @@ void	export_single(char *arg, int *err_flag, char ***env, t_pipe *info)
 	&& !info->next_pipe_exist)
 	{
 		key = ckm(ft_substr(arg, 0, equal - arg + 1));
-		idx = find_key_in_env(key, *env);
-		if (idx < 0)
-			ft_setenv(env, arg);
-		else
-			change_env(env, arg, idx);
+		ft_addenv(key, arg, env);
 		free(key);
 	}
 }

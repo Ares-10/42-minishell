@@ -6,11 +6,12 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:45:29 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 17:02:24 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 19:36:12 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
+#include "builtin.h"
 #include <dirent.h>
 
 static char	*find_cdpath(char *dirname, char **env);
@@ -119,13 +120,12 @@ static char	*find_cdpath(char *dirname, char **env)
 
 static void	set_env_pwd(char ***env, char *old_pwd, char *new_pwd)
 {
-	char	*tmp_oldpwd;
-	char	*tmp_newpwd;
+	char	*tmp;
 
-	tmp_oldpwd = ckm(ft_strjoin("OLDPWD=", old_pwd));
-	ft_setenv(env, tmp_oldpwd);
-	free(tmp_oldpwd);
-	tmp_newpwd = ckm(ft_strjoin("PWD=", new_pwd));
-	ft_setenv(env, tmp_newpwd);
-	free(tmp_newpwd);
+	tmp = ckm(ft_strjoin("OLDPWD=", old_pwd));
+	ft_addenv("OLDPWD", tmp, env);
+	free(tmp);
+	tmp = ckm(ft_strjoin("PWD=", new_pwd));
+	ft_addenv("PWD", tmp, env);
+	free(tmp);
 }
