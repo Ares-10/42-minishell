@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/07 19:40:46 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 19:43:50 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ void	start_shell(char ***envp)
 
 	while (1)
 	{
-		input = readline("\033[0;32m[minishell] % \033[0m");
+		ft_putstr_fd("\033[0;32m[minishell] %\033[0m", 1);
+		input = readline(" ");
 		if (!is_white_space(input))
 		{
 			add_history(input);
