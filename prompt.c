@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/06 21:51:54 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:55:19 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,19 @@
 #include "run.h"
 #include <sys/ioctl.h>
 
-int	check_str(char *str)
+int	is_white_space(char *str)
 {
 	int		i;
 
 	if (str == NULL)
-		return (0);
+		return (1);
 	i = 0;
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'
+			|| str[i] == '\r' || str[i] == '\v' || str[i] == '\f'))
 		i++;
 	if (!str[i])
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 static void	init_exit_sig(char **env)
@@ -68,7 +69,7 @@ void	start_shell(char ***envp)
 	while (1)
 	{
 		input = readline("\033[0;32m[minishell] % \033[0m\0337");
-		if (check_str(input))
+		if (!is_white_space(input))
 		{
 			add_history(input);
 			init_exit_sig(*envp);
