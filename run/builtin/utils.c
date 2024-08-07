@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:33:06 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/04 16:10:49 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:31:53 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	execute_builtin(t_simplecmd *cmd, char ***env, t_pipe *info)
 		builtin_exit(cmd->argv, *env, info);
 	else
 		return (0);
+	if (!info->next_pipe_exist)
+		info->builtin_last_flag = TRUE;
 	return (1);
 }
 

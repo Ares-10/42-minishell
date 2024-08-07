@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:02:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/06 18:18:22 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:31:15 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_simplecmd
 
 typedef struct s_pipe
 {
+	int		builtin_last_flag;
 	int		prev_fd[2];
 	int		prev_pipe_exist;
 	int		next_pipe_exist;

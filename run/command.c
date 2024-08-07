@@ -1,31 +1,18 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/30 21:44:53 by seojepar          #+#    #+#             */
-/*   Updated: 2024/07/21 17:07:01 by seojepar         ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   command.c										  :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: seojepar <seojepar@student.42.fr>		  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2024/06/30 21:44:53 by seojepar		  #+#	#+#			 */
+/*   Updated: 2024/08/07 17:26:14 by seojepar		 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "run.h"
 #include "parse.h"
 #include <dirent.h>
-
-void	ft_free(char **ptr)
-{
-	size_t	i;
-
-	i = 0;
-	while (ptr[i])
-	{
-		free(ptr[i]);
-		i++;
-	}
-	free(ptr);
-}
 
 char	*ft_getenv(char *name, char **env)
 {
@@ -49,6 +36,22 @@ char	*ft_getenv(char *name, char **env)
 		i++;
 	}
 	return (NULL);
+}
+
+char	*access_check(char *cmd)
+{
+	DIR	*dir;
+
+	dir = opendir(cmd);
+	if ((dir != NULL && (closedir(dir), 1)) \
+	|| access(cmd, X_OK) != 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": command not found", 2);
+		exit (127);
+	}
+	return (cmd);
 }
 
 static char	*get_path(char *cmd, char **env)
@@ -77,30 +80,46 @@ static char	*get_path(char *cmd, char **env)
 		free(exec);
 	}
 	ft_free(allpath);
-	return (cmd);
+	return (access_check(cmd));
 }
 
-void	check_dir(char *path, char *cmd)
+char	*handle_relative(char *cmd, char **env)
 {
-	DIR		*dir;
+	DIR	*dir;
 
-	dir = opendir(path);
-	if (dir != NULL)
+	if (access(cmd, F_OK) != 0)
 	{
-		closedir(dir);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		exit (127);
+	}
+	dir = opendir(cmd);
+	if (dir != NULL && (closedir(dir), 1))
+	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
 		ft_putendl_fd(": is a directory", 2);
-		exit(126);
+		exit (126);
 	}
+	if (access(cmd, X_OK) != 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": Permission denied", 2);
+		exit (126);
+	}
+	return (cmd);
 }
 
 void	ft_execve(char *cmd, char **argv, char **env)
 {
 	char	*path;
 
-	path = get_path(cmd, env);
-	check_dir(path, cmd);
+	if (cmd && (cmd[0] == '.' || cmd[0] == '/'))
+		path = handle_relative(cmd, env);
+	else
+		path = get_path(cmd, env);
 	if (execve(path, argv, env) == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);

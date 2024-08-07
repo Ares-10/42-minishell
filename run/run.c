@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 11:43:58 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/04 14:54:05 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:34:58 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	init_pipe(t_pipe **info)
 		pexit("pipe failed");
 	(*info)->prev_pipe_exist = FALSE;
 	(*info)->next_pipe_exist = FALSE;
+	(*info)->builtin_last_flag = FALSE;
 	(*info)->original_stdin = safe_dup(STDIN_FILENO);
 	(*info)->original_stdout = safe_dup(STDOUT_FILENO);
 	(*info)->child_pids = NULL;
