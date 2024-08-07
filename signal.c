@@ -17,7 +17,7 @@ static void	sig_handler(int sig)
 	g_sig = sig;
 	if (sig == SIGINT)
 	{
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\n", STDERR_FILENO);
 		rl_on_new_line();
 		rl_replace_line("", 1);
 		rl_redisplay();
