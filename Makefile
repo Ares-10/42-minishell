@@ -7,7 +7,7 @@ SRCS =  main.c							\
 		parse/parse.c					\
 		parse/token.c					\
 		parse/tokenchecker.c			\
-		parse/quote.c					\
+		parse/utils.c					\
 		parse/replvar.c					\
 		parse/split.c					\
 		parse/treebuilder1.c			\
@@ -37,8 +37,8 @@ INC = ./include
 
 # CFLAGS = -Wall -Wextra -Werror
 
-LDFLAGS = -L/usr/local/opt/readline/lib
-CPPFLAGS = -I/usr/local/opt/readline/include
+LDFLAGS = -L/opt/homebrew/opt/readline/lib
+CPPFLAGS = -I/opt/homebrew/opt/readline/include
 
 LIBS = -lreadline		\
 		Libft/libft.a	\

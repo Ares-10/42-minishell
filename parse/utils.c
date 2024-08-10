@@ -1,14 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quote.c                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyungcho <hyungcho@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:29:57 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/06/30 05:29:23 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/08/11 03:42:28 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdlib.h>
 
 /*
  * 열림 및 닫힘: -1
@@ -41,4 +43,14 @@ int	check_quote(const char *str, int index)
 	if (dquote_flag)
 		return (2);
 	return (0);
+}
+
+void	free_strs(char ***strs)
+{
+	int	i;
+
+	i = -1;
+	while ((*strs)[++i])
+		free((*strs)[i]);
+	free(*strs);
 }
