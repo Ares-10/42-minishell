@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/11 03:42:46 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/08/11 05:50:50 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,30 @@ static int	check_unsupported_str(char *str)
 	return (SUCCESS);
 }
 
+void	set_exit_status(char *str, char **envp)
+{
+	int i;
+	int	flag;
+
+	flag = 0;
+	i = -1;
+	while (str[++i])
+		if (str[i] == '|' && check_quote(str, i) == 0)
+			flag = 1;
+	if (flag)
+	{
+		free(envp[0]);
+		envp[0] = ckm(ft_strdup("?=0"));
+	}
+}
+
 t_tree	*parse(char *str, char **envp)
 {
 	t_list	*token_list;
 	t_tree	*parse_tree;
 	char	*new_str;
 
+	set_exit_status(str, envp);
 	if (check_unsupported_str(str) == FAILURE)
 		return (FAILURE);
 	new_str = replace_variable(str, envp);
