@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/30 04:23:19 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/07/22 17:45:39 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/11 03:47:30 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ int		token_check(t_list *token_list);
 /* split.c */
 char	**nquote_split(const char *str, char c);
 
-/* quote.c */
+/* utils.c */
 int		check_quote(const char *str, int index);
+void	free_strs(char ***strs);
 
 /* treebuilder1,2 */
 t_tree	*syntax_pipeline(t_list *token_list);
