@@ -6,15 +6,13 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/04 17:35:16 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/11 03:42:46 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parse.h"
 
 /*
- * ?…Œ?Š¤?Š¸?š©?ž…?‹ˆ?‹¤
- *
 void	prf(void *t)
 {
 	t_token	*token;
