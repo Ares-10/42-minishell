@@ -35,10 +35,7 @@ OBJS = $(SRCS:.c=.o)
 
 INC = ./include
 
-# CFLAGS = -Wall -Wextra -Werror
-
-LDFLAGS = -L/opt/homebrew/opt/readline/lib
-CPPFLAGS = -I/opt/homebrew/opt/readline/include
+CFLAGS = -Wall -Wextra -Werror
 
 LIBS = -lreadline		\
 		Libft/libft.a	\

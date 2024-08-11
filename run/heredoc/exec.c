@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:47:21 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/07 17:30:52 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:09:10 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	do_sigint_heredoc(int signum)
 	exit(1);
 }
 
-static void	init_term2(t_pipe *info, struct termios *term, char **line)
+static void	init_term2(struct termios *term, char **line)
 {
 	tcgetattr(STDIN_FILENO, term);
 	term->c_lflag &= ~(ECHOCTL);
@@ -87,7 +87,7 @@ void	exec_heredoc(t_redirect *redirect, char **env, t_pipe *info)
 		pexit("fork failed");
 	else if (pid == 0)
 	{
-		init_term2(info, &term, &line);
+		init_term2(&term, &line);
 		get_line_heredoc(redirect, pfd[W]);
 		exit (EXIT_SUCCESS);
 	}

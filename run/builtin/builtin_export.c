@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 21:41:30 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/07 19:26:12 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:06:31 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	builtin_export(char **argv, char ***env, t_pipe *info)
 void	export_single(char *arg, int *err_flag, char ***env, t_pipe *info)
 {
 	char	*key;
-	int		idx;
 	char	*equal;
 
 	key = NULL;

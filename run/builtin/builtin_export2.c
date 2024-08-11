@@ -6,30 +6,30 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:13:51 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/07 19:59:17 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:14:49 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "run.h"
 #include "builtin.h"
 
-static void bubble_sort_indices(char *arr[], int indices[], int n)
+static void	bubble_sort_indices(char *arr[], int indices[], int n)
 {
 	int	i;
 	int	j;
 	int	tmp;
 
 	i = 1;
-	while (i < n-1)
+	while (i < n - 1)
 	{
 		j = 1;
 		while (j < n - i - 1)
 		{
-			if (ft_strcmp(arr[indices[j]], arr[indices[j+1]]) > 0)
+			if (ft_strcmp(arr[indices[j]], arr[indices[j + 1]]) > 0)
 			{
 				tmp = indices[j];
-				indices[j] = indices[j+1];
-				indices[j+1] = tmp;
+				indices[j] = indices[j + 1];
+				indices[j + 1] = tmp;
 			}
 			j++;
 		}
@@ -41,7 +41,6 @@ void	put_declare_x(char **env)
 {
 	int		i;
 	int		cnt;
-	char	*tmp;
 	int		*idxs;
 
 	cnt = 0;

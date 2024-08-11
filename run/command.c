@@ -83,7 +83,7 @@ static char	*get_path(char *cmd, char **env)
 	return (access_check(cmd));
 }
 
-char	*handle_relative(char *cmd, char **env)
+char	*handle_relative(char *cmd)
 {
 	DIR	*dir;
 
@@ -117,7 +117,7 @@ void	ft_execve(char *cmd, char **argv, char **env)
 	char	*path;
 
 	if (cmd && (cmd[0] == '.' || cmd[0] == '/'))
-		path = handle_relative(cmd, env);
+		path = handle_relative(cmd);
 	else
 		path = get_path(cmd, env);
 	if (execve(path, argv, env) == -1)

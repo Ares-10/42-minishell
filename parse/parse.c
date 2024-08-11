@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 03:28:45 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/11 05:50:50 by hyungcho         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:16:54 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ static int	check_unsupported_str(char *str)
 
 void	set_exit_status(char *str, char **envp)
 {
-	int i;
+	int	i;
 	int	flag;
 
 	flag = 0;

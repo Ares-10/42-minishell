@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:36:44 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/04 17:35:16 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:13:39 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@ static int	get_redirection_type(char *str);
 static char	*get_file_path(t_list *token_list);
 static char	**get_argv(t_list *token_list);
 
-/*
- * token_list?Š” pipe, redirect, null ì¤? ?•˜?‚˜
- * token_list?˜ ì²? ë²ˆì§¸ token??? type
- * token_list?˜ ?‘ ë²ˆì§¸ token??? file_path
- * ?„¸ ë²ˆì§¸ ?¸?ë¶??„° ì²˜ë¦¬ x
- */
 t_tree	*syntax_io_redirect(t_list *token_list)
 {
 	t_tree		*tree;
@@ -44,9 +38,9 @@ t_tree	*syntax_io_redirect(t_list *token_list)
 }
 
 /*
- * token_list?Š” pipe, redirect, null ì¤? ?•˜?‚˜
- * token_list?˜ ì²? ë²ˆì§¸ token??? type
- * token_list?˜ ì²? ë²ˆì§¸ token ?´?›„?Š” argv
+ * token_list?ï¿½ï¿½ pipe, redirect, null ï¿½? ?ï¿½ï¿½?ï¿½ï¿½
+ * token_list?ï¿½ï¿½ ï¿½? ë²ˆì§¸ token??? type
+ * token_list?ï¿½ï¿½ ï¿½? ë²ˆì§¸ token ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ argv
  */
 t_tree	*syntax_simple_cmd(t_list *token_list)
 {
