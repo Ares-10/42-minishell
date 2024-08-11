@@ -83,7 +83,7 @@ static char	*get_path(char *cmd, char **env)
 	return (access_check(cmd));
 }
 
-char	*handle_relative(char *cmd)
+static void	check_path(char *cmd)
 {
 	DIR	*dir;
 
@@ -109,17 +109,17 @@ char	*handle_relative(char *cmd)
 		ft_putendl_fd(": Permission denied", 2);
 		exit (126);
 	}
-	return (cmd);
 }
 
 void	ft_execve(char *cmd, char **argv, char **env)
 {
 	char	*path;
 
-	if (cmd && (cmd[0] == '.' || cmd[0] == '/'))
-		path = handle_relative(cmd);
+	if (cmd && (cmd[0] == '/' || cmd[0] == '.'))
+		path = cmd;
 	else
 		path = get_path(cmd, env);
+	check_path(path);
 	if (execve(path, argv, env) == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
