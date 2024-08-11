@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:45:29 by seojepar          #+#    #+#             */
-/*   Updated: 2024/08/07 19:36:12 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/11 16:51:12 by seojepar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	builtin_cd(char **argv, char ***env)
 
 	getcwd(old_pwd, sizeof(old_pwd));
 	if (argv[1] == NULL)
-		dest = ft_getenv("HOME", *env);
+		dest = ckm(ft_strdup(ft_getenv("HOME", *env)));
 	else
 	{
 		dest = find_cdpath(argv[1], *env);
@@ -53,6 +53,7 @@ void	builtin_cd(char **argv, char ***env)
 		**env = ckm(ft_strdup("?=0"));
 		set_env_pwd(env, old_pwd, new_pwd);
 	}
+	free(dest);
 }
 
 int	dir_in_path(char *name, char *path)

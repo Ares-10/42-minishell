@@ -40,6 +40,9 @@ CFLAGS = -Wall -Wextra -Werror
 LIBS = -lreadline		\
 		Libft/libft.a	\
 
+# LDFLAGS = -L/usr/local/opt/readline/lib
+# CPPFLAGS = -I/usr/local/opt/readline/include
+
 #LDFLAGS = -L/opt/homebrew/opt/readline/lib
 #CPPFLAGS = -I/opt/homebrew/opt/readline/include
 
