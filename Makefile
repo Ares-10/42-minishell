@@ -40,6 +40,9 @@ CFLAGS = -Wall -Wextra -Werror
 LIBS = -lreadline		\
 		Libft/libft.a	\
 
+#LDFLAGS = -L/opt/homebrew/opt/readline/lib
+#CPPFLAGS = -I/opt/homebrew/opt/readline/include
+
 all : $(NAME)
 
 $(NAME) : $(OBJS)

@@ -6,7 +6,7 @@
 /*   By: seojepar <seojepar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 21:13:13 by hyungcho          #+#    #+#             */
-/*   Updated: 2024/08/11 14:24:32 by seojepar         ###   ########.fr       */
+/*   Updated: 2024/08/11 16:40:20 by hyungcho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ void	start_shell(char ***envp)
 				run(parse_tree, envp);
 			set_signal();
 			free_tree(&parse_tree);
-			free(input);
 		}
 		else if (input == NULL)
 		{
 			ft_putstr_fd("\033[1A\033[14Cexit\n", 1);
 			exit(0);
 		}
+		free(input);
 	}
 }
