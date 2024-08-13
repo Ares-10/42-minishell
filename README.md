@@ -92,4 +92,4 @@
 
 ### 테스트 영상
 
-<img src="[https://github.com/user-attachments/assets/31c70a88-e9be-4a02-ad17-5ce7d78a7529](https://github.com/user-attachments/assets/e732e5ca-bc76-42e1-83d0-f9a23e050d44)">
+<img src="![테스트 영상](https://github.com/user-attachments/assets/b0b098d3-e85f-4fd2-be3e-dc74050330be)">
