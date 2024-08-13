@@ -9,6 +9,7 @@
 4. [설치](#설치)
 5. [사용법](#사용법)
 6. [지원 명령어](#지원-명령어)
+7. [테스트 영상](#테스트-영상)
 
 ---
 
@@ -35,13 +36,17 @@
 ### 설치
 
 1. **저장소 클론**
-   '''bash
+   - **저장소 클론:**
+   '''
    git clone https://github.com/Ares-10/42-minishell.git
+   '''
+   - **디렉토리 이동:**
+   '''
    cd minishell
    '''
 
 3. **프로젝트 빌드**
-   '''bash
+   '''
    make
    '''
    이 명령은 소스 코드를 컴파일하고 'minishell'이라는 실행 파일을 생성합니다.
@@ -54,22 +59,22 @@
 ### 사용법
 
 1. **쉘 시작**
-   '''bash
+   '''
    ./minishell
    '''
    새로운 쉘 세션이 열리며, 명령어를 입력할 수 있는 프롬프트가 나타납니다.
 
 2. **명령어 실행**
    - 명령어 실행:
-     '''bash
+     '''
      [minishell] % ls -la
      '''
    - 리다이렉션 사용:
-     '''bash
+     '''
      [minishell] % echo "Hello, World!" > output.txt
      '''
    - 파이프 사용:
-     '''bash
+     '''
      [minishell] % cat file.txt | grep "search_term"
      '''
 
@@ -84,3 +89,7 @@
 
 - 시스템의 '/bin' 또는 '/usr/bin' 디렉토리에 있는 명령어 (예: 'ls', 'grep', 'cat', 'pwd').
 - bulit-in 명령어 ('cd', 'echo', 'exit', 'env', 'export').
+
+### 테스트 영상
+
+<img src="https://github.com/user-attachments/assets/31c70a88-e9be-4a02-ad17-5ce7d78a7529">
