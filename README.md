@@ -62,15 +62,15 @@
 2. **명령어 실행**
    - 명령어 실행:
      '''bash
-     minishell> ls -la
+     [minishell] % ls -la
      '''
    - 리다이렉션 사용:
      '''bash
-     minishell> echo "Hello, World!" > output.txt
+     [minishell] % echo "Hello, World!" > output.txt
      '''
    - 파이프 사용:
      '''bash
-     minishell> cat file.txt | grep "search_term"
+     [minishell] % cat file.txt | grep "search_term"
      '''
 
 3. **내장 명령어**
