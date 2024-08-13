@@ -39,17 +39,17 @@
 
 1. **저장소 클론**
    '''bash
-   git clone https://github.com/yourusername/minishell.git
+   git clone https://github.com/Ares-10/42-minishell.git
    cd minishell
    '''
 
-2. **프로젝트 빌드**
+3. **프로젝트 빌드**
    '''bash
    make
    '''
    이 명령은 소스 코드를 컴파일하고 'minishell'이라는 실행 파일을 생성합니다.
 
-3. **추가 Make 명령어**
+4. **추가 Make 명령어**
    - **make re:** 전체 프로젝트를 다시 빌드합니다.
    - **make clean:** 빌드 과정에서 생성된 오브젝트 파일(.o)들을 삭제합니다.
    - **make fclean:** 오브젝트 파일과 함께 'minishell' 실행 파일도 삭제합니다.
