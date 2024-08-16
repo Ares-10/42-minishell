@@ -48,8 +48,6 @@ char	**nquote_split(char const *s, char c)
 	strs = (char **)xmalloc(sizeof(char *) * (word_count(s, c) + 1));
 	j = 0;
 	i = 0;
-	if (s[0] == c)
-		strs[j] = ckm(ft_strdup(""));
 	while (s[i] != '\0')
 	{
 		strs[j] = get_word(s, i, c);
